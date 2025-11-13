@@ -2,8 +2,7 @@ package com.example.noaproj;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,37 +10,28 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnLogin, btnSignup;
+public class ActShowData extends AppCompatActivity {
+    TextView tvInfo;
+    String fname, lname, password, email, phone;
+    Intent takeit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_act_show_data);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup);
-        btnLogin.setOnClickListener(this);
-        btnSignup.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v == btnLogin)
-        {
-            Intent goLog = new Intent(this, Login.class);
-            startActivity(goLog);
-        }
-        if (v == btnSignup)
-        {
-            Intent goReg = new Intent(this, Register.class);
-            startActivity(goReg);
-        }
+        takeit =getIntent();
+        tvInfo = findViewById(R.id.tvInfo);
+        fname = takeit.getStringExtra("fname");
+        lname = takeit.getStringExtra("lname");
+        password = takeit.getStringExtra("password");
+        email = takeit.getStringExtra("email");
+        phone = takeit.getStringExtra("phone");
+        tvInfo.setText(fname + "\n" + lname + "\n" + password + "\n" + email + "\n" + phone);
     }
 }

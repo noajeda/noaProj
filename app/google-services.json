@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "515745717063",
+    "firebase_url": "https://noaproj-d8d9d-default-rtdb.firebaseio.com",
+    "project_id": "noaproj-d8d9d",
+    "storage_bucket": "noaproj-d8d9d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515745717063:android:d691b52225d4b70c228a62",
+        "android_client_info": {
+          "package_name": "com.example.noaproj"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8fhpcdiJY9JGS0fvp2Yhrmo18QBA87Ck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
