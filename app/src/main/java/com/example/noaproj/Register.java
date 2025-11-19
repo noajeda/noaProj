@@ -22,8 +22,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private DatabaseService databaseService;
 
     Button btnSubmit;
-    EditText etFname, etLname, etPassword, etEmail, etPhone;
-    String fname, lname, password, email, phone;
+    EditText etFname, etLname, etPassword, etEmail, etPhone, etCity, etGender, etAge;
+    String fname, lname, password, email, phone, city, gender, age;
 
 
     @Override
@@ -36,6 +36,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnSubmit = findViewById(R.id.btnSubmit);
+        etFname = findViewById(R.id.etFname);
+        etLname = findViewById(R.id.etLname);
+        etPassword = findViewById(R.id.etPassword);
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
+        etCity = findViewById(R.id.etCity);
+        etGender = findViewById(R.id.etGender);
+        etAge = findViewById(R.id.etAge);
         btnSubmit.setOnClickListener(this);
     }
 
@@ -51,24 +60,28 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             password = etPassword.getText().toString();
             email = etEmail.getText().toString();
             phone = etPhone.getText().toString();
+            city = etCity.getText().toString();
+            age = etAge.getText().toString();
+            gender = etGender.getText().toString();
+
             databaseService = DatabaseService.getInstance();
 
             Log.d(TAG, "onClick: Registering user...");
 
             /// Register user
-            registerUser(fname, lname, phone, email, password);
+            registerUser(fname, lname, phone, email, password, age,gender, city);
         }
     }
 
 
     /// Register the user
-    private void registerUser(String fname, String lname, String phone, String email, String password) {
+    private void registerUser(String fname, String lname, String phone, String email, String password, String age, String gender, String city) {
         Log.d(TAG, "registerUser: Registering user...");
 
         String uid = databaseService.generateUserId();
 
         /// create a new user object
-        User user = new User("0", "a", email, fname, "gender", uid, lname, password, phone);
+        User user = new User(age, city, email, fname, gender, uid, lname, password, phone);
             createUserInDatabase(user);
         }
 

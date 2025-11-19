@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="243dp"
         android:layout_marginEnd="31dp"
-        android:text="שם משתמנש"
+        android:text="שם משתמש"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +44,7 @@
         android:layout_marginEnd="18dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:hint="Name"
         app:layout_constraintBaseline_toBaselineOf="@+id/Login"
         app:layout_constraintEnd_toStartOf="@+id/Login" />
 
