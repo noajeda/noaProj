@@ -19,12 +19,6 @@ import android.widget.Button;
 import com.example.noaproj.R;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
-
-
-/*/ import com.example.noaproj.utils.SharedPreferencesUtil;
-  import com.example.noaproj.utils.Validator;/*/
-
-
 import com.example.noaproj.services.DatabaseService;
 
 
@@ -89,48 +83,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         }
 
-        /*/
-        /// Method to check if the input is valid
-        /// It checks if the email and password are valid
-        /// @see Validator#isEmailValid(String)
-        /// @see Validator#isPasswordValid(String)
-        private boolean checkInput(String email, String password) {
-            if (!Validator.isEmailValid(email)) {
-                Log.e(TAG, "checkInput: Invalid email address");
-                /// show error message to user
-                etEmail.setError("Invalid email address");
-                /// set focus to email field
-                etEmail.requestFocus();
-                return false;
-            }
-
-            if (!Validator.isPasswordValid(password)) {
-                Log.e(TAG, "checkInput: Invalid password");
-                /// show error message to user
-                etPassword.setError("Password must be at least 6 characters long");
-                /// set focus to password field
-                etPassword.requestFocus();
-                return false;
-            }
-
-            return true;
-        }
-        */
-
         private void loginUser(String email, String password) {
             DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() {
                 /// Callback method called when the operation is completed
-           /*/     /// @param email  & password is logged in /*/
                 @Override
                 public void onCompleted(String  uid) {
+
                     Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
                     /// save the user data to shared preferences
-                    // SharedPreferencesUtil.saveUser(LoginActivity.this, user);
                     /// Redirect to main activity and clear back stack to prevent user from going back to login screen
                     Intent mainIntent = new Intent(Login.this, HomeActivity.class);
                     /// Clear the back stack (clear history) and start the MainActivity
+
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(mainIntent);
+
                 }
 
                 @Override
@@ -141,7 +108,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     etPassword.requestFocus();
                     /// Sign out the user if failed to retrieve user data
                     /// This is to prevent the user from being logged in again
-                    /*/ SharedPreferencesUtil.signOutUser(Login.this); /*/
                 }
             });
         }
