@@ -21,9 +21,9 @@
         android:id="@+id/Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="243dp"
-        android:layout_marginEnd="31dp"
-        android:text="שם משתמש"
+        android:layout_marginTop="248dp"
+        android:layout_marginEnd="37dp"
+        android:text="אימייל"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,29 +31,51 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginEnd="37dp"
         android:text="סיסמה"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/tvLogin" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/etLoginPassword"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/tvLogin"
+        android:id="@+id/etLoginEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="1dp"
         android:ems="10"
+        android:hint="Email"
         android:inputType="text"
-        android:hint="Name"
         app:layout_constraintBaseline_toBaselineOf="@+id/Login"
-        app:layout_constraintEnd_toStartOf="@+id/Login" />
+        app:layout_constraintEnd_toEndOf="@+id/etLoginPassword" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/etLoginPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="23dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/tvLogin" />
+        app:layout_constraintEnd_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginEmail" />
+
+    <Button
+        android:id="@+id/btnLoginSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="94dp"
+        android:text="submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPassword" />
+
+    <TextView
+        android:id="@+id/tvLogToReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="34dp"
+        android:text="עבור להרשמה"
+        app:layout_constraintBottom_toTopOf="@+id/btnLoginSubmit"
+        app:layout_constraintStart_toStartOf="@+id/btnLoginSubmit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

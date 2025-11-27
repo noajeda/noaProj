@@ -257,8 +257,8 @@ public class DatabaseService {
                     }
                 });
     }
-    public void LoginUser(@NotNull final String email,final String password,
-                          @Nullable final DatabaseCallback<String> callback) {
+    public static void LoginUser(@NotNull final String email, final String password,
+                                 @Nullable final DatabaseCallback<String> callback) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email,password)
