@@ -1,6 +1,8 @@
 package com.example.noaproj;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -20,6 +22,10 @@ import com.example.noaproj.services.DatabaseService;
 public class Register extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "RegisterActivity";
     private DatabaseService databaseService;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    SharedPreferences sharedpreferences;
+
+
 
     Button btnSubmit;
     EditText etFname, etLname, etPassword, etEmail, etPhone, etCity, etGender, etAge;
@@ -36,6 +42,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         btnSubmit = findViewById(R.id.btnSubmit);
         etFname = findViewById(R.id.etFname);
         etLname = findViewById(R.id.etLname);
@@ -94,6 +102,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
                 Log.d(TAG, "createUserInDatabase: Redirecting to MainActivity");
                 /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("email", email);
+                editor.putString("password", password);
+                editor.commit();
+
+
                 Intent mainIntent = new Intent(Register.this, MainActivity.class);
                 /// clear the back stack (clear history) and start the MainActivity
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

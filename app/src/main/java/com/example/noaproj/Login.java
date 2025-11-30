@@ -1,6 +1,8 @@
 package com.example.noaproj;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -28,7 +30,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView tvRegister;
-
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    SharedPreferences sharedpreferences;
+    String email2, pass2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-            /// get the views
+        /// get the views
             etEmail = findViewById(R.id.etLoginEmail);
             etPassword = findViewById(R.id.etLoginPassword);
             btnLogin = findViewById(R.id.btnLoginSubmit);
             tvRegister = findViewById(R.id.tvLogToReg);
 
-            /// set the click listener
+        email2=sharedpreferences.getString("email","");
+        pass2=sharedpreferences.getString("password","");
+        etEmail.setText(email2);
+        etPassword.setText(pass2);
+
+
+        /// set the click listener
             btnLogin.setOnClickListener(this);
             tvRegister.setOnClickListener(this);
         }
@@ -88,6 +99,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 /// Callback method called when the operation is completed
                 @Override
                 public void onCompleted(String  uid) {
+
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("email", email);
+                    editor.putString("password", password);
+                    editor.commit();
+
 
                     Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
                     /// save the user data to shared preferences
