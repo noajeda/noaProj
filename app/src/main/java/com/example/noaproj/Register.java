@@ -109,7 +109,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 editor.commit();
 
 
-                Intent mainIntent = new Intent(Register.this, MainActivity.class);
+                Intent mainIntent = new Intent(Register.this, UserActivity.class);
                 /// clear the back stack (clear history) and start the MainActivity
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(mainIntent);

@@ -18,9 +18,6 @@ import android.widget.TextView;
 import android.widget.Button;
 
 
-import com.example.noaproj.R;
-import com.example.noaproj.model.User;
-import com.example.noaproj.services.DatabaseService;
 import com.example.noaproj.services.DatabaseService;
 
 
@@ -109,7 +106,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
                     /// save the user data to shared preferences
                     /// Redirect to main activity and clear back stack to prevent user from going back to login screen
-                    Intent mainIntent = new Intent(Login.this, HomeActivity.class);
+                    Intent mainIntent = new Intent(Login.this, UserActivity.class);
                     /// Clear the back stack (clear history) and start the MainActivity
 
                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
