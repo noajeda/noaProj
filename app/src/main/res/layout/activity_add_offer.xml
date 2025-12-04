@@ -12,8 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="הגשת הצעה"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="52dp" />
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="55dp" />
 
     <TextView
         android:id="@+id/tvCity"
@@ -64,62 +65,69 @@
         tools:layout_editor_absoluteY="461dp" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/etJobCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text=""
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="131dp" />
 
     <EditText
-        android:id="@+id/editTextText2"
+        android:id="@+id/etJobAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text=""
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="192dp" />
 
     <EditText
-        android:id="@+id/editTextText3"
+        android:id="@+id/etjobTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text=""
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="250dp" />
 
     <EditText
-        android:id="@+id/editTextText4"
+        android:id="@+id/etJobPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="20dp"
+        android:inputType="phone"
+        tools:layout_editor_absoluteX="21dp"
         tools:layout_editor_absoluteY="313dp" />
 
     <EditText
-        android:id="@+id/editTextText5"
+        android:id="@+id/etJobAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="Name"
+        android:inputType="number"
         tools:layout_editor_absoluteX="21dp"
         tools:layout_editor_absoluteY="375dp" />
 
     <EditText
-        android:id="@+id/editTextText6"
+        android:id="@+id/etJobDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text=""
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="434dp" />
+
+    <Button
+        android:id="@+id/btnSubmitOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שליחת בקשה"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="532dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
