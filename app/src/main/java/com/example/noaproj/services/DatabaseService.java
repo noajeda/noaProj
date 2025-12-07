@@ -246,7 +246,6 @@ public class DatabaseService {
                         Log.d("TAG", "createUserWithEmail:success");
 
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
                         writeData(USERS_PATH + "/" + uid, user, callback);
 
                     } else {
