@@ -30,7 +30,7 @@
             android:id="@+id/btnOffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="הגשת הצעה" />
+            android:text="משרה חדשה" />
 
         <Button
             android:id="@+id/btnAnswer"

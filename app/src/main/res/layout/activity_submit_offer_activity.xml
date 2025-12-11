@@ -22,8 +22,8 @@
         android:id="@+id/tvCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="63dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="61dp"
         android:text="ישוב העסק:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etCompany" />
@@ -33,6 +33,7 @@
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:text="כתובת העסק:"
         app:layout_constraintBottom_toBottomOf="@+id/etJobAddress"
         app:layout_constraintEnd_toEndOf="@+id/tvJobNumber"
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="35dp"
         android:text="שם העסק:"
         app:layout_constraintBottom_toTopOf="@+id/tvCity"
         app:layout_constraintStart_toStartOf="@+id/tvCity" />
@@ -54,11 +55,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="59dp"
         android:layout_marginEnd="60dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="37dp"
         android:text="מס' טלפון:"
         app:layout_constraintBottom_toTopOf="@+id/tvMinAge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etJobPhone" />
+        app:layout_constraintStart_toEndOf="@+id/etJobAddress" />
 
     <TextView
         android:id="@+id/tvMinAge"
@@ -72,16 +73,17 @@
         android:id="@+id/tvJobType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="44dp"
         android:text="סוג העיסוק"
         app:layout_constraintEnd_toEndOf="@+id/tvCity"
+        app:layout_constraintStart_toStartOf="@+id/tvCompany"
         app:layout_constraintTop_toBottomOf="@+id/tvCity" />
 
     <TextView
         android:id="@+id/tvJobTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="35dp"
         android:text="תפקידים:"
         app:layout_constraintEnd_toEndOf="@+id/tvJobType"
         app:layout_constraintTop_toBottomOf="@+id/tvJobType" />
@@ -90,7 +92,8 @@
         android:id="@+id/tvDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginBottom="2dp"
         android:text="פרטים נוספים:"
         app:layout_constraintBottom_toBottomOf="@+id/etJobDetails"
         app:layout_constraintStart_toEndOf="@+id/etJobDetails" />
@@ -100,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="18dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
@@ -124,7 +127,7 @@
         android:id="@+id/spCity"
         android:layout_width="0dp"
         android:layout_height="41dp"
-        android:layout_marginTop="114dp"
+        android:layout_marginTop="115dp"
         android:layout_marginBottom="115dp"
         android:entries="@array/arrCity"
         app:layout_constraintBottom_toBottomOf="@+id/tvJobTitle"
@@ -140,7 +143,7 @@
         android:layout_marginBottom="16dp"
         android:entries="@array/arrType"
         app:layout_constraintBottom_toTopOf="@+id/spTitle"
-        app:layout_constraintEnd_toEndOf="@+id/etJobAge"
+        app:layout_constraintEnd_toEndOf="@+id/etJobPhone"
         app:layout_constraintStart_toStartOf="@+id/spTitle"
         app:layout_constraintTop_toBottomOf="@+id/spCity" />
 
@@ -149,21 +152,21 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="119dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="119dp"
+        android:layout_marginBottom="36dp"
         android:entries="@array/arrTitle"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobPhone"
+        app:layout_constraintBottom_toTopOf="@+id/tvAddress"
         app:layout_constraintEnd_toEndOf="@+id/etJobAddress"
         app:layout_constraintStart_toStartOf="@+id/etJobAddress"
-        app:layout_constraintTop_toTopOf="@+id/spCity" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobType" />
 
     <EditText
         android:id="@+id/etJobPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="26dp"
         android:ems="10"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,12 +176,11 @@
         android:id="@+id/etJobAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/etJobDetails"
-        app:layout_constraintStart_toStartOf="@+id/etJobDetails" />
+        app:layout_constraintStart_toStartOf="@+id/etJobPhone"
+        app:layout_constraintTop_toBottomOf="@+id/etJobPhone" />
 
 
     <EditText
@@ -186,12 +188,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmitOffer"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etJobAge" />
 
     <Button
         android:id="@+id/btnSubmitOffer"

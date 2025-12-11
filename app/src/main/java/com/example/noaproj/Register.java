@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,8 +30,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
 
     Button btnSubmit;
-    EditText etFname, etLname, etPassword, etEmail, etPhone, etCity, etGender, etAge;
+    EditText etFname, etLname, etPassword, etEmail, etPhone, etAge;
     String fname, lname, password, email, phone, city, gender, age;
+    Spinner spUserGender, spUserCity;
 
 
     @Override
@@ -51,8 +53,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         etPassword = findViewById(R.id.etPassword);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
-        etCity = findViewById(R.id.etCity);
-        etGender = findViewById(R.id.etGender);
+        spUserCity = findViewById(R.id.spUserCity);
+        spUserGender = findViewById(R.id.spUserGender);
         etAge = findViewById(R.id.etAge);
         btnSubmit.setOnClickListener(this);
     }
@@ -69,9 +71,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             password = etPassword.getText().toString();
             email = etEmail.getText().toString();
             phone = etPhone.getText().toString();
-            city = etCity.getText().toString();
+            city = spUserCity.getSelectedItem().toString();
             age = etAge.getText().toString();
-            gender = etGender.getText().toString();
+            gender = spUserGender.getSelectedItem().toString();
 
             databaseService = DatabaseService.getInstance();
 

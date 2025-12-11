@@ -100,8 +100,6 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-
-
     private void createJobInDatabase(Job job) {
         databaseService.createNewJob(job, new DatabaseService.DatabaseCallback<Void>() {
             @Override
