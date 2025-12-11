@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,13 +20,16 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SubmitOfferActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "AddOfferActivity";
     private DatabaseService databaseService;
-    EditText etJobCity, etJobAddress, etJobTitle, etJobPhone, etJobAge, etJobDetails, etJobType;
-    String jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType;
+    EditText etCompany, etJobAddress, etJobPhone, etJobAge, etJobDetails, etJobType;
+    String jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType, company;
     Button btnSubmitOffer;
+
+    Spinner spCity,spTitle, spType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +42,15 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             return insets;
         });
 
-
-        etJobCity = findViewById(R.id.etJobCity);
+        etCompany = findViewById(R.id.etCompany);
+        spCity = findViewById(R.id.spCity);
+        spType = findViewById(R.id.spType);
+        spTitle = findViewById(R.id.spTitle);
         etJobAddress = findViewById(R.id.etJobAddress);
-        etJobTitle = findViewById(R.id.etjobTitle);
         etJobPhone = findViewById(R.id.etJobPhone);
         etJobAge = findViewById(R.id.etJobAge);
         etJobDetails = findViewById(R.id.etJobDetails);
         btnSubmitOffer = findViewById(R.id.btnSubmitOffer);
-        etJobType = findViewById(R.id.etJobType);
 
         btnSubmitOffer.setOnClickListener(this);
 
@@ -57,32 +61,34 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
         if (v.getId() == btnSubmitOffer.getId()) {
             Log.d(TAG, "onClick: Add Offer button clicked");
 
-            /// get the input from the user
-            jobCity = etJobCity.getText().toString();
+            company = etCompany.getText().toString();
+            jobCity=spCity.getSelectedItem().toString();
+            jobType = spType.getSelectedItem().toString();
+            jobTitle = spTitle.getSelectedItem().toString();
             jobAddress = etJobAddress.getText().toString();
-            jobTitle = etJobTitle.getText().toString();
             jobPhone = etJobPhone.getText().toString();
             jobAge = etJobAge.getText().toString();
             jobDetails = etJobDetails.getText().toString();
-            jobType = etJobType.getText().toString();
+
 
             databaseService = DatabaseService.getInstance();
 
             Log.d(TAG, "onClick: submitting offer...");
 
             /// Register user
-            SubmitOffer(jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType);
+            SubmitOffer(company, jobCity,jobType, jobTitle, jobAddress, jobPhone, jobAge, jobDetails);
         }
     }
 
-    private void SubmitOffer(String jobCity, String jobAddress, String jobTitle, String jobPhone, String jobAge, String jobDetails, String jobType) {
+    private void SubmitOffer(String company, String jobCity, String jobType, String jobTitle, String jobAddress, String jobPhone, String jobAge, String jobDetails) {
         Log.d(TAG, "registerUser: Registering user...");
-        String uid = databaseService.generateUserId();
 
-        DatabaseService.getInstance().getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String uid= mAuth.getCurrentUser().getUid();
+
+        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
-
-                Job job = new Job(jobAddress, jobAge, jobCity, jobDetails, uid, jobPhone, jobTitle, jobType, user);
+                    Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, uid, jobPhone, jobTitle, jobType, user);
                 createJobInDatabase(job);
 
             }

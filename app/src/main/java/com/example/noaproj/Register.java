@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "RegisterActivity";
@@ -86,7 +87,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private void registerUser(String fname, String lname, String phone, String email, String password, String age, String gender, String city) {
         Log.d(TAG, "registerUser: Registering user...");
 
-        String uid = databaseService.generateUserId();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String uid= mAuth.getCurrentUser().getUid();
 
         /// create a new user object
         User user = new User(age, city, email, fname, gender, uid, lname, password, phone);

@@ -11,109 +11,152 @@
         android:id="@+id/tvTitle4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="הגשת הצעה"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="28dp"
+        android:text="משרה חדשה"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/etCompany"
+        app:layout_constraintEnd_toStartOf="@+id/tvCompany" />
 
     <TextView
         android:id="@+id/tvCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="63dp"
         android:text="ישוב העסק:"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobCity"
-        app:layout_constraintStart_toStartOf="@+id/tvAddress" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCompany" />
+
 
     <TextView
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
         android:text="כתובת העסק:"
         app:layout_constraintBottom_toBottomOf="@+id/etJobAddress"
-        app:layout_constraintStart_toEndOf="@+id/etJobAddress" />
+        app:layout_constraintEnd_toEndOf="@+id/tvJobNumber"
+        app:layout_constraintStart_toEndOf="@+id/btnSubmitOffer" />
 
     <TextView
-        android:id="@+id/tvJobName"
+        android:id="@+id/tvCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="34dp"
         android:text="שם העסק:"
-        app:layout_constraintBottom_toBottomOf="@+id/etjobTitle"
-        app:layout_constraintStart_toStartOf="@+id/tvAddress" />
+        app:layout_constraintBottom_toTopOf="@+id/tvCity"
+        app:layout_constraintStart_toStartOf="@+id/tvCity" />
 
     <TextView
         android:id="@+id/tvJobNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="35dp"
         android:text="מס' טלפון:"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobPhone"
+        app:layout_constraintBottom_toTopOf="@+id/tvMinAge"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etJobPhone" />
 
     <TextView
         android:id="@+id/tvMinAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
         android:text="גיל העסקה:"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobAge"
-        app:layout_constraintStart_toEndOf="@+id/etJobAge" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/etJobAge"
+        app:layout_constraintEnd_toEndOf="@+id/tvJobNumber" />
 
     <TextView
         android:id="@+id/tvJobType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
         android:text="סוג העיסוק"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobType"
-        app:layout_constraintEnd_toEndOf="@+id/tvMinAge" />
+        app:layout_constraintEnd_toEndOf="@+id/tvCity"
+        app:layout_constraintTop_toBottomOf="@+id/tvCity" />
 
+    <TextView
+        android:id="@+id/tvJobTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="תפקידים:"
+        app:layout_constraintEnd_toEndOf="@+id/tvJobType"
+        app:layout_constraintTop_toBottomOf="@+id/tvJobType" />
 
     <TextView
         android:id="@+id/tvDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="34dp"
         android:text="פרטים נוספים:"
         app:layout_constraintBottom_toBottomOf="@+id/etJobDetails"
         app:layout_constraintStart_toEndOf="@+id/etJobDetails" />
 
     <EditText
-        android:id="@+id/etJobCity"
+        android:id="@+id/etJobAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="131dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvJobTitle" />
+
+
+    <EditText
+        android:id="@+id/etCompany"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="111dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etJobAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobCity" />
+    <Spinner
+        android:id="@+id/spCity"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="114dp"
+        android:layout_marginBottom="115dp"
+        android:entries="@array/arrCity"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobTitle"
+        app:layout_constraintEnd_toEndOf="@+id/spType"
+        app:layout_constraintStart_toStartOf="@+id/etCompany"
+        app:layout_constraintTop_toTopOf="@+id/tvTitle4" />
 
-    <EditText
-        android:id="@+id/etjobTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobAddress" />
+    <Spinner
+        android:id="@+id/spType"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:entries="@array/arrType"
+        app:layout_constraintBottom_toTopOf="@+id/spTitle"
+        app:layout_constraintEnd_toEndOf="@+id/etJobAge"
+        app:layout_constraintStart_toStartOf="@+id/spTitle"
+        app:layout_constraintTop_toBottomOf="@+id/spCity" />
+
+    <Spinner
+        android:id="@+id/spTitle"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="119dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="119dp"
+        android:entries="@array/arrTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/etJobPhone"
+        app:layout_constraintEnd_toEndOf="@+id/etJobAddress"
+        app:layout_constraintStart_toStartOf="@+id/etJobAddress"
+        app:layout_constraintTop_toTopOf="@+id/spCity" />
 
     <EditText
         android:id="@+id/etJobPhone"
@@ -124,42 +167,31 @@
         android:ems="10"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etjobTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/etJobAddress" />
 
     <EditText
         android:id="@+id/etJobAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="12dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobPhone" />
+        app:layout_constraintBottom_toTopOf="@+id/etJobDetails"
+        app:layout_constraintStart_toStartOf="@+id/etJobDetails" />
 
-    <EditText
-        android:id="@+id/etJobType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="13dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobAge" />
 
     <EditText
         android:id="@+id/etJobDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginBottom="48dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobType" />
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmitOffer"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSubmitOffer"

@@ -220,13 +220,6 @@ public class DatabaseService {
 
     // region User Section
 
-    /// generate a new id for a new user in the database
-    /// @return a new id for the user
-    /// @see #generateNewId(String)
-    /// @see User
-    public String generateUserId() {
-        return generateNewId(USERS_PATH);
-    }
 
     /// create a new user in the database
     /// @param user the user object to create

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="arrCity">
+        <item>תל אביב–יפו</item>
+        <item>רמת גן</item>
+        <item>גבעתיים</item>
+        <item>בני ברק</item>
+        <item>פתח תקווה</item>
+        <item>ראשון לציון</item>
+        <item>חולון</item>
+        <item>בת ים</item>
+        <item>הרצליה</item>
+        <item>רעננה</item>
+        <item>כפר סבא</item>
+        <item>נתניה</item>
+        <item>רחובות</item>
+        <item>נס ציונה</item>
+        <item>מודיעין–מכבים–רעות</item>
+        <item>ירושלים</item>
+        <item>בית שמש</item>
+        <item>מבשרת ציון</item>
+        <item>גבעת זאב</item>
+        <item>חיפה</item>
+        <item>נשר</item>
+        <item>קריית אתא</item>
+        <item>קריית מוצקין</item>
+        <item>קריית ביאליק</item>
+        <item>קריית ים</item>
+        <item>עפולה</item>
+        <item>נצרת</item>
+        <item>טבריה</item>
+        <item>עכו</item>
+        <item>נהריה</item>
+        <item>כרמיאל</item>
+        <item>צפת</item>
+        <item>באר שבע</item>
+        <item>אשדוד</item>
+        <item>אשקלון</item>
+        <item>אילת</item>
+        <item>קריית גת</item>
+        <item>קריית מלאכי</item>
+        <item>רהט</item>
+        <item>דימונה</item>
+    </string-array>
+
+    <string-array name="arrType">
+        <item>אבטחה</item>
+        <item>מסעדנות</item>
+        <item>מכירות</item>
+        <item>סופרמרקטים</item>
+        <item>שירות לקוחות</item>
+        <item>לוגיסטיקה / שליחויות</item>
+        <item>חינוך / הדרכה</item>
+        <item>עבודה עם ילדים</item>
+        <item>ניקיון ותחזוקה</item>
+        <item>חקלאות</item>
+        <item>בידור ואירועים</item>
+        <item>מלונות ואירוח</item>
+        <item>עבודות משרד</item>
+        <item>מחשבים/טכנאות בסיסית</item>
+        <item>עיצוב / יצירה</item>
+    </string-array>
+
+    <string-array name="arrTitle">
+        <item>מלצר/ית</item>
+        <item>בריסטה</item>
+        <item>קופאי/ת</item>
+        <item>עובד/ת דלפק</item>
+        <item>שטיפת כלים</item>
+        <item>שליח/ה</item>
+        <item>מוכר/ת</item>
+        <item>מסדר/ת סחורה</item>
+        <item>לקט/ית אונליין</item>
+        <item>נציג/ת שירות לקוחות</item>
+        <item>רכז/ת קבלה</item>
+        <item>מדריך/ת קייטנה</item>
+        <item>סייע/ת בצהרון</item>
+        <item>עוזר/ת מדריך</item>
+        <item>שומר/ת במתקנים</item>
+        <item>עובד/ת מחסן</item>
+        <item>קטיף</item>
+        <item>מיון תוצרת</item>
+        <item>אריזה בחממות</item>
+        <item>סדרן/ית אולם</item>
+        <item>עובד/ת קייטרינג</item>
+        <item>עוזר/ת בהפקות</item>
+        <item>עובד/ת חדר אוכל</item>
+        <item>עובד/ת ניקיון</item>
+        <item>פקיד/ת קבלה</item>
+        <item>קלדנ/ית</item>
+        <item>מיון ותיוק מסמכים</item>
+        <item>טכנאי/ת מחשבים מתחיל/ה</item>
+        <item>נציג/ת תמיכה בסיסית</item>
+        <item>מתפעל/ת עמדות מחשב</item>
+        <item>עוזר/ת גרפיקה</item>
+        <item>יוצר/ת דיגיטל (תוכן בסיסי)</item>
+        <item>עוזר/ת סטודיו</item>
+    </string-array>
+</resources>
