@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.noaproj.R;
 import com.example.noaproj.model.User;
 import com.google.android.material.chip.Chip;
 
@@ -49,21 +50,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         
         // Set initials
         String initials = "";
-        if (user.getFirstName() != null && !user.getFirstName().isEmpty()) {
-            initials += user.getFirstName().charAt(0);
+        if (user.getfName() != null && !user.getfName().isEmpty()) {
+            initials += user.getfName().charAt(0);
         }
-        if (user.getLastName() != null && !user.getLastName().isEmpty()) {
-            initials += user.getLastName().charAt(0);
+        if (user.getlName() != null && !user.getlName().isEmpty()) {
+            initials += user.getlName().charAt(0);
         }
         holder.tvInitials.setText(initials.toUpperCase());
         
-        // Show admin chip if user is admin
+        /*/ Show admin chip if user is admin
         if (user.isAdmin()) {
             holder.chipRole.setVisibility(View.VISIBLE);
             holder.chipRole.setText("Admin");
         } else {
             holder.chipRole.setVisibility(View.GONE);
         }
+        /*/
 
         holder.itemView.setOnClickListener(v -> {
             if (onUserClickListener != null) {
@@ -111,15 +113,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvEmail, tvPhone, tvInitials;
-        Chip chipRole;
+        //Chip chipRole;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tv_item_user_name);
-            tvEmail = itemView.findViewById(R.id.tv_item_user_email);
-            tvPhone = itemView.findViewById(R.id.tv_item_user_phone);
-            tvInitials = itemView.findViewById(R.id.tv_user_initials);
-            chipRole = itemView.findViewById(R.id.chip_user_role);
+            tvName = itemView.findViewById(R.id.tvFname_userList);
+            tvEmail = itemView.findViewById(R.id.tvLname_userList);
+            tvPhone = itemView.findViewById(R.id.tvPhone_userList);
+            tvInitials = itemView.findViewById(R.id.tvInitials_userList);
+           // chipRole = itemView.findViewById(R.id.chip_user_role);
         }
     }
 }

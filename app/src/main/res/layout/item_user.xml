@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvFname_userList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        tools:layout_editor_absoluteX="2dp"
+        tools:layout_editor_absoluteY="52dp" />
+
+    <TextView
+        android:id="@+id/tvLname_userList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Name"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="78dp" />
+
+    <TextView
+        android:id="@+id/tvPhone_userList"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="Phone"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="108dp" />
+
+    <TextView
+        android:id="@+id/tvInitials_userList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="initials"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="26dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
