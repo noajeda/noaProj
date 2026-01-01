@@ -1,4 +1,4 @@
-package com.example.testapp.adapters;
+package com.example.noaproj.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testapp.R;
-import com.example.testapp.models.User;
+
+import com.example.noaproj.model.User;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         User user = userList.get(position);
         if (user == null) return;
 
-        holder.tvName.setText(user.getFullName());
+        holder.tvName.setText(user.getfName() + "" + user.getlName());
         holder.tvEmail.setText(user.getEmail());
         holder.tvPhone.setText(user.getPhone());
         

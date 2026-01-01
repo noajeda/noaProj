@@ -33,7 +33,9 @@
                 android:textColor="?attr/colorOnSurfaceVariant"/>
         </LinearLayout>
 
-        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_users_list"
                 android:layout_width="match_parent"
