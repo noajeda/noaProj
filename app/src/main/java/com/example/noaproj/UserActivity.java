@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
-   Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList
+   Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnAnswer = findViewById(R.id.btnAnswer);
         btnChat = findViewById(R.id.btnChat);
         btnLogOut = findViewById(R.id.btnLogOut);
-        btnUserList = findViewById(R.id.btnUserList)
+        btnUserList = findViewById(R.id.btnUserList);
         btnSearch.setOnClickListener(this);
         btnFilter.setOnClickListener(this);
         btnOffer.setOnClickListener(this);

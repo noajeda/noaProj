@@ -1,5 +1,6 @@
 package com.example.noaproj;
 
+import android.health.connect.datatypes.units.Length;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Adapter;
@@ -26,8 +27,10 @@ public class userList extends AppCompatActivity {
     DatabaseService databaseService;
     ArrayList<User> userList;
     RecyclerView rcUsers;
+    TextView tv_user_count;
 
     UserAdapter adapter;
+    int totalUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,9 @@ public class userList extends AppCompatActivity {
             @Override
             public void onCompleted(List<User> object) {
                 Log.d(TAG, "onCompleted: " + object);
-                userList.clear();
-                userList.addAll(object);
-                adapter.notifyDataSetChanged();
+                adapter.setUserList(object);
+                totalUsers= object.size();
+                tv_user_count.setText("Total users: " + totalUsers);
             }
 
             @Override
@@ -58,6 +61,7 @@ public class userList extends AppCompatActivity {
     }
 
     private void initViews() {
+        tv_user_count = findViewById(R.id.tv_user_count);
         databaseService = DatabaseService.getInstance();
         rcUsers = findViewById(R.id.rv_users_list);
         rcUsers.setLayoutManager(new LinearLayoutManager(this));

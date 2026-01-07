@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -8,31 +9,43 @@
         android:id="@+id/tvFname_userList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="7dp"
         android:text="First Name"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="52dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tvLname_userList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInitials_userList" />
 
     <TextView
         android:id="@+id/tvLname_userList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="11dp"
         android:text="Last Name"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="78dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tvPhone_userList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFname_userList" />
 
     <TextView
         android:id="@+id/tvPhone_userList"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="Phone"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="108dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLname_userList" />
 
     <TextView
         android:id="@+id/tvInitials_userList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="7dp"
         android:text="initials"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="26dp" />
+        app:layout_constraintBottom_toTopOf="@+id/tvFname_userList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
