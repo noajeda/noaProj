@@ -16,21 +16,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="Job Title" />
 
         <TextView
             android:id="@+id/tvJobType2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="Job Type" />
 
         <TextView
             android:id="@+id/tvJobCompany2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="Job Company" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,14 +44,14 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="Job Age" />
 
         <TextView
             android:id="@+id/tvJobAddress2"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="Job Adress" />
 
 
 
@@ -70,6 +70,6 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="text"
-            android:text="Name" />
+            android:text="Job Details" />
     </LinearLayout>
 </LinearLayout>

@@ -93,7 +93,7 @@ public class User {
         return isAdmin;
     }
 
-    public void setIsAdmin(String password) {
+    public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 

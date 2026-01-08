@@ -20,11 +20,19 @@ import com.google.firebase.auth.FirebaseAuth;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
    Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList;
     private DatabaseService databaseService;
+    private FirebaseAuth mAuth;
+
     private static final String TAG = "UserActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            Log.d(TAG, "onCreate started");
+            // כל הקוד שלך כאן...
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in onCreate", e);
+        }
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_activity);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -32,26 +40,30 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid= mAuth.getCurrentUser().getUid();
-        databaseService = DatabaseService.getInstance();
 
-       initViews();
-       initListeners();
+        initViews();
+        initListeners();
+        Log.d(TAG, "Views initialized");
 
+            mAuth = FirebaseAuth.getInstance();
+            String uid = mAuth.getCurrentUser().getUid();
+            databaseService = DatabaseService.getInstance();
 
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
-                if(user.getIsAdmin())
-                {
+                Log.d(TAG, "onCompleted: id:" + uid);
+                if (user.getIsAdmin()) {
                     btnUserList.setVisibility(View.VISIBLE);
+
                 }
             }
+
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "userActivity: Failed to load user", e);
+                Log.e(TAG, "onFailed: Failed to admin", e);
             }
         });
+
     }
     private void initViews(){
         btnSearch = findViewById(R.id.btnSearch);
