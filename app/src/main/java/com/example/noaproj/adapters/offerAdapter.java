@@ -51,7 +51,9 @@ import java.util.List;
         holder.tvJobCity2.setText(job.getCity());
         holder.tvJobPhone2.setText(job.getPhone());
         holder.tvJobDetails2.setText(job.getDetails());
-        holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName() );
+        if (job.getUser() != null) {
+            holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName() );
+        }
 
 
         /*/ Show admin chip if user is admin
@@ -116,7 +118,7 @@ import java.util.List;
             tvJobTitle2 = itemView.findViewById(R.id.tvJobTitle2);
             tvJobType2 = itemView.findViewById(R.id.tvJobType2);
             tvJobCompany2 = itemView.findViewById(R.id.tvJobCompany2);
-            tvAddress2 = itemView.findViewById(R.id.tvAdress2);
+            tvAddress2 = itemView.findViewById(R.id.tvAddress2);
             tvJobCity2 = itemView.findViewById(R.id.tvJobCity2);
             tvJobPhone2 = itemView.findViewById(R.id.tvJobPhone2);
             tvJobDetails2 = itemView.findViewById(R.id.tvJobDetails2);

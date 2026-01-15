@@ -18,7 +18,7 @@ import com.example.noaproj.services.DatabaseService;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
-   Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList;
+   Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList, btnJobList;
     private DatabaseService databaseService;
     private FirebaseAuth mAuth;
 
@@ -54,7 +54,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d(TAG, "onCompleted: id:" + uid);
                 if (user.getIsAdmin()) {
                     btnUserList.setVisibility(View.VISIBLE);
-
+                    btnJobList.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -73,6 +73,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnChat = findViewById(R.id.btnChat);
         btnLogOut = findViewById(R.id.btnLogOut);
         btnUserList = findViewById(R.id.btnUserList);
+        btnJobList = findViewById(R.id.btnJobList);
     }
     private void initListeners() {
         btnSearch.setOnClickListener(this);
@@ -82,6 +83,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnChat.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
         btnUserList.setOnClickListener(this);
+        btnJobList.setOnClickListener(this);
     }
 
         @Override
@@ -96,6 +98,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(goUserList);
 
         }
+            if(v == btnJobList){
+                Intent goJobList = new Intent(this, offer_list.class);
+                startActivity(goJobList);
+            }
+
 
     }
 }
