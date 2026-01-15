@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NoaProj">
         <activity
+            android:name=".offer_list"
+            android:exported="false" />
+        <activity
             android:name=".userList"
             android:exported="false" />
         <activity
