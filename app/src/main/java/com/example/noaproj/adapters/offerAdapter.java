@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-    public class offerAdapter extends RecyclerView.Adapter<com.example.noaproj.adapters.offerAdapter.ViewHolder> {
+    public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapters.OfferAdapter.ViewHolder> {
 
         public interface OnJobClickListener {
         void onJobClick(Job job);
@@ -26,21 +26,21 @@ import java.util.List;
     }
 
     private final List<Job> jobList;
-    private final offerAdapter.OnJobClickListener onJobClickListener;
-    public offerAdapter(@Nullable final offerAdapter.OnJobClickListener onJobClickListener) {
+    private final OfferAdapter.OnJobClickListener onJobClickListener;
+    public OfferAdapter(@Nullable final OfferAdapter.OnJobClickListener onJobClickListener) {
         jobList = new ArrayList<>();
         this.onJobClickListener = onJobClickListener;
     }
 
     @NonNull
     @Override
-    public offerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public OfferAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
-        return new offerAdapter.ViewHolder(view);
+        return new OfferAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull offerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OfferAdapter.ViewHolder holder, int position) {
         Job job = jobList.get(position);
         if (job == null) return;
 

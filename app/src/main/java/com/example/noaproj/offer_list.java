@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noaproj.adapters.offerAdapter;
+import com.example.noaproj.adapters.OfferAdapter;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
@@ -27,7 +27,7 @@ public class offer_list extends AppCompatActivity {
     RecyclerView rcOffers;
     TextView tv_offer_count;
 
-    offerAdapter adapter;
+    OfferAdapter adapter;
     int totalOffers;
 
     @Override
@@ -72,8 +72,8 @@ public class offer_list extends AppCompatActivity {
 
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
         offerList = new ArrayList<>();
-            adapter = new offerAdapter(null);
-            rcOffers.setAdapter(adapter);
+        adapter = new OfferAdapter(null);
+        rcOffers.setAdapter(adapter);
         Log.d(TAG, "initViews finished");
 
     }
