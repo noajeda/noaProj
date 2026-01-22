@@ -51,6 +51,7 @@ public class offer_list extends AppCompatActivity {
                 Log.d(TAG, "onCompleted: " + object);
                 adapter.setJobList(object);
                 totalOffers= object.size();
+                tv_offer_count.setText("Total offers:" + totalOffers);
                 Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
 
             }
@@ -63,7 +64,7 @@ public class offer_list extends AppCompatActivity {
     }
 
     private void initViews() {
-            tv_offer_count = findViewById(R.id.tv_user_count);
+            tv_offer_count = findViewById(R.id.tv_offer_count);
             databaseService = DatabaseService.getInstance();
         Log.d(TAG, "databaseService initialized");
 
