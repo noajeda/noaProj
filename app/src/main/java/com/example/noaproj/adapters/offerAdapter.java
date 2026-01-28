@@ -35,7 +35,7 @@ import java.util.List;
     @NonNull
     @Override
     public OfferAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_job, parent, false);
         return new OfferAdapter.ViewHolder(view);
     }
 

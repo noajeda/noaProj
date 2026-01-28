@@ -1,6 +1,7 @@
 package com.example.noaproj;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -98,11 +99,23 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(goUserList);
 
         }
-            if(v == btnJobList){
-                Intent goJobList = new Intent(this, offer_list.class);
-                startActivity(goJobList);
-            }
+        if(v == btnJobList){
+            Intent goJobList = new Intent(this, offer_list.class);
+            startActivity(goJobList);
+        }
+        if(v == btnLogOut){
+            logOut();
+        }
 
+    }
+    private void logOut() {
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        prefs.edit().clear().apply();
 
+        Intent intent = new Intent(UserActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        finish();
     }
 }
