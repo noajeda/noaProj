@@ -104,11 +104,31 @@
             android:id="@+id/tvJobDetails2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
             android:inputType="text"
             android:text="Job Details" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        >
+        <Button
+            android:id="@+id/reject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="דחייה"
+            />
+        <Button
+            android:id="@+id/approve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="אישור"
+            />
     </LinearLayout>
 </LinearLayout>

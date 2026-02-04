@@ -11,7 +11,10 @@ public class Job {
     String details;
     User user;
 
+
+
     String company;
+    String status;
 
 
     public Job(String address, String age, String city, String company, String details, String id, String phone, String title, String type, User user) {
@@ -22,6 +25,21 @@ public class Job {
         this.details = details;
         this.id = id;
         this.phone = phone;
+        this.title = title;
+        this.type = type;
+        this.user = user;
+        this.status = "new";
+    }
+
+    public Job(String address, String age, String city, String company, String details, String id, String phone, String status, String title, String type, User user) {
+        this.address = address;
+        this.age = age;
+        this.city = city;
+        this.company = company;
+        this.details = details;
+        this.id = id;
+        this.phone = phone;
+        this.status = status;
         this.title = title;
         this.type = type;
         this.user = user;
@@ -110,6 +128,14 @@ public class Job {
         this.user = user;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -123,6 +149,7 @@ public class Job {
                 ", details='" + details + '\'' +
                 ", user=" + user +
                 ", company='" + company + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

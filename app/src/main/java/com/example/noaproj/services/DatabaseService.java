@@ -38,6 +38,8 @@ public class DatabaseService {
     /// paths for different data types in the database
     /// @see DatabaseService#readData(String)
     private static final String USERS_PATH = "users",
+
+                                COMPANY_JOBS_PATH = "company_jobs",
                                 JOBS_PATH = "jobs";
 
 
@@ -382,6 +384,8 @@ public class DatabaseService {
     /// @see Job
     public void createNewJob(@NotNull final Job job, @Nullable final DatabaseCallback<Void> callback) {
         writeData(JOBS_PATH + "/" + job.getId(), job, callback);
+        writeData(COMPANY_JOBS_PATH + "/" +job.getUser().getId()+"/" + job.getId(), job, callback);
+
     }
 
     /// get a job from the database
@@ -395,6 +399,18 @@ public class DatabaseService {
         getData(JOBS_PATH + "/" + jobId, Job.class, callback);
     }
 
+    /// get a job from the database
+    /// @param comanyId the id of the job to get
+    /// @param callback the callback to call when the operation is completed
+    ///               the callback will receive the job object
+    ///              if the operation fails, the callback will receive an exception
+    /// @see DatabaseCallback
+    /// @see Job
+    public void getCompanyJob(@NotNull final String comanyId,@NotNull final String jobId  , @NotNull final DatabaseCallback<Job> callback) {
+        getData(COMPANY_JOBS_PATH + "/" + comanyId +"/"+jobId , Job.class, callback);
+    }
+
+
     /// get all the jobs from the database
     /// @param callback the callback to call when the operation is completed
     ///              the callback will receive a list of job objects
@@ -405,6 +421,19 @@ public class DatabaseService {
     public void getJobList(@NotNull final DatabaseCallback<List<Job>> callback) {
         getDataList(JOBS_PATH, Job.class, callback);
     }
+
+
+    /// get all the jobs from the database
+    /// @param callback the callback to call when the operation is completed
+    ///              the callback will receive a list of job objects
+    ///            if the operation fails, the callback will receive an exception
+    /// @see DatabaseCallback
+    /// @see List
+    /// @see Job
+    public void getCompanyJobList( @NotNull final String comanyId, @NotNull final DatabaseCallback<List<Job>> callback) {
+        getDataList(COMPANY_JOBS_PATH +"/" + comanyId, Job.class, callback);
+    }
+
 
     /// generate a new id for a new job in the database
     /// @return a new id for the job
@@ -419,5 +448,7 @@ public class DatabaseService {
     /// @param callback the callback to call when the operation is completed
     public void deleteJob(@NotNull final String jobId, @Nullable final DatabaseCallback<Void> callback) {
         deleteData(JOBS_PATH + "/" + jobId, callback);
+
+
     }
 }

@@ -88,7 +88,11 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
 
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
-                    Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, uid, jobPhone, jobTitle, jobType, user);
+
+                user=new User(user);
+
+                String jobId=databaseService.generateJobId();
+                Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, jobId, jobPhone, jobTitle, jobType, user);
                 createJobInDatabase(job);
 
             }

@@ -24,6 +24,21 @@ public class User {
         this.phone = phone;
         this.isAdmin = false;
     }
+
+    public  User(User  user){
+
+        this.id = user.id;
+        this.email = user.getEmail();
+        this.fName = user.getfName();
+
+
+        this.lName = user.getlName();
+
+        this.phone = user.getPhone();
+
+    }
+
+
     public User() {
     }
     public String getAge() {
@@ -67,7 +82,7 @@ public class User {
     }
 
     public String getId() {
-        return id;
+        return  this.id;
     }
 
     public void setId(String id) {
