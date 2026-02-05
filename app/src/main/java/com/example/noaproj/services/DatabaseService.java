@@ -39,8 +39,8 @@ public class DatabaseService {
     /// @see DatabaseService#readData(String)
     private static final String USERS_PATH = "users",
 
-                                COMPANY_JOBS_PATH = "company_jobs",
-                                JOBS_PATH = "jobs";
+    COMPANY_JOBS_PATH = "company_jobs",
+            JOBS_PATH = "jobs";
 
 
     /// callback interface for database operations
@@ -98,8 +98,8 @@ public class DatabaseService {
             } else {
                 if (callback == null) return;
                 callback.onCompleted(null);
-        }
-    });
+            }
+        });
     }
 
     /// remove data from the database at a specific path
@@ -114,8 +114,8 @@ public class DatabaseService {
             } else {
                 if (callback == null) return;
                 callback.onCompleted(null);
-        }
-    });
+            }
+        });
     }
 
     /// read data from the database at a specific path
@@ -167,6 +167,7 @@ public class DatabaseService {
         });
     }
 
+
     /// generate a new id for a new object in the database
     /// @param path the path to generate the id for
     /// @return a new id for the object
@@ -208,10 +209,10 @@ public class DatabaseService {
                     return;
                 }
                 T result = currentData != null ? currentData.getValue(clazz) : null;
-                callback.onCompleted(result);   
+                callback.onCompleted(result);
             }
 
-         
+
         });
 
     }
@@ -303,28 +304,28 @@ public class DatabaseService {
     /// @see User
     public void getUserByEmailAndPassword(@NotNull final String email, @NotNull final String password, @NotNull final DatabaseCallback<User> callback) {
         readData(USERS_PATH).orderByChild("email").equalTo(email).get()
-            .addOnCompleteListener(task -> {
-                if (!task.isSuccessful()) {
-                    Log.e(TAG, "Error getting data", task.getException());
-                    callback.onFailed(task.getException());
-                    return;
-                }
-                if (task.getResult().getChildrenCount() == 0) {
-                    callback.onFailed(new Exception("User not found"));
-                    return;
-                }
-                for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user == null || !Objects.equals(user.getPassword(), password)) {
-                        callback.onFailed(new Exception("Invalid email or password"));
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e(TAG, "Error getting data", task.getException());
+                        callback.onFailed(task.getException());
                         return;
                     }
+                    if (task.getResult().getChildrenCount() == 0) {
+                        callback.onFailed(new Exception("User not found"));
+                        return;
+                    }
+                    for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user == null || !Objects.equals(user.getPassword(), password)) {
+                            callback.onFailed(new Exception("Invalid email or password"));
+                            return;
+                        }
 
-                    callback.onCompleted(user);
-                    return;
+                        callback.onCompleted(user);
+                        return;
 
-                }
-            });
+                    }
+                });
     }
 
     /// check if an email already exists in the database
@@ -430,8 +431,8 @@ public class DatabaseService {
     /// @see DatabaseCallback
     /// @see List
     /// @see Job
-    public void getCompanyJobList( @NotNull final String comanyId, @NotNull final DatabaseCallback<List<Job>> callback) {
-        getDataList(COMPANY_JOBS_PATH +"/" + comanyId, Job.class, callback);
+    public void getCompanyJobList( @NotNull final String companyId, @NotNull final DatabaseCallback<List<Job>> callback) {
+        getDataList(COMPANY_JOBS_PATH +"/" + companyId, Job.class, callback);
     }
 
 
@@ -450,5 +451,11 @@ public class DatabaseService {
         deleteData(JOBS_PATH + "/" + jobId, callback);
 
 
+    }
+
+    public void updateJobStatus(@NotNull Job job, @NotNull String newStatus, @Nullable DatabaseCallback<Void> callback) {
+        job.setStatus(newStatus);
+        writeData(JOBS_PATH + "/" + job.getId(), job, callback);
+        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
     }
 }

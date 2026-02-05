@@ -47,53 +47,51 @@ public class offer_list extends AppCompatActivity {
 
 
         readNewJobs();
-
     }
 
 
 
-private void readNewJobs() {
+    private void readNewJobs() {
 
-    databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
-        @Override
-        public void onCompleted(List<Job> jobsList) {
+        databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
+            @Override
+            public void onCompleted(List<Job> jobsList) {
 
 
-           if(jobsList!=null) {
+                if(jobsList!=null) {
+                    //Log.d(TAG, "onCompleted: " + jobsList);
+                    for (int i = 0; i < jobsList.size(); i++) {
+                        Log.d(TAG, "Job " + i + ": " + jobsList.get(i));
 
-                //Log.d(TAG, "onCompleted: " + jobsList);
-                for (int i = 0; i < jobsList.size(); i++) {
+                        if (jobsList.get(i).getStatus().contains("new"))
+                        {
+                            jobArrayList.add(jobsList.get(i));
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                    totalOffers= jobArrayList.size();
+                    tv_offer_count.setText("Total offers:" + totalOffers);
+                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
 
-                 if (jobsList.get(i).getStatus().contains("new"))
-
-                       jobArrayList.add(jobsList.get(i));
                 }
-
-
-                adapter.notifyDataSetChanged();
-                totalOffers= jobArrayList.size();
-                tv_offer_count.setText("Total offers:" + totalOffers);
-                Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
 
             }
 
 
-     }
+            @Override
+            public void onFailed(Exception e) {
 
-        @Override
-        public void onFailed(Exception e) {
+            }
+        });
 
-        }
-    });
+    }
 
-}
-
-private void initViews() {
-            tv_offer_count = findViewById(R.id.tv_offer_count);
-            databaseService = DatabaseService.getInstance();
+    private void initViews() {
+        tv_offer_count = findViewById(R.id.tv_offer_count);
+        databaseService = DatabaseService.getInstance();
         Log.d(TAG, "databaseService initialized");
 
-            rcOffers = findViewById(R.id.rv_users_list);
+        rcOffers = findViewById(R.id.rv_users_list);
         Log.d(TAG, "rcOffers found: " + (rcOffers != null));
 
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
@@ -101,7 +99,8 @@ private void initViews() {
         adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener() {
             @Override
             public void onJobClick(Job job) {
-
+                jobArrayList.clear();
+                readNewJobs();
             }
 
             @Override
@@ -109,9 +108,8 @@ private void initViews() {
 
             }
         });
-
         rcOffers.setAdapter(adapter);
-        Log.d(TAG, "initViews finished");
 
+        Log.d(TAG, "initViews finished");
     }
-    }
+}

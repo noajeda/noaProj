@@ -118,13 +118,13 @@
         android:gravity="center"
         >
         <Button
-            android:id="@+id/reject"
+            android:id="@+id/btnReject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="דחייה"
             />
         <Button
-            android:id="@+id/approve"
+            android:id="@+id/btnApprove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

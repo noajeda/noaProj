@@ -3,6 +3,7 @@ package com.example.noaproj.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noaproj.R;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
+import com.example.noaproj.services.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-    public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapters.OfferAdapter.ViewHolder> {
+public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapters.OfferAdapter.ViewHolder> {
 
-        public interface OnJobClickListener {
+    public interface OnJobClickListener {
         void onJobClick(Job job);
         void onLongJobClick(Job job);
     }
+
 
     private final List<Job> jobList;
     private final OfferAdapter.OnJobClickListener onJobClickListener;
@@ -39,6 +42,10 @@ import java.util.List;
         return new OfferAdapter.ViewHolder(view);
     }
 
+    public OfferAdapter(List<Job> jobs, @Nullable OnJobClickListener listener) {
+        this.jobList = jobs;
+        this.onJobClickListener = listener;
+    }
     @Override
     public void onBindViewHolder(@NonNull OfferAdapter.ViewHolder holder, int position) {
         Job job = jobList.get(position);
@@ -51,10 +58,15 @@ import java.util.List;
         holder.tvJobCity2.setText(job.getCity());
         holder.tvJobPhone2.setText(job.getPhone());
         holder.tvJobDetails2.setText(job.getDetails());
+
         if (job.getUser() != null) {
-            holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName() );
+            holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
 
+        if (job.getStatus().equals("approve")) {
+            holder.btnApprove.setVisibility(View.GONE);
+            holder.btnReject.setVisibility(View.GONE);
+        }
 
         /*/ Show admin chip if user is admin
         if (user.isAdmin()) {
@@ -76,6 +88,32 @@ import java.util.List;
                 onJobClickListener.onLongJobClick(job);
             }
             return true;
+        });
+        holder.btnApprove.setOnClickListener(v -> {
+            DatabaseService.getInstance().updateJobStatus(job, "approve", new DatabaseService.DatabaseCallback<Void>() {
+                @Override
+                public void onCompleted(Void unused) {
+                    if (onJobClickListener != null) {
+                        onJobClickListener.onJobClick(job);
+                    }
+                }
+                @Override
+                public void onFailed(Exception e) { }
+            });
+        });
+
+        holder.btnReject.setOnClickListener(v -> {
+            DatabaseService.getInstance().updateJobStatus(job, "reject", new DatabaseService.DatabaseCallback<Void>() {
+                @Override
+                public void onCompleted(Void unused) {
+                    if (onJobClickListener != null) {
+                        onJobClickListener.onJobClick(job);
+                    }
+                }
+
+                @Override
+                public void onFailed(Exception e) { }
+            });
         });
 
     }
@@ -111,6 +149,7 @@ import java.util.List;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvJobTitle2, tvJobType2, tvJobCompany2, tvAddress2, tvJobCity2, tvJobPhone2, tvJobDetails2,tvJobUser2;
+        Button btnApprove, btnReject;
         //Chip chipRole;
 
         public ViewHolder(@NonNull View itemView) {
@@ -123,7 +162,8 @@ import java.util.List;
             tvJobPhone2 = itemView.findViewById(R.id.tvJobPhone2);
             tvJobDetails2 = itemView.findViewById(R.id.tvJobDetails2);
             tvJobUser2 = itemView.findViewById(R.id.tvJobUser2);
-
+            btnApprove = itemView.findViewById(R.id.btnApprove);
+            btnReject = itemView.findViewById(R.id.btnReject);
             // chipRole = itemView.findViewById(R.id.chip_user_role);
         }
     }
