@@ -5,13 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    tools:context=".Register"
+    android:background="@color/material_dynamic_primary70"
+    >
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="127dp"
         android:layout_height="0dp"
-
+        android:textStyle="bold"
         android:layout_marginTop="52dp"
         android:layout_marginBottom="28dp"
         android:text="טופס הרשמה"
@@ -92,6 +94,7 @@
         android:layout_marginEnd="23dp"
         android:layout_marginBottom="32dp"
         android:text="Submit"
+        android:backgroundTint="@color/material_dynamic_primary40"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/spUserGender"
         app:layout_constraintStart_toStartOf="@+id/spUserCity"

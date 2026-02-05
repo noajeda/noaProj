@@ -5,17 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".Login"
+    android:background="@color/material_dynamic_primary70"
+    >
 
 
     <ImageButton
         android:id="@+id/logo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/logo2" />
 
     <TextView
         android:id="@+id/Login"
@@ -65,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="94dp"
         android:text="submit"
+        android:backgroundTint="@color/material_dynamic_primary30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etLoginPassword" />
