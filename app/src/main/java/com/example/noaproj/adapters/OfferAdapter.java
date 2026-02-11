@@ -30,6 +30,13 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
     private final List<Job> jobList;
     private final OfferAdapter.OnJobClickListener onJobClickListener;
+
+        public OfferAdapter(List<Job> jobList, OnJobClickListener onJobClickListener) {
+            this.jobList = jobList;
+            this.onJobClickListener = onJobClickListener;
+        }
+
+
     public OfferAdapter(@Nullable final OfferAdapter.OnJobClickListener onJobClickListener) {
         jobList = new ArrayList<>();
         this.onJobClickListener = onJobClickListener;
@@ -42,10 +49,6 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         return new OfferAdapter.ViewHolder(view);
     }
 
-    public OfferAdapter(List<Job> jobs, @Nullable OnJobClickListener listener) {
-        this.jobList = jobs;
-        this.onJobClickListener = listener;
-    }
     @Override
     public void onBindViewHolder(@NonNull OfferAdapter.ViewHolder holder, int position) {
         Job job = jobList.get(position);
@@ -58,9 +61,16 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         holder.tvJobCity2.setText(job.getCity());
         holder.tvJobPhone2.setText(job.getPhone());
         holder.tvJobDetails2.setText(job.getDetails());
+        holder.btnApprove.setVisibility(View.GONE);
+        holder.btnReject.setVisibility(View.GONE);
 
         if (job.getUser() != null) {
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
+            if (job.getUser().getIsAdmin()) {
+                holder.btnApprove.setVisibility(View.VISIBLE);
+                holder.btnReject.setVisibility(View.VISIBLE);
+            }
+
         }
 
         if (job.getStatus().equals("approve")) {
@@ -90,7 +100,11 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             return true;
         });
         holder.btnApprove.setOnClickListener(v -> {
-            DatabaseService.getInstance().updateJobStatus(job, "approve", new DatabaseService.DatabaseCallback<Void>() {
+
+
+            //SEnd Notification
+            job.setStatus("approve");
+            DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
                 @Override
                 public void onCompleted(Void unused) {
                     if (onJobClickListener != null) {
@@ -103,17 +117,25 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         });
 
         holder.btnReject.setOnClickListener(v -> {
-            DatabaseService.getInstance().updateJobStatus(job, "reject", new DatabaseService.DatabaseCallback<Void>() {
+
+
+            job.setStatus("reject");
+
+            //SEnd Notification
+
+            DatabaseService.getInstance().updateRejectJob(job, new DatabaseService.DatabaseCallback<Void>() {
                 @Override
-                public void onCompleted(Void unused) {
-                    if (onJobClickListener != null) {
-                        onJobClickListener.onJobClick(job);
-                    }
+                public void onCompleted(Void object) {
+
                 }
 
                 @Override
-                public void onFailed(Exception e) { }
+                public void onFailed(Exception e) {
+
+                }
             });
+
+
         });
 
     }
@@ -128,6 +150,10 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         jobList.addAll(jobs);
         notifyDataSetChanged();
     }
+
+
+
+
 
     public void addJob(Job job) {
         jobList.add(job);
@@ -164,7 +190,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             tvJobUser2 = itemView.findViewById(R.id.tvJobUser2);
             btnApprove = itemView.findViewById(R.id.btnApprove);
             btnReject = itemView.findViewById(R.id.btnReject);
-            // chipRole = itemView.findViewById(R.id.chip_user_role);
+
         }
     }
 }

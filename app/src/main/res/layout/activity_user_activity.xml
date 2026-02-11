@@ -91,6 +91,13 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:text="רשימת הצעות " />
+
+                <Button
+                    android:id="@+id/btnMyOffersJobs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="המשרות שלי" />
             </LinearLayout>
         </FrameLayout>
 

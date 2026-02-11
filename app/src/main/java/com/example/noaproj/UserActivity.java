@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList, btnJobList;
+    Button btnSearch, btnFilter, btnOffer, btnAnswer, btnChat, btnLogOut, btnUserList, btnJobList, btnMyOffersJobs;
     ImageView imgMenu;
     private boolean isMenuOpen = false;
     OfferAdapter adapter;
@@ -74,8 +74,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnUserList = findViewById(R.id.btnUserList);
         btnJobList = findViewById(R.id.btnJobList);
         rvApproveJobs = findViewById(R.id.rv_approve_jobs);
-        rvApproveJobs = findViewById(R.id.rv_approve_jobs);
         flMenu = findViewById(R.id.flMenu);
+
+        btnMyOffersJobs = findViewById(R.id.btnMyOffersJobs);
 
         rvApproveJobs.setLayoutManager(new LinearLayoutManager(this));
         adapter = new OfferAdapter(new OfferAdapter.OnJobClickListener() {
@@ -105,6 +106,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnLogOut.setOnClickListener(this);
         btnUserList.setOnClickListener(this);
         btnJobList.setOnClickListener(this);
+
+        btnMyOffersJobs.setOnClickListener(this);
     }
     @Override
     protected void onResume() {
@@ -122,6 +125,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             btnAnswer.setVisibility(View.VISIBLE);
             btnChat.setVisibility(View.VISIBLE);
             btnLogOut.setVisibility(View.VISIBLE);
+            btnMyOffersJobs.setVisibility(View.VISIBLE);
             flMenu.setBackgroundColor(Color.parseColor("#CCFFFFFF"));
             isAdmin();
             isMenuOpen = true;
@@ -136,6 +140,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             btnLogOut.setVisibility(View.GONE);
             btnUserList.setVisibility(View.GONE);
             btnJobList.setVisibility(View.GONE);
+            btnMyOffersJobs.setVisibility(View.GONE);
+
             flMenu.setBackground(new ColorDrawable(Color.TRANSPARENT));
             isMenuOpen = false;
         }
@@ -155,6 +161,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(v == btnLogOut){
             logOut();
+        }
+        if(v == btnMyOffersJobs){
+            Intent goMyOffersJobs = new Intent(this, MyJobs.class);
+            startActivity(goMyOffersJobs);
         }
 
     }
@@ -176,9 +186,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
                 Log.d(TAG, "onCompleted: id:" + uid);
-                if (user.getIsAdmin()) {
-                    btnUserList.setVisibility(View.VISIBLE);
-                    btnJobList.setVisibility(View.VISIBLE);
+                if(user!=null) {
+                    if (user.getIsAdmin()) {
+                        btnUserList.setVisibility(View.VISIBLE);
+                        btnJobList.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 

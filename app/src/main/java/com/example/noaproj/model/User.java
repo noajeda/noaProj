@@ -10,7 +10,20 @@ public class User {
     String age;
     String gender;
     String city;
-    Boolean isAdmin;
+    boolean isAdmin;
+
+    public User(String age, String city, String email, String fName, String gender, String id, boolean isAdmin, String lName, String password, String phone) {
+        this.age = age;
+        this.city = city;
+        this.email = email;
+        this.fName = fName;
+        this.gender = gender;
+        this.id = id;
+        this.isAdmin = isAdmin;
+        this.lName = lName;
+        this.password = password;
+        this.phone = phone;
+    }
 
     public User(String age, String city, String email, String fName, String gender, String id, String lName, String password, String phone) {
         this.age = age;
@@ -25,9 +38,11 @@ public class User {
         this.isAdmin = false;
     }
 
+
+
     public  User(User  user){
 
-        this.id = user.id;
+        this.id = user.getId();
         this.email = user.getEmail();
         this.fName = user.getfName();
 
@@ -35,6 +50,7 @@ public class User {
         this.lName = user.getlName();
 
         this.phone = user.getPhone();
+        this.isAdmin= user.getIsAdmin();
 
     }
 
@@ -104,11 +120,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Boolean getIsAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public void setIsAdmin(Boolean isAdmin) {
+    public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 

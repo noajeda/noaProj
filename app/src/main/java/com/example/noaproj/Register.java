@@ -90,14 +90,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         Log.d(TAG, "registerUser: Registering user...");
 
         /// create a new user object
-        User user = new User(age, city, email, fname, gender, null, lname, password, phone);
+        User user = new User(age, city, email, fname, gender, "oo", lname, password, phone);
             createUserInDatabase(user);
         }
 
     private void createUserInDatabase(User user) {
-        databaseService.createNewUser(user, new DatabaseService.DatabaseCallback<Void>() {
+        databaseService.createNewUser(user, new DatabaseService.DatabaseCallback<String>() {
             @Override
-            public void onCompleted(Void object) {
+            public void onCompleted(String uid) {
+                user.setId(uid);
                 Log.d(TAG, "createUserInDatabase: User created successfully");
                 /// save the user to shared preferences
 

@@ -232,26 +232,33 @@ public class DatabaseService {
     /// @see DatabaseCallback
     /// @see User
     public void createNewUser(@NotNull final User user,
-                              @Nullable final DatabaseCallback<Void> callback) {
-
+                              @Nullable final DatabaseCallback<String> callback) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful()) {
                         Log.d("TAG", "createUserWithEmail:success");
-
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        writeData(USERS_PATH + "/" + uid, user, callback);
+                        user.setId(uid);
+                        writeData(USERS_PATH + "/" + uid, user, new DatabaseCallback<Void>() {
+                            @Override
+                            public void onCompleted(Void v) {
+                                if (callback != null) callback.onCompleted(uid);
+                            }
 
+                            @Override
+                            public void onFailed(Exception e) {
+                                if (callback != null) callback.onFailed(e);
+                            }
+                        });
                     } else {
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
-
                         if (callback != null)
                             callback.onFailed(task.getException());
                     }
                 });
     }
+
     public static void LoginUser(@NotNull final String email, final String password,
                                  @Nullable final DatabaseCallback<String> callback) {
 
@@ -389,6 +396,22 @@ public class DatabaseService {
 
     }
 
+
+
+
+    public void updateJob(@NotNull Job job,  @Nullable DatabaseCallback<Void> callback) {
+
+        writeData(JOBS_PATH + "/" + job.getId(), job, callback);
+        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
+    }
+
+
+    public void updateRejectJob(@NotNull Job job,  @Nullable DatabaseCallback<Void> callback) {
+
+        deleteJob(JOBS_PATH + "/" + job.getId(),  callback);
+        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
+    }
+
     /// get a job from the database
     /// @param jobId the id of the job to get
     /// @param callback the callback to call when the operation is completed
@@ -432,7 +455,7 @@ public class DatabaseService {
     /// @see List
     /// @see Job
     public void getCompanyJobList( @NotNull final String companyId, @NotNull final DatabaseCallback<List<Job>> callback) {
-        getDataList(COMPANY_JOBS_PATH +"/" + companyId, Job.class, callback);
+        getDataList(COMPANY_JOBS_PATH +"/" + companyId+"/", Job.class, callback);
     }
 
 
@@ -453,9 +476,4 @@ public class DatabaseService {
 
     }
 
-    public void updateJobStatus(@NotNull Job job, @NotNull String newStatus, @Nullable DatabaseCallback<Void> callback) {
-        job.setStatus(newStatus);
-        writeData(JOBS_PATH + "/" + job.getId(), job, callback);
-        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
-    }
 }

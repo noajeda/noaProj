@@ -16,6 +16,7 @@ import com.example.noaproj.adapters.OfferAdapter;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,14 @@ public class offer_list extends AppCompatActivity {
     OfferAdapter adapter;
     int totalOffers;
 
+    String uid="";
+
+
+    FirebaseAuth mAuth;
+
+    User currentUser=null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +52,36 @@ public class offer_list extends AppCompatActivity {
             return insets;
         });
         initViews();
+        mAuth=FirebaseAuth.getInstance();
+        uid=  mAuth.getCurrentUser().getUid();
+
+        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+            @Override
+            public void onCompleted(User user) {
+
+                currentUser=user;
+                if(currentUser.getIsAdmin()) {
+                    readNewJobs();
+                }
+                else return;
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
         Log.d(TAG, "initViews started");
 
 
-        readNewJobs();
+
     }
 
 
 
     private void readNewJobs() {
+
+
 
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
             @Override
@@ -96,7 +126,7 @@ public class offer_list extends AppCompatActivity {
 
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
-        adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener() {
+        adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
             @Override
             public void onJobClick(Job job) {
                 jobArrayList.clear();
