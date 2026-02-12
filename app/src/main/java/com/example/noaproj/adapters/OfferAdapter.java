@@ -29,12 +29,20 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
 
     private final List<Job> jobList;
-    private final OfferAdapter.OnJobClickListener onJobClickListener;
+    /*/ private User currentUser = null;/*/
+     private final OfferAdapter.OnJobClickListener onJobClickListener;
 
-        public OfferAdapter(List<Job> jobList, OnJobClickListener onJobClickListener) {
+      /*/   public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
             this.jobList = jobList;
             this.onJobClickListener = onJobClickListener;
+            this.currentUser = currentUser;
         }
+        /*/
+
+      public OfferAdapter(List<Job> jobList,  OnJobClickListener onJobClickListener) {
+          this.jobList = jobList;
+            this.onJobClickListener = onJobClickListener;
+      }
 
 
     public OfferAdapter(@Nullable final OfferAdapter.OnJobClickListener onJobClickListener) {
@@ -66,12 +74,13 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
         if (job.getUser() != null) {
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
-            if (job.getUser().getIsAdmin()) {
-                holder.btnApprove.setVisibility(View.VISIBLE);
-                holder.btnReject.setVisibility(View.VISIBLE);
-            }
-
         }
+
+       /*/ if (currentUser.getIsAdmin()) {
+            holder.btnApprove.setVisibility(View.VISIBLE);
+            holder.btnReject.setVisibility(View.VISIBLE);
+        }/*/
+
 
         if (job.getStatus().equals("approve")) {
             holder.btnApprove.setVisibility(View.GONE);

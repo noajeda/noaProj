@@ -58,8 +58,9 @@ public class offer_list extends AppCompatActivity {
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             @Override
             public void onCompleted(User user) {
-
                 currentUser=user;
+
+
                 if(currentUser.getIsAdmin()) {
                     readNewJobs();
                 }
@@ -95,6 +96,7 @@ public class offer_list extends AppCompatActivity {
 
                         if (jobsList.get(i).getStatus().contains("new"))
                         {
+
                             jobArrayList.add(jobsList.get(i));
                         }
                     }
@@ -126,6 +128,7 @@ public class offer_list extends AppCompatActivity {
 
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
+
         adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
             @Override
             public void onJobClick(Job job) {
