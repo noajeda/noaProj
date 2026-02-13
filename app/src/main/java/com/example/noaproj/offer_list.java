@@ -59,7 +59,19 @@ public class offer_list extends AppCompatActivity {
             @Override
             public void onCompleted(User user) {
                 currentUser=user;
+                adapter = new OfferAdapter(jobArrayList, currentUser, new OfferAdapter.OnJobClickListener(){
+                    @Override
+                    public void onJobClick(Job job) {
+                        jobArrayList.clear();
+                        readNewJobs();
+                    }
 
+                    @Override
+                    public void onLongJobClick(Job job) {
+
+                    }
+                });
+                rcOffers.setAdapter(adapter);
 
                 if(currentUser.getIsAdmin()) {
                     readNewJobs();
@@ -129,19 +141,7 @@ public class offer_list extends AppCompatActivity {
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
 
-        adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
-            @Override
-            public void onJobClick(Job job) {
-                jobArrayList.clear();
-                readNewJobs();
-            }
 
-            @Override
-            public void onLongJobClick(Job job) {
-
-            }
-        });
-        rcOffers.setAdapter(adapter);
 
         Log.d(TAG, "initViews finished");
     }

@@ -29,15 +29,14 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
 
     private final List<Job> jobList;
-    /*/ private User currentUser = null;/*/
+     private User currentUser = null;
      private final OfferAdapter.OnJobClickListener onJobClickListener;
 
-      /*/   public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
+        public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
             this.jobList = jobList;
             this.onJobClickListener = onJobClickListener;
             this.currentUser = currentUser;
         }
-        /*/
 
       public OfferAdapter(List<Job> jobList,  OnJobClickListener onJobClickListener) {
           this.jobList = jobList;
@@ -76,10 +75,10 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
 
-       /*/ if (currentUser.getIsAdmin()) {
+        if (currentUser!= null && currentUser.getIsAdmin()) {
             holder.btnApprove.setVisibility(View.VISIBLE);
             holder.btnReject.setVisibility(View.VISIBLE);
-        }/*/
+        }
 
 
         if (job.getStatus().equals("approve")) {
