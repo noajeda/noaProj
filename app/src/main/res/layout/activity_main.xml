@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/material_dynamic_primary70"
+        android:background="@drawable/background"
         android:weightSum="5"
         >
 
@@ -25,32 +25,35 @@
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/material_dynamic_primary30"
+            android:backgroundTint="#5B91D3"
             android:layout_margin="3dp"
+            android:fontFamily="serif"
             android:textStyle="bold"
             android:text="התחברות" />
 
         <Button
             android:id="@+id/btnSignup"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/material_dynamic_primary40"
+            android:backgroundTint="#95B7E4"
             android:layout_margin="3dp"
             android:textStyle="bold"
+            android:fontFamily="serif"
             android:text="הרשמה" />
 
         <Button
             android:id="@+id/btnAbout"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/material_dynamic_primary60"
+            android:backgroundTint="#B0CBE9"
             android:layout_margin="3dp"
             android:textStyle="bold"
+            android:fontFamily="serif"
             android:text="אודות" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

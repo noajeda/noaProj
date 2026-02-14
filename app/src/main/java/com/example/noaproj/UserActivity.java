@@ -205,9 +205,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
                 @Override
                 public void onCompleted(List<Job> jobList) {
+                    approveArraylist.clear();
                     for (int i= 0; i<jobList.size(); i++){
                         if(jobList.get(i).getStatus().contains("approve"))
                             approveArraylist.add(jobList.get(i));
+                        Log.d(TAG, "Job ID: " + jobList.get(i).getId() + ", Status: " + jobList.get(i).getStatus());
+
                     }
                     adapter.setJobList(approveArraylist);
                     Log.d(TAG, "onCompleted: " + approveArraylist);

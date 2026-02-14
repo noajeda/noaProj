@@ -2,109 +2,105 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/background_rect"
     android:orientation="vertical">
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
 
         <TextView
             android:id="@+id/tvJobUser2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ems="10"
             android:inputType="text"
+            android:gravity="center"
             android:text="Job User" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvJobTitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-
-            android:text="Job Title" />
+            android:text="Job Title"
+            android:layout_marginRight="10dp"/>
 
         <TextView
             android:id="@+id/tvJobType2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="Job Type" />
+            android:layout_marginRight="10dp"            android:text="Job Type" />
 
         <TextView
             android:id="@+id/tvJobCompany2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="Job Company" />
+            android:layout_marginRight="10dp"            android:text="Job Company" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvAddress2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_marginRight="10dp"
             android:text="Job Address" />
 
         <TextView
             android:id="@+id/tvJobCity2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_marginRight="10dp"
             android:text="Job City" />
-
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvJobPhone2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
             android:gravity="center"
+            android:ems="10"
             android:inputType="text"
             android:text="Job Phone" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvJobDetails2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ems="10"
             android:gravity="center"
             android:inputType="text"
@@ -113,14 +109,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         >
         <Button
             android:id="@+id/btnReject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/ButtonStyle"
             android:text="דחייה"
             />
         <Button
@@ -128,6 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            style="@style/ButtonStyle"
             android:text="אישור"
             />
     </LinearLayout>

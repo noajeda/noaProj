@@ -8,97 +8,104 @@
     tools:context=".UserActivity">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_approve_jobs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_approve_jobs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_job" />
+
+    <FrameLayout
+        android:id="@+id/flMenu"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgMenu"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            app:srcCompat="@drawable/baseline_menu_24" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            android:clipToPadding="false"
-            tools:listitem="@layout/item_job"
-            android:layout_width="match_parent"/>
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/flMenu"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imgMenu"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                app:srcCompat="@drawable/baseline_menu_24"
-                />
-
-            <LinearLayout
+            <Button
+                android:id="@+id/btnSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="חיפוש"
+                android:visibility="gone" />
 
-                <Button
-                    android:layout_marginTop="50dp"
-                    android:id="@+id/btnSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="חיפוש" />
+            <Button
+                android:id="@+id/btnFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="סינון"
+                android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btnFilter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="סינון" />
+            <Button
+                android:id="@+id/btnOffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="משרה חדשה"
+                android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btnOffer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="משרה חדשה" />
+            <Button
+                android:id="@+id/btnAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="מענה"
+                android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btnAnswer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="מענה" />
-                <Button
-                    android:id="@+id/btnChat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="צ'אט כללי" />
-                <Button
-                    android:id="@+id/btnLogOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="התנתקות" />
-                <Button
-                    android:id="@+id/btnUserList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="רשימת מתחברים" />
-                <Button
-                    android:id="@+id/btnJobList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="רשימת הצעות " />
+            <Button
+                android:id="@+id/btnChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="צ'אט כללי"
+                android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btnMyOffersJobs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="המשרות שלי" />
-            </LinearLayout>
-        </FrameLayout>
+            <Button
+                android:id="@+id/btnLogOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="התנתקות"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnUserList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="רשימת מתחברים"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnJobList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="רשימת הצעות "
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnMyOffersJobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="המשרות שלי"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
