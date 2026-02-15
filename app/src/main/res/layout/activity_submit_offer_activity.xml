@@ -5,27 +5,28 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".SubmitOfferActivity">
 
     <TextView
         android:id="@+id/tvTitle4"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="35dp"
         android:text="משרה חדשה"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/etCompany"
-        app:layout_constraintEnd_toStartOf="@+id/tvCompany" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="33dp"
-        android:layout_marginEnd="61dp"
         android:text="ישוב העסק:"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvJobType"
+        app:layout_constraintStart_toStartOf="@+id/tvMinAge"
         app:layout_constraintTop_toBottomOf="@+id/etCompany" />
 
 
@@ -33,18 +34,17 @@
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginTop="42dp"
         android:text="כתובת העסק:"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobAddress"
-        app:layout_constraintEnd_toEndOf="@+id/tvJobNumber"
-        app:layout_constraintStart_toEndOf="@+id/btnSubmitOffer" />
+        app:layout_constraintEnd_toEndOf="@+id/tvJobTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvJobTitle" />
 
     <TextView
         android:id="@+id/tvCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="36dp"
         android:text="שם העסק:"
         app:layout_constraintBottom_toTopOf="@+id/tvCity"
         app:layout_constraintStart_toStartOf="@+id/tvCity" />
@@ -73,10 +73,10 @@
         android:id="@+id/tvJobType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="60dp"
         android:text="סוג העיסוק"
-        app:layout_constraintEnd_toEndOf="@+id/tvCity"
-        app:layout_constraintStart_toStartOf="@+id/tvCompany"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCity" />
 
     <TextView
@@ -93,44 +93,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginTop="36dp"
         android:text="פרטים נוספים:"
-        app:layout_constraintBottom_toBottomOf="@+id/etJobDetails"
-        app:layout_constraintStart_toEndOf="@+id/etJobDetails" />
+        app:layout_constraintStart_toEndOf="@+id/etJobDetails"
+        app:layout_constraintTop_toBottomOf="@+id/etJobAge" />
 
     <EditText
         android:id="@+id/etJobAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="18dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tvAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvJobTitle" />
+        app:layout_constraintTop_toTopOf="@+id/tvAddress" />
 
 
     <EditText
         android:id="@+id/etCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginTop="35dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/tvTitle4"
+        app:layout_constraintStart_toStartOf="@+id/tvTitle4"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle4" />
 
     <Spinner
         android:id="@+id/spCity"
         android:layout_width="0dp"
         android:layout_height="41dp"
-        android:layout_marginTop="115dp"
-        android:layout_marginBottom="115dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginBottom="128dp"
         android:entries="@array/arrCity"
-        app:layout_constraintBottom_toBottomOf="@+id/tvJobTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/spTitle"
         app:layout_constraintEnd_toEndOf="@+id/spType"
         app:layout_constraintStart_toStartOf="@+id/etCompany"
         app:layout_constraintTop_toTopOf="@+id/tvTitle4" />
@@ -139,27 +139,27 @@
         android:id="@+id/spType"
         android:layout_width="0dp"
         android:layout_height="46dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginBottom="62dp"
         android:entries="@array/arrType"
-        app:layout_constraintBottom_toTopOf="@+id/spTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/spTitle"
         app:layout_constraintEnd_toEndOf="@+id/etJobPhone"
         app:layout_constraintStart_toStartOf="@+id/spTitle"
-        app:layout_constraintTop_toBottomOf="@+id/spCity" />
+        app:layout_constraintTop_toTopOf="@+id/spCity" />
 
     <Spinner
         android:id="@+id/spTitle"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="154dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="154dp"
         android:entries="@array/arrTitle"
-        app:layout_constraintBottom_toTopOf="@+id/tvAddress"
+        app:layout_constraintBottom_toTopOf="@+id/tvMinAge"
         app:layout_constraintEnd_toEndOf="@+id/etJobAddress"
         app:layout_constraintStart_toStartOf="@+id/etJobAddress"
-        app:layout_constraintTop_toTopOf="@+id/tvJobType" />
+        app:layout_constraintTop_toTopOf="@+id/tvCompany" />
 
     <EditText
         android:id="@+id/etJobPhone"
@@ -188,15 +188,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tvDetails"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etJobAge" />
+        app:layout_constraintTop_toTopOf="@+id/tvDetails" />
 
     <Button
         android:id="@+id/btnSubmitOffer"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="59dp"

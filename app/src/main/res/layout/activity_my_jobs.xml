@@ -9,25 +9,21 @@
 
     <TextView
         android:id="@+id/tv_MyJoboffer_count"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="המשרות שהוספתי"
-        tools:layout_editor_absoluteX="174dp"
-        tools:layout_editor_absoluteY="28dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="50dp" />
+        tools:layout_editor_absoluteX="93dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyjobOffer"
-        android:layout_width="411dp"
+        android:layout_width="wrap_content"
         android:layout_height="654dp"
-        tools:layout_editor_absoluteY="77dp">
+        android:layout_gravity="center_horizontal"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="61dp"
+        tools:listitem="@layout/item_job">
 
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,15 +19,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Management"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnBackground"
+                android:layout_gravity="center"
+                android:text="רשימת משתמשים"
+                style="@style/TextStyle"
                 android:layout_marginBottom="8dp"/>
             <TextView
                 android:id="@+id/tv_user_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Total users: 0"
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurfaceVariant"/>
@@ -38,7 +38,7 @@
         android:id="@+id/rv_users_list"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:padding="8dp"
+            android:padding="8dp"
                 android:clipToPadding="false"
                 tools:listitem="@layout/item_user"
                 android:layout_width="match_parent"/>
