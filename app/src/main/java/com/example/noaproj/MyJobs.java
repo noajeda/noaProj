@@ -1,7 +1,10 @@
 package com.example.noaproj;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,14 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyJobs extends AppCompatActivity {
+public class MyJobs extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ReadUserOffers";
     DatabaseService databaseService;
     ArrayList<Job> jobArrayList=new ArrayList<>();
     RecyclerView rcOffers;
     TextView tv_offer_count;
-
+ImageView imgAddOffer;
     OfferAdapter adapter;
     int totalOffers;
 
@@ -109,7 +112,18 @@ public class MyJobs extends AppCompatActivity {
         });
         rcOffers.setAdapter(adapter);
 
+        imgAddOffer = findViewById(R.id.imgAddOffer);
+        imgAddOffer.setOnClickListener((View.OnClickListener) this);
         Log.d(TAG, "initViews finished");
+    }
+
+    @Override
+    public void onClick(View v) {
+        if( v == imgAddOffer){
+            Intent goAddOffer = new Intent(this, SubmitOfferActivity.class);
+            startActivity(goAddOffer);
+        }
+
     }
 
 }
