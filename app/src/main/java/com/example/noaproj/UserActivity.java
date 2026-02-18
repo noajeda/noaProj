@@ -24,6 +24,7 @@ import com.example.noaproj.adapters.UserAdapter;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -77,6 +78,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         flMenu = findViewById(R.id.flMenu);
 
         btnMyOffersJobs = findViewById(R.id.btnMyOffersJobs);
+
+
 
         rvApproveJobs.setLayoutManager(new LinearLayoutManager(this));
         adapter = new OfferAdapter(new OfferAdapter.OnJobClickListener() {
@@ -165,6 +168,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         if(v == btnMyOffersJobs){
             Intent goMyOffersJobs = new Intent(this, MyJobs.class);
             startActivity(goMyOffersJobs);
+        }
+        if(v == btnFilter){
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UserActivity.this);
+            bottomSheetDialog.setContentView(R.layout.botton_sheet_filter);
+            bottomSheetDialog.show();
+            Button btnApplyFilter = bottomSheetDialog.findViewById(R.id.btnApplyFilter);
+            if (btnApplyFilter != null) {
+                btnApplyFilter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+            }
         }
 
     }
