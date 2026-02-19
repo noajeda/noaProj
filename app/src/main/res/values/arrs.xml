@@ -105,4 +105,9 @@
         <item>אחר</item>
 
     </string-array>
+
+    <integer-array name="initialAgeRange">
+    <item>16</item>
+    <item>60</item>
+    </integer-array>
 </resources>

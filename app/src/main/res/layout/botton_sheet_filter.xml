@@ -27,13 +27,15 @@
             style="@style/TextStyle"
             android:text="גיל מינימלי" />
 
-        <SeekBar
-            android:id="@+id/sbMinAge"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/sliderAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="16" />
+            android:valueFrom="16"
+            android:valueTo="60"
+            android:stepSize="1"
+            />
+
 
         <TextView
             android:id="@+id/textView5"
@@ -42,11 +44,15 @@
             style="@style/TextStyle"
             android:text="עיר" />
 
-        <CheckBox
-            android:id="@+id/checkBox"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="אחר" />
+            android:layout_height="120dp">
+            <LinearLayout
+                android:id="@+id/layoutCities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
 
         <TextView
             android:id="@+id/textView6"
@@ -55,24 +61,41 @@
             style="@style/TextStyle"
             android:text="סוג עבודה" />
 
-        <CheckBox
-            android:id="@+id/checkBox2"
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+            <LinearLayout
+                android:id="@+id/layoutTypes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="אחר" />
+            style="@style/TextStyle"
+            android:text="סוג עבודה" />
+
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+            <LinearLayout
+                android:id="@+id/layoutTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+        </ScrollView>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnCleanFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ButtonStyle"
-                android:layout_weight="1"
-                android:text="נקה הכל" />
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
             <Button
                 android:id="@+id/btnApplyFilter"
@@ -82,6 +105,6 @@
                 android:layout_weight="1"
                 android:text="אישור" />
         </LinearLayout>
-
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

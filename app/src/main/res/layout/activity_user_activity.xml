@@ -9,42 +9,60 @@
     tools:context=".UserActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="חפש עבודה.." />
-        <Button
-            android:id="@+id/btnFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            style="@style/ButtonStyle"
-            android:layout_weight="1"
-            android:text="סינון" />
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imgSearchJob"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                app:srcCompat="@drawable/baseline_search_24"
 
-        <ImageView
-            android:id="@+id/imgMenu"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_gravity="right"
-            app:srcCompat="@drawable/baseline_menu_24" />
+                />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etSearchJob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="     חפש בית עסק.."
+                android:inputType="text" />
+
+
+
+            <Button
+                android:id="@+id/btnFilter"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="סינון" />
+
+            <ImageView
+                android:id="@+id/imgMenu"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/baseline_menu_24" />
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_approve_jobs"
             android:layout_width="match_parent"
@@ -56,83 +74,63 @@
     </LinearLayout>
 
 
-
     <FrameLayout
         android:id="@+id/flMenu"
         android:layout_width="250dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="162dp"
         android:orientation="vertical"
+        android:visibility="gone"
         android:padding="16dp"
-        tools:layout_editor_absoluteX="162dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
             <Button
-                android:id="@+id/btnSearch"
+                android:id="@+id/btnMyOffersJobs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:text="חיפוש"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnFilter1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="סינון"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnOffer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="משרה חדשה"
-                android:visibility="gone" />
-
+                android:text="המשרות שלי"
+                />
             <Button
                 android:id="@+id/btnAnswer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="מענה"
-                android:visibility="gone" />
+                 />
 
             <Button
                 android:id="@+id/btnChat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="צ'אט כללי"
-                android:visibility="gone" />
+                />
 
             <Button
                 android:id="@+id/btnLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="התנתקות"
-                android:visibility="gone" />
+             />
 
             <Button
                 android:id="@+id/btnUserList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="רשימת מתחברים"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
 
             <Button
                 android:id="@+id/btnJobList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="רשימת הצעות "
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnMyOffersJobs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="המשרות שלי"
                 android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
