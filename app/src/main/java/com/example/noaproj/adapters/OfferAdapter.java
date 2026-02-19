@@ -26,6 +26,10 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         void onJobClick(Job job);
         void onLongJobClick(Job job);
     }
+    public interface OnJobActionListener {
+        void onApprove(Job job);
+        void onReject(Job job);
+    }
 
 
     private final List<Job> jobList;
@@ -47,6 +51,12 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
     public OfferAdapter(@Nullable final OfferAdapter.OnJobClickListener onJobClickListener) {
         jobList = new ArrayList<>();
         this.onJobClickListener = onJobClickListener;
+    }
+
+    private OnJobActionListener onJobActionListener;
+
+    public void setOnJobActionListener(OnJobActionListener listener) {
+        this.onJobActionListener = listener;
     }
 
     @NonNull
@@ -118,6 +128,9 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
                     if (onJobClickListener != null) {
                         onJobClickListener.onJobClick(job);
                     }
+                    if (onJobActionListener != null) {
+                        onJobActionListener.onApprove(job);
+                    }
                 }
                 @Override
                 public void onFailed(Exception e) { }
@@ -129,11 +142,14 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
             job.setStatus("reject");
 
-            //SEnd Notification
+            //Send Notification
 
             DatabaseService.getInstance().updateRejectJob(job, new DatabaseService.DatabaseCallback<Void>() {
                 @Override
                 public void onCompleted(Void object) {
+                    if (onJobActionListener != null) {
+                        onJobActionListener.onReject(job);
+                    }
 
                 }
 

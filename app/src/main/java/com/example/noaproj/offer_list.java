@@ -1,11 +1,16 @@
 package com.example.noaproj;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import android.Manifest;
+import android.widget.Toast;
 
 public class offer_list extends AppCompatActivity {
     private static final String TAG = "ReadOffers";
@@ -73,6 +81,8 @@ public class offer_list extends AppCompatActivity {
                 });
                 rcOffers.setAdapter(adapter);
 
+                setupAdapterListeners();
+
                 if(currentUser.getIsAdmin()) {
                     readNewJobs();
                 }
@@ -86,21 +96,101 @@ public class offer_list extends AppCompatActivity {
         });
         Log.d(TAG, "initViews started");
 
-
+        checkSMSPermission();
 
     }
 
+    private void setupAdapterListeners() {
+        adapter.setOnJobActionListener(new OfferAdapter.OnJobActionListener() {
+            @Override
+            public void onApprove(Job job) {
+                if(job.getUser()!=null) {
+                    sendApprovalSMS(job);
+                }
+            }
 
+            @Override
+            public void onReject(Job job) {
+                if(job.getUser()!=null) {
+                    showRejectReasonDialog(job);
+                }
+            }
+        });
+    }
+
+    private static final int SMS_PERMISSION_CODE = 1; // קוד זיהוי להרשאה
+    private void checkSMSPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {    // האם יש הרשאה לSMS
+
+            // אם לא, מבקש הרשאה מהמנהל
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS},
+                    SMS_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == SMS_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "הרשאה ניתנה! אפשר לשלוח SMS", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "הרשאה נדחתה! SMS לא יישלח", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    public void sendApprovalSMS(Job job) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED) {    // בדיקה שיש הרשאה
+            SmsManager smsManager = SmsManager.getDefault();
+            String msg = "העבודה '" + job.getTitle() + "' אושרה!";
+            String userPhone = job.getUser().getPhone();
+            smsManager.sendTextMessage(userPhone, null, msg, null, null);
+            Toast.makeText(this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show();
+        } else {
+            // מבקשים הרשאה אם אין
+            checkSMSPermission();
+        }
+    }
+    public void sendRejectionSMS(String userPhone, String reason) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                == PackageManager.PERMISSION_GRANTED) {  // בדיקה שיש הרשאה
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(userPhone, null, reason, null, null);
+            Toast.makeText(this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show();
+        } else {
+            // מבקשים הרשאה אם אין
+            checkSMSPermission();
+        }
+    }
+     private void showRejectReasonDialog(Job job) {
+         EditText input = new EditText(this);
+         input.setHint("הקלד את סיבת הדחייה כאן");
+
+         new androidx.appcompat.app.AlertDialog.Builder(this)
+                 .setTitle("דחיית עבודה")
+                 .setMessage("אנא הקלד את סיבת הדחייה:")
+                 .setView(input)
+                 .setPositiveButton("אישור", (dialog, which) -> {
+                     String reason = input.getText().toString().trim();
+                     if (!reason.isEmpty()) {
+                         sendRejectionSMS(job.getUser().getPhone(), reason);
+                     } else {
+                         Toast.makeText(this, "יש להזין סיבה", Toast.LENGTH_SHORT).show();
+                     }
+                 })
+                 .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
+                 .show();
+        }
 
     private void readNewJobs() {
-
-
 
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
             @Override
             public void onCompleted(List<Job> jobsList) {
-
-
                 if(jobsList!=null) {
                     //Log.d(TAG, "onCompleted: " + jobsList);
                     for (int i = 0; i < jobsList.size(); i++) {
@@ -118,7 +208,6 @@ public class offer_list extends AppCompatActivity {
                     Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
 
                 }
-
             }
 
 
