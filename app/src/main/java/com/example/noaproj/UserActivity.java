@@ -279,8 +279,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             if (!selectedTitles.isEmpty()) {
                 match = match && selectedTitles.contains(job.getTitle());
             }
-         //   if(job.getAge() < String.valueOf(minAge) || job.getAge() > maxAge)
-             //   match= false;
+            if(Integer.parseInt(job.getAge()) < minAge || Integer.parseInt(job.getAge()) > maxAge)
+                match= false;
 
             if (match) {     // בדיקה האם ישנה עבודה התואמת לדרישות
                 filteredJobs.add(job);
