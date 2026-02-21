@@ -1,5 +1,6 @@
 package com.example.noaproj;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -96,7 +97,7 @@ public class offer_list extends AppCompatActivity {
         });
         Log.d(TAG, "initViews started");
 
-        checkSMSPermission();
+        //checkSMSPermission();
 
     }
 
@@ -105,20 +106,83 @@ public class offer_list extends AppCompatActivity {
             @Override
             public void onApprove(Job job) {
                 if(job.getUser()!=null) {
-                    sendApprovalSMS(job);
+                                                    //   sendApprovalSMS(job);
+                    // יצירת Intent ל-BroadcastReceiver
+                    Intent intent = new Intent(offer_list.this, ApprovalReceiver.class);
+                    intent.putExtra("job_title", job.getTitle());
+
+                    // שליחת ה-Broadcast
+                    sendBroadcast(intent);
+
+                    Toast.makeText(offer_list.this, "Notification sent to user", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onReject(Job job) {
                 if(job.getUser()!=null) {
-                    showRejectReasonDialog(job);
+                                                 //     showRejectReasonDialog(job);
                 }
             }
         });
     }
 
-    private static final int SMS_PERMISSION_CODE = 1; // קוד זיהוי להרשאה
+
+    private void readNewJobs() {
+
+        databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
+            @Override
+            public void onCompleted(List<Job> jobsList) {
+                if(jobsList!=null) {
+                    //Log.d(TAG, "onCompleted: " + jobsList);
+                    for (int i = 0; i < jobsList.size(); i++) {
+                        Log.d(TAG, "Job " + i + ": " + jobsList.get(i));
+
+                        if (jobsList.get(i).getStatus().contains("new"))
+                        {
+
+                            jobArrayList.add(jobsList.get(i));
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                    totalOffers= jobArrayList.size();
+                    tv_offer_count.setText("Total offers:" + totalOffers);
+                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
+
+                }
+            }
+
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+
+    }
+
+    private void initViews() {
+        tv_offer_count = findViewById(R.id.tv_offer_count);
+        databaseService = DatabaseService.getInstance();
+        Log.d(TAG, "databaseService initialized");
+
+        rcOffers = findViewById(R.id.rv_users_list);
+        Log.d(TAG, "rcOffers found: " + (rcOffers != null));
+
+        rcOffers.setLayoutManager(new LinearLayoutManager(this));
+        jobArrayList = new ArrayList<>();
+
+
+
+        Log.d(TAG, "initViews finished");
+    }
+}
+
+
+
+
+/*/
+   private static final int SMS_PERMISSION_CODE = 1; // קוד זיהוי להרשאה
     private void checkSMSPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {    // האם יש הרשאה לSMS
@@ -185,53 +249,4 @@ public class offer_list extends AppCompatActivity {
                  .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
                  .show();
         }
-
-    private void readNewJobs() {
-
-        databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
-            @Override
-            public void onCompleted(List<Job> jobsList) {
-                if(jobsList!=null) {
-                    //Log.d(TAG, "onCompleted: " + jobsList);
-                    for (int i = 0; i < jobsList.size(); i++) {
-                        Log.d(TAG, "Job " + i + ": " + jobsList.get(i));
-
-                        if (jobsList.get(i).getStatus().contains("new"))
-                        {
-
-                            jobArrayList.add(jobsList.get(i));
-                        }
-                    }
-                    adapter.notifyDataSetChanged();
-                    totalOffers= jobArrayList.size();
-                    tv_offer_count.setText("Total offers:" + totalOffers);
-                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
-
-                }
-            }
-
-
-            @Override
-            public void onFailed(Exception e) {
-
-            }
-        });
-
-    }
-
-    private void initViews() {
-        tv_offer_count = findViewById(R.id.tv_offer_count);
-        databaseService = DatabaseService.getInstance();
-        Log.d(TAG, "databaseService initialized");
-
-        rcOffers = findViewById(R.id.rv_users_list);
-        Log.d(TAG, "rcOffers found: " + (rcOffers != null));
-
-        rcOffers.setLayoutManager(new LinearLayoutManager(this));
-        jobArrayList = new ArrayList<>();
-
-
-
-        Log.d(TAG, "initViews finished");
-    }
-}
+/*/
