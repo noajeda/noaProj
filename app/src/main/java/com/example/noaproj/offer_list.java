@@ -1,5 +1,7 @@
 package com.example.noaproj;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,10 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noaproj.adapters.OfferAdapter;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
+import com.example.noaproj.services.AlarmReceiver;
 import com.example.noaproj.services.DatabaseService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.Manifest;
@@ -79,10 +83,57 @@ public class offer_list extends AppCompatActivity {
                     public void onLongJobClick(Job job) {
 
                     }
+
+                    @Override
+                    public void onApprove(Job job) {
+
+
+                        job.setStatus("approve");
+                        DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
+
+
+
+                            @Override
+                            public void onCompleted(Void object) {
+                                setAlarm("approve");
+
+
+
+                            }
+                            @Override
+                            public void onFailed(Exception e) {
+
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onReject(Job job) {
+
+
+
+                        job.setStatus("reject");
+
+                        //Send Notification
+
+                        DatabaseService.getInstance().updateRejectJob(job, new DatabaseService.DatabaseCallback<Void>() {
+                            @Override
+                            public void onCompleted(Void object) {
+                              setAlarm("reject");
+                            }
+
+                            @Override
+                            public void onFailed(Exception e) {
+
+                            }
+                        });
+
+                    }
                 });
                 rcOffers.setAdapter(adapter);
 
-                setupAdapterListeners();
+
 
                 if(currentUser.getIsAdmin()) {
                     readNewJobs();
@@ -101,32 +152,28 @@ public class offer_list extends AppCompatActivity {
 
     }
 
-    private void setupAdapterListeners() {
-        adapter.setOnJobActionListener(new OfferAdapter.OnJobActionListener() {
-            @Override
-            public void onApprove(Job job) {
-                if(job.getUser()!=null) {
-                                                    //   sendApprovalSMS(job);
-                    // יצירת Intent ל-BroadcastReceiver
-                    Intent intent = new Intent(offer_list.this, ApprovalReceiver.class);
-                    intent.putExtra("job_title", job.getTitle());
 
-                    // שליחת ה-Broadcast
-                    sendBroadcast(intent);
 
-                    Toast.makeText(offer_list.this, "Notification sent to user", Toast.LENGTH_SHORT).show();
-                }
-            }
+    private void showRejectReasonDialog(Job job) {
 
-            @Override
-            public void onReject(Job job) {
-                if(job.getUser()!=null) {
-                                                 //     showRejectReasonDialog(job);
-                }
-            }
-        });
+        EditText input = new EditText(this);
+        input.setHint("Reject reason");
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Reject Job")
+                .setView(input)
+                .setPositiveButton("Reject", (dialog, which) -> {
+
+                    String reason =
+                            input.getText().toString().trim();
+
+                    job.setStatus("rejected:" + reason);
+
+                    databaseService.updateJob(job, null);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
-
 
     private void readNewJobs() {
 
@@ -175,6 +222,34 @@ public class offer_list extends AppCompatActivity {
 
 
         Log.d(TAG, "initViews finished");
+    }
+
+
+
+    private void setAlarm(String text) {
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("text",text);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        AlarmManager alarmManager =
+                (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1); // fires in 1 minute
+
+        alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                pendingIntent
+        );
     }
 }
 

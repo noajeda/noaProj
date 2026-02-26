@@ -97,6 +97,16 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             public void onLongJobClick(Job job) {
 
             }
+
+            @Override
+            public void onApprove(Job job) {
+
+            }
+
+            @Override
+            public void onReject(Job job) {
+
+            }
         });
         adapter.setJobList(approveArraylist);
         rvApproveJobs.setAdapter(adapter);

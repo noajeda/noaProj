@@ -109,6 +109,16 @@ ImageView imgAddOffer;
             public void onLongJobClick(Job job) {
 
             }
+
+            @Override
+            public void onApprove(Job job) {
+
+            }
+
+            @Override
+            public void onReject(Job job) {
+
+            }
         });
         rcOffers.setAdapter(adapter);
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,25 +25,32 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
     public interface OnJobClickListener {
         void onJobClick(Job job);
+
         void onLongJobClick(Job job);
-    }
-    public interface OnJobActionListener {
+
         void onApprove(Job job);
+
         void onReject(Job job);
+
     }
+        private final List<Job> jobList;
+
+        private final OfferAdapter.OnJobClickListener onJobClickListener;
+
+        User currentUser;
 
 
-    private final List<Job> jobList;
-     private User currentUser = null;
-     private final OfferAdapter.OnJobClickListener onJobClickListener;
 
         public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
             this.jobList = jobList;
             this.onJobClickListener = onJobClickListener;
-            this.currentUser = currentUser;
+            this.currentUser=currentUser;
+
         }
 
-      public OfferAdapter(List<Job> jobList,  OnJobClickListener onJobClickListener) {
+
+
+    public OfferAdapter(List<Job> jobList, OnJobClickListener onJobClickListener) {
           this.jobList = jobList;
             this.onJobClickListener = onJobClickListener;
       }
@@ -53,11 +61,9 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         this.onJobClickListener = onJobClickListener;
     }
 
-    private OnJobActionListener onJobActionListener;
 
-    public void setOnJobActionListener(OnJobActionListener listener) {
-        this.onJobActionListener = listener;
-    }
+
+
 
     @NonNull
     @Override
@@ -85,16 +91,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
 
-        if (currentUser!= null && currentUser.getIsAdmin()) {
-            holder.btnApprove.setVisibility(View.VISIBLE);
-            holder.btnReject.setVisibility(View.VISIBLE);
-        }
 
-
-        if (job.getStatus().equals("approve")) {
-            holder.btnApprove.setVisibility(View.GONE);
-            holder.btnReject.setVisibility(View.GONE);
-        }
 
         /*/ Show admin chip if user is admin
         if (user.isAdmin()) {
@@ -117,50 +114,30 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             }
             return true;
         });
+
+
         holder.btnApprove.setOnClickListener(v -> {
 
 
-            //SEnd Notification
-            job.setStatus("approve");
-            DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
-                @Override
-                public void onCompleted(Void unused) {
-                    if (onJobClickListener != null) {
-                        onJobClickListener.onJobClick(job);
-                    }
-                    if (onJobActionListener != null) {
-                        onJobActionListener.onApprove(job);
-                    }
-                }
-                @Override
-                public void onFailed(Exception e) { }
-            });
+            if (onJobClickListener != null) {
+                onJobClickListener.onApprove(job);
+            }
+
+
         });
 
         holder.btnReject.setOnClickListener(v -> {
-
-
-            job.setStatus("reject");
-
-            //Send Notification
-
-            DatabaseService.getInstance().updateRejectJob(job, new DatabaseService.DatabaseCallback<Void>() {
-                @Override
-                public void onCompleted(Void object) {
-                    if (onJobActionListener != null) {
-                        onJobActionListener.onReject(job);
-                    }
-
-                }
-
-                @Override
-                public void onFailed(Exception e) {
-
-                }
-            });
-
+            if (onJobClickListener != null) {
+                onJobClickListener.onReject(job);
+            }
 
         });
+
+        if (currentUser!= null && currentUser.getIsAdmin()) {
+            holder.btnApprove.setVisibility(View.VISIBLE);
+            holder.btnReject.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
@@ -201,6 +178,8 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         TextView tvJobTitle2, tvJobType2, tvJobCompany2, tvAddress2, tvJobCity2, tvJobPhone2, tvJobDetails2,tvJobUser2;
         Button btnApprove, btnReject;
         //Chip chipRole;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
