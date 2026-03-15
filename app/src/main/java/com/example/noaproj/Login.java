@@ -44,10 +44,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         /// get the views
-            etEmail = findViewById(R.id.etLoginEmail);
-            etPassword = findViewById(R.id.etLoginPassword);
-            btnLogin = findViewById(R.id.btnLoginSubmit);
-            tvRegister = findViewById(R.id.tvLogToReg);
+        etEmail = findViewById(R.id.etLoginEmail);
+        etPassword = findViewById(R.id.etLoginPassword);
+        btnLogin = findViewById(R.id.btnLoginSubmit);
+        tvRegister = findViewById(R.id.tvLogToReg);
 
         email2=sharedpreferences.getString("email","");
         pass2=sharedpreferences.getString("password","");
@@ -56,75 +56,74 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
         /// set the click listener
-            btnLogin.setOnClickListener(this);
-            tvRegister.setOnClickListener(this);
-        }
+        btnLogin.setOnClickListener(this);
+        tvRegister.setOnClickListener(this);
+    }
 
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == btnLogin.getId()) {
-                Log.d(TAG, "onClick: Login button clicked");
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == btnLogin.getId()) {
+            Log.d(TAG, "onClick: Login button clicked");
 
-                /// get the email and password entered by the user
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+            /// get the email and password entered by the user
+            String email = etEmail.getText().toString();
+            String password = etPassword.getText().toString();
 
-                /// log the email and password
-                Log.d(TAG, "onClick: Email: " + email);
-                Log.d(TAG, "onClick: Password: " + password);
+            /// log the email and password
+            Log.d(TAG, "onClick: Email: " + email);
+            Log.d(TAG, "onClick: Password: " + password);
 
-                Log.d(TAG, "onClick: Validating input...");
-                /// Validate input
+            Log.d(TAG, "onClick: Validating input...");
+            /// Validate input
                 /*/ if (!checkInput(email, password)) {
                     /// stop if input is invalid
                     return;
                 } /*/
 
-                Log.d(TAG, "onClick: Logging in user...");
+            Log.d(TAG, "onClick: Logging in user...");
 
-                /// Login user
-                loginUser(email, password);
-            } else if (v.getId() == tvRegister.getId()) {
-                /// Navigate to Register Activity
-                Intent registerIntent = new Intent(Login.this, Register.class);
-                startActivity(registerIntent);
-            }
-        }
-
-        private void loginUser(String email, String password) {
-            DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() {
-                /// Callback method called when the operation is completed
-                @Override
-                public void onCompleted(String  uid) {
-
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("email", email);
-                    editor.putString("password", password);
-                    editor.commit();
-
-
-                    Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
-                    /// save the user data to shared preferences
-                    /// Redirect to main activity and clear back stack to prevent user from going back to login screen
-                    Intent mainIntent = new Intent(Login.this, UserActivity.class);
-                    mainIntent.putExtra("uid", uid);  // מעבירים את המשתמש
-                    startActivity(mainIntent);
-                    /// Clear the back stack (clear history) and start the MainActivity
-
-                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainIntent);
-
-                }
-
-                @Override
-                public void onFailed(Exception e) {
-                    Log.e(TAG, "onFailed: Failed to retrieve user data", e);
-                    /// Show error message to user
-                    etPassword.setError("Invalid email or password");
-                    etPassword.requestFocus();
-                    /// Sign out the user if failed to retrieve user data
-                    /// This is to prevent the user from being logged in again
-                }
-            });
+            /// Login user
+            loginUser(email, password);
+        } else if (v.getId() == tvRegister.getId()) {
+            /// Navigate to Register Activity
+            Intent registerIntent = new Intent(Login.this, Register.class);
+            startActivity(registerIntent);
         }
     }
+
+    private void loginUser(String email, String password) {
+        DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() {
+            /// Callback method called when the operation is completed
+            @Override
+            public void onCompleted(String  uid) {
+
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("email", email);
+                editor.putString("password", password);
+                editor.commit();
+
+
+                Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
+                /// save the user data to shared preferences
+                /// Redirect to main activity and clear back stack to prevent user from going back to login screen
+                Intent mainIntent = new Intent(Login.this, UserActivity.class);
+                mainIntent.putExtra("uid", uid);  // מעבירים את המשתמש
+                /// Clear the back stack (clear history) and start the MainActivity
+
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(mainIntent);
+
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to retrieve user data", e);
+                /// Show error message to user
+                etPassword.setError("Invalid email or password");
+                etPassword.requestFocus();
+                /// Sign out the user if failed to retrieve user data
+                /// This is to prevent the user from being logged in again
+            }
+        });
+    }
+}

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,8 +68,10 @@ ImageView imgAddOffer;
             @Override
             public void onCompleted(List<Job> jobsList) {
                 if(jobsList!=null) {
-
-                    jobArrayList.addAll(jobsList);
+                    for(int i=0; i< jobsList.size(); i++){
+                        if(jobsList.get(i).getStatus().contains("approve"))
+                            jobArrayList.add(jobsList.get(i));
+                    }
 
                     adapter.notifyDataSetChanged();
                     totalOffers= jobArrayList.size();
@@ -107,8 +110,22 @@ ImageView imgAddOffer;
 
             @Override
             public void onLongJobClick(Job job) {
+                job.setStatus("delete");
+                DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
+                    @Override
+                    public void onCompleted(Void object) {
+                        jobArrayList.remove(job);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MyJobs.this, "The job is deleted", Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onFailed(Exception e) {
+
+                    }
+                });
             }
+
 
             @Override
             public void onApprove(Job job) {

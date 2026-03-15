@@ -1,9 +1,13 @@
 package com.example.noaproj;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,16 +31,18 @@ import com.example.noaproj.adapters.OfferAdapter;
 import com.example.noaproj.adapters.UserAdapter;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
+import com.example.noaproj.services.AlarmReceiver;
 import com.example.noaproj.services.DatabaseService;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
-    Button btnFilter, btnAnswer, btnChat, btnLogOut, btnUserList, btnJobList, btnMyOffersJobs;
+    Button btnFilter, btnNotification, btnLogOut, btnUserList, btnJobList, btnMyOffersJobs;
     ImageView imgMenu, imgSearchJob;
     private boolean isMenuOpen = false;
     OfferAdapter adapter;
@@ -64,6 +71,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "Views initialized");
         databaseService = DatabaseService.getInstance();
         approvejoblist();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    1
+            );
+        }
 
     }
 
@@ -72,8 +85,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews(){
         imgMenu = findViewById(R.id.imgMenu);
         btnFilter = findViewById(R.id.btnFilter);
-        btnAnswer = findViewById(R.id.btnAnswer);
-        btnChat = findViewById(R.id.btnChat);
+        btnNotification = findViewById(R.id.btnNotification);
         btnLogOut = findViewById(R.id.btnLogOut);
         btnUserList = findViewById(R.id.btnUserList);
         btnJobList = findViewById(R.id.btnJobList);
@@ -95,9 +107,25 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onLongJobClick(Job job) {
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    String uid = mAuth.getCurrentUser().getUid();
+                    databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+                        @Override
+                        public void onCompleted(User user) {
+                            User currentUser = user;
+                            if (currentUser.getIsAdmin()) {
+                                job.setStatus("delete");
+                                approveArraylist.remove(job);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(UserActivity.this, "The job is deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailed(Exception e) {
 
-            }
-
+                        }
+                    });
+                }
             @Override
             public void onApprove(Job job) {
 
@@ -116,8 +144,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void initListeners() {
         imgMenu.setOnClickListener(this);
         btnFilter.setOnClickListener(this);
-        btnAnswer.setOnClickListener(this);
-        btnChat.setOnClickListener(this);
+        btnNotification.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
         btnUserList.setOnClickListener(this);
         btnJobList.setOnClickListener(this);
@@ -173,6 +200,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(v == imgSearchJob){
             searchJob();
+        }
+        if(v == btnNotification){
+            Intent goNotification = new Intent(this, JobNotification.class);
+            startActivity(goNotification);
         }
 
     }

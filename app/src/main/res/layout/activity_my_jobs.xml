@@ -9,7 +9,7 @@
     tools:context=".MyJobs">
 
     <TextView
-        android:id="@+id/tv_MyJoboffer_count"
+        android:id="@+id/tv_MyJobs_title"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +21,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_MyJoboffer_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvMyjobOffer" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyjobOffer"
         android:layout_width="0dp"
@@ -28,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_MyJoboffer_count"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MyJobs_title"
         tools:listitem="@layout/item_job">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -39,9 +49,10 @@
         android:layout_height="60dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:tint="#306bc9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/baseline_note_add_24" />
+        app:srcCompat="@drawable/baseline_note_add_24"
+        app:tint="#306bc9" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

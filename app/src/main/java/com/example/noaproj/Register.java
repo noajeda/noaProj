@@ -90,7 +90,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         Log.d(TAG, "registerUser: Registering user...");
 
         /// create a new user object
-        User user = new User(age, city, email, fname, gender, "oo", lname, password, phone);
+        User user = new User("oo",fname, lname, phone, email, password, age, gender, city);
             createUserInDatabase(user);
         }
 

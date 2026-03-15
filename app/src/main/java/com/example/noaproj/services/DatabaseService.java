@@ -20,7 +20,9 @@ import com.google.firebase.database.Transaction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -40,8 +42,8 @@ public class DatabaseService {
     private static final String USERS_PATH = "users",
 
     COMPANY_JOBS_PATH = "company_jobs",
-            JOBS_PATH = "jobs";
-
+            JOBS_PATH = "jobs",
+    USER_NOTIFICATINS_PATH = "user_notifications";
 
     /// callback interface for database operations
     /// @param <T> the type of the object to return
@@ -402,15 +404,15 @@ public class DatabaseService {
     public void updateJob(@NotNull Job job,  @Nullable DatabaseCallback<Void> callback) {
 
         writeData(JOBS_PATH + "/" + job.getId(), job, callback);
-        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
+        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, null);
     }
 
 
     public void updateRejectJob(@NotNull Job job,  @Nullable DatabaseCallback<Void> callback) {
-
         deleteJob(JOBS_PATH + "/" + job.getId(),  callback);
         writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
     }
+
 
     /// get a job from the database
     /// @param jobId the id of the job to get
@@ -475,5 +477,41 @@ public class DatabaseService {
 
 
     }
+    // DatabaseService.java
+    /*/
+    public void updateUserToken(@NotNull String uid, @NotNull String token, @Nullable DatabaseCallback<Void> callback) {
+        writeData(USERS_PATH + "/" + uid + "/fcmToken", token, callback);
+    }
 
+    public void addNotificationToDatabase(String userId, String title, String message, @Nullable DatabaseCallback<Void> callback) {
+        String notificationId = String.valueOf(System.currentTimeMillis());
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", title);
+        data.put("message", message);
+        data.put("timestamp", System.currentTimeMillis());
+
+        writeData("notifications/" + userId + "/" + notificationId, data, callback);
+    }
+    public void saveFcmToken(String userId, String token, DatabaseCallback<Void> callback) {
+        writeData("users/" + userId + "/fcmToken", token, callback);
+    }
+     */
+
+    /*/
+    public void updateUserToken(String uid, String token) {
+        readData(USERS_PATH + "/" + uid + "/token").setValue(token);
+    }
+    public void addNotificationToDatabase(String userId, String title, String message) {
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("body", message);
+        notification.put("timestamp", System.currentTimeMillis());
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("notifications")
+                .child(userId)
+                .push()
+                .setValue(notification);
+    }
+    /*/
 }

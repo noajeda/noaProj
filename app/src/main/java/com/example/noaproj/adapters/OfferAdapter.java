@@ -1,10 +1,14 @@
 package com.example.noaproj.adapters;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.noaproj.R;
+import com.example.noaproj.UserActivity;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
@@ -115,20 +120,30 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             return true;
         });
 
+        holder.tvJobPhone2.setOnClickListener(v -> {
+                String phone = holder.tvJobPhone2.getText().toString().trim();
+                Intent goCall = new Intent(Intent.ACTION_DIAL);
+                goCall.setData(Uri.parse("tel:" + phone));
+                v.getContext().startActivity(goCall);
+        });
+        holder.imgPhone.setOnClickListener(v -> {
+            String phone = holder.tvJobPhone2.getText().toString().trim();
+            Intent goCall = new Intent(Intent.ACTION_DIAL);
+            goCall.setData(Uri.parse("tel:" + phone));
+            v.getContext().startActivity(goCall);
+        });
 
-        holder.btnApprove.setOnClickListener(v -> {
-
-
+    holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);
+
             }
-
-
         });
 
         holder.btnReject.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onReject(job);
+
             }
 
         });
@@ -177,12 +192,14 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvJobTitle2, tvJobType2, tvJobCompany2, tvAddress2, tvJobCity2, tvJobPhone2, tvJobDetails2,tvJobUser2;
         Button btnApprove, btnReject;
+        ImageView imgPhone;
         //Chip chipRole;
 
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgPhone = itemView.findViewById(R.id.imgPhone);
             tvJobTitle2 = itemView.findViewById(R.id.tvJobTitle2);
             tvJobType2 = itemView.findViewById(R.id.tvJobType2);
             tvJobCompany2 = itemView.findViewById(R.id.tvJobCompany2);

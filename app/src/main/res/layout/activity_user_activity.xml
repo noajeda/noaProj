@@ -97,18 +97,12 @@
                 android:layout_marginTop="50dp"
                 android:text="המשרות שלי"
                 />
-            <Button
-                android:id="@+id/btnAnswer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="מענה"
-                 />
 
             <Button
-                android:id="@+id/btnChat"
+                android:id="@+id/btnNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="צ'אט כללי"
+                android:text="קבל התראה"
                 />
 
             <Button

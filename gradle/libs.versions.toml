@@ -11,6 +11,8 @@ googleGmsGoogleServices = "4.4.4"
 firebaseAuth = "24.0.1"
 firebaseDatabase = "22.0.1"
 recyclerview = "1.4.0"
+firebase_messaging = "23.4.1"
+
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -23,6 +25,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase_messaging" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.11.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

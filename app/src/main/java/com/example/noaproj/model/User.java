@@ -11,36 +11,71 @@ public class User {
     String gender;
     String city;
     boolean isAdmin;
+    String fcmToken;  // Firebase Cloud Messaging token
 
-    public User(String age, String city, String email, String fName, String gender, String id, boolean isAdmin, String lName, String password, String phone) {
-        this.age = age;
-        this.city = city;
-        this.email = email;
-        this.fName = fName;
-        this.gender = gender;
+
+
+
+    //  Constructor מלא – כולל isAdmin ו-fcmToken
+    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, boolean isAdmin, String fcmToken) {
         this.id = id;
+        this.fName = fName;
+        this.lName = lName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+        this.gender = gender;
+        this.city = city;
         this.isAdmin = isAdmin;
-        this.lName = lName;
-        this.password = password;
-        this.phone = phone;
+        this.fcmToken = fcmToken;
     }
-
-    public User(String age, String city, String email, String fName, String gender, String id, String lName, String password, String phone) {
-        this.age = age;
-        this.city = city;
-        this.email = email;
-        this.fName = fName;
-        this.gender = gender;
+    //  Constructor בלי לקבל fcmToken
+    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, boolean isAdmin) {
         this.id = id;
+        this.fName = fName;
         this.lName = lName;
-        this.password = password;
         this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+        this.gender = gender;
+        this.city = city;
+        this.isAdmin = isAdmin;
+        this.fcmToken = null;
+    }
+    //  Constructor בלי לקבל isAdmin
+    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, String fcmToken) {
+        this.id = id;
+        this.fName = fName;
+        this.lName = lName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+        this.gender = gender;
+        this.city = city;
         this.isAdmin = false;
+        this.fcmToken = fcmToken;
+    }
+    //  Constructor בלי לקבל isAdmin ו-fcmToken
+    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city) {
+        this.id = id;
+        this.fName = fName;
+        this.lName = lName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+        this.gender = gender;
+        this.city = city;
+        this.isAdmin = false;
+        this.fcmToken = null;
     }
 
 
 
-    public  User(User  user){
+    public User(User  user){
 
         this.id = user.getId();
         this.email = user.getEmail();
@@ -136,6 +171,10 @@ public class User {
         this.phone = phone;
     }
 
+    public String getFcmToken() {return fcmToken;}
+
+    public void setFcmToken(String token) {this.fcmToken = token;}
+
     @Override
     public String toString() {
         return "User{" +
@@ -149,6 +188,7 @@ public class User {
                 ", gender='" + gender + '\'' +
                 ", city='" + city + '\'' +
                 ", isAdmin='" + isAdmin + '\'' +
+                ", token='" + fcmToken + '\'' +
                 '}';
     }
 }
