@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:layoutDirection="ltr"
     tools:context=".Register">
 
 
@@ -38,11 +39,11 @@
         android:id="@+id/etFname"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-
         android:layout_marginBottom="9dp"
         android:ems="10"
         android:hint="First Name"
         android:inputType="text"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etLname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +58,7 @@
         android:ems="10"
         android:hint="Last Name"
         android:inputType="text"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etPassword"
         app:layout_constraintStart_toStartOf="@+id/etFname"
         app:layout_constraintTop_toBottomOf="@+id/etFname" />
@@ -69,6 +71,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etEmail"
         app:layout_constraintStart_toStartOf="@+id/etLname"
         app:layout_constraintTop_toBottomOf="@+id/etLname" />
@@ -81,6 +84,7 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etPhone"
         app:layout_constraintStart_toStartOf="@+id/etPassword"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
@@ -94,6 +98,7 @@
         android:ems="10"
         android:hint="Phone"
         android:inputType="phone"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etAge"
         app:layout_constraintEnd_toEndOf="@+id/etEmail"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
@@ -118,6 +123,7 @@
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="age"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/spUserGender"
         app:layout_constraintStart_toStartOf="@+id/etPhone"
         app:layout_constraintTop_toBottomOf="@+id/etPhone" />

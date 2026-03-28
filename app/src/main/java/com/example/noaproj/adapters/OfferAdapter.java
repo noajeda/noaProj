@@ -1,8 +1,11 @@
 package com.example.noaproj.adapters;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noaproj.R;
 import com.example.noaproj.UserActivity;
+import com.example.noaproj.model.Call;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
@@ -36,6 +40,8 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         void onApprove(Job job);
 
         void onReject(Job job);
+
+        void onPhoneClick(Job job);
 
     }
         private final List<Job> jobList;
@@ -120,20 +126,19 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             return true;
         });
 
-        holder.tvJobPhone2.setOnClickListener(v -> {
-                String phone = holder.tvJobPhone2.getText().toString().trim();
-                Intent goCall = new Intent(Intent.ACTION_DIAL);
-                goCall.setData(Uri.parse("tel:" + phone));
-                v.getContext().startActivity(goCall);
-        });
         holder.imgPhone.setOnClickListener(v -> {
+          // לחיצה על תמונת הטלפון ומעבר לאפליקציית שיחות
             String phone = holder.tvJobPhone2.getText().toString().trim();
             Intent goCall = new Intent(Intent.ACTION_DIAL);
             goCall.setData(Uri.parse("tel:" + phone));
             v.getContext().startActivity(goCall);
+
+            if (onJobClickListener != null) {
+                onJobClickListener.onPhoneClick(job);
+            }
         });
 
-    holder.btnApprove.setOnClickListener(v -> {
+        holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);
 

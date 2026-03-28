@@ -41,35 +41,38 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        initViews();
+        initListeners();
+
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-        /// get the views
-        etEmail = findViewById(R.id.etLoginEmail);
-        etPassword = findViewById(R.id.etLoginPassword);
-        btnLogin = findViewById(R.id.btnLoginSubmit);
-        tvRegister = findViewById(R.id.tvLogToReg);
-
         email2=sharedpreferences.getString("email","");
         pass2=sharedpreferences.getString("password","");
         etEmail.setText(email2);
         etPassword.setText(pass2);
+    }
 
+    private void initViews() {
+        etEmail = findViewById(R.id.etLoginEmail);
+        etPassword = findViewById(R.id.etLoginPassword);
+        btnLogin = findViewById(R.id.btnLoginSubmit);
+        tvRegister = findViewById(R.id.tvLogToReg);
+    }
 
-        /// set the click listener
+    private void initListeners() {
         btnLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnLogin.getId()) {
+        if (v == btnLogin) { // לחיצה על התחברות
             Log.d(TAG, "onClick: Login button clicked");
 
-            /// get the email and password entered by the user
+            // קבלת המייל והסיסמה שהמשתמש הזין
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
 
-            /// log the email and password
             Log.d(TAG, "onClick: Email: " + email);
             Log.d(TAG, "onClick: Password: " + password);
 
@@ -81,48 +84,37 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 } /*/
 
             Log.d(TAG, "onClick: Logging in user...");
-
-            /// Login user
-            loginUser(email, password);
-        } else if (v.getId() == tvRegister.getId()) {
-            /// Navigate to Register Activity
-            Intent registerIntent = new Intent(Login.this, Register.class);
-            startActivity(registerIntent);
+            loginUser(email, password); // חיבור המשתמש
+        }
+        if (v == tvRegister) { // לחיצה על הרשמה
+            Intent goRegister = new Intent(Login.this, Register.class);
+            startActivity(goRegister); // מעבר למסך הרשמה
         }
     }
 
     private void loginUser(String email, String password) {
-        DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() {
-            /// Callback method called when the operation is completed
+        DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() { // חיבור המשתמש
             @Override
             public void onCompleted(String  uid) {
 
+                // שמירת האימייל והסיסמה של המשתמש המחובר ב-sharedpreferences
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("email", email);
                 editor.putString("password", password);
                 editor.commit();
-
-
                 Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
-                /// save the user data to shared preferences
-                /// Redirect to main activity and clear back stack to prevent user from going back to login screen
-                Intent mainIntent = new Intent(Login.this, UserActivity.class);
-                mainIntent.putExtra("uid", uid);  // מעבירים את המשתמש
-                /// Clear the back stack (clear history) and start the MainActivity
 
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent mainIntent = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
+                mainIntent.putExtra("uid", uid);  // מעבירים את המזהה היחודי של המשתמש
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
                 startActivity(mainIntent);
-
             }
 
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "onFailed: Failed to retrieve user data", e);
-                /// Show error message to user
-                etPassword.setError("Invalid email or password");
+                etPassword.setError("Invalid email or password"); // הצגת הודעת שגיאה למשתמש
                 etPassword.requestFocus();
-                /// Sign out the user if failed to retrieve user data
-                /// This is to prevent the user from being logged in again
             }
         });
     }

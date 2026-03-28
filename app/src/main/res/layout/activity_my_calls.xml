@@ -5,55 +5,42 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:layoutDirection="ltr"
-    tools:context=".MyJobs">
+    tools:context=".MyCalls">
+
 
     <TextView
-        android:id="@+id/tv_MyJobs_title"
+        android:id="@+id/tv_MyCalls_title"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="20dp"
-        android:text="המשרות שהוספתי"
-        app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
+        android:text="השיחות שלי"
+        app:layout_constraintBottom_toTopOf="@+id/rvMyCalls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_MyJoboffer_count"
+        android:id="@+id/tv_MyCalloffer_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="סך המשרות: 0"
-        app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rvMyjobOffer" />
+        android:layout_marginEnd="25dp"
+        android:text="סך השיחות: 0"
+        app:layout_constraintBottom_toTopOf="@+id/rvMyCalls"
+        app:layout_constraintEnd_toEndOf="@+id/tv_MyCalls_title"
+        app:layout_constraintTop_toTopOf="@+id/rvMyCalls" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMyjobOffer"
+        android:id="@+id/rvMyCalls"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_MyJobs_title"
-        tools:listitem="@layout/item_job">
+        app:layout_constraintTop_toBottomOf="@+id/tv_MyCalls_title"
+        tools:listitem="@layout/item_call">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <ImageView
-        android:id="@+id/imgAddOffer"
-        android:layout_width="76dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/baseline_note_add_24"
-        app:tint="#306bc9" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

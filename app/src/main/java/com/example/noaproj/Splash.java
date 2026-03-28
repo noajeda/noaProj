@@ -13,38 +13,39 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Splash extends AppCompatActivity {
-    ImageView img;
+    ImageView imgSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
-        img = findViewById(R.id.img);
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Thread mSplashTheard = new Thread(){
+
+        imgSplash = findViewById(R.id.imgSplash);
+
+        Thread mSplashThread = new Thread(){
             @Override
             public void run(){
                 try{
                     synchronized (this){
-                        Animation myFadeInAnimation = AnimationUtils.loadAnimation(Splash.this, R.anim.tween);
-                        img.startAnimation(myFadeInAnimation);
+                        Animation myFadeInAnimation = AnimationUtils.loadAnimation(Splash.this, R.anim.tween); // טעינת אנימציה
+                        imgSplash.startAnimation(myFadeInAnimation); // הפעלת האנימציה על התמונה
                         wait(3000);
                     }
                 }
                 catch (InterruptedException ex){
                 }
-                finish();
+                finish(); // סגירת הSplash
 
-                Intent intent = new Intent(Splash.this, MainActivity.class);
-                startActivity(intent);
+                Intent goMainActivity = new Intent(Splash.this, MainActivity.class);
+                startActivity(goMainActivity); // מעבר למסך הראשי
             }
         };
-        mSplashTheard.start();
+        mSplashThread.start(); // הפעלת הThread
     }
 }

@@ -45,8 +45,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        initViews();
+        initListeners();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        databaseService = DatabaseService.getInstance();
+    }
 
+    private void initViews() {
         btnSubmit = findViewById(R.id.btnSubmit);
         etFname = findViewById(R.id.etFname);
         etLname = findViewById(R.id.etLname);
@@ -56,16 +61,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         spUserCity = findViewById(R.id.spUserCity);
         spUserGender = findViewById(R.id.spUserGender);
         etAge = findViewById(R.id.etAge);
+    }
+
+    private void initListeners() {
         btnSubmit.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnSubmit.getId()) {
+        if (v == btnSubmit) { // לחיצה על שליחה
             Log.d(TAG, "onClick: Register button clicked");
 
-            /// get the input from the user
+            // שמירת הקלט שהמשתמש הזין
             fname = etFname.getText().toString();
             lname = etLname.getText().toString();
             password = etPassword.getText().toString();
@@ -75,55 +83,42 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             age = etAge.getText().toString();
             gender = spUserGender.getSelectedItem().toString();
 
-            databaseService = DatabaseService.getInstance();
-
             Log.d(TAG, "onClick: Registering user...");
-
-            /// Register user
-            registerUser(fname, lname, phone, email, password, age,gender, city);
+            registerUser(fname, lname, phone, email, password, age,gender, city);  // רישום המשתמש לפי הנתונים שנקלטו
         }
     }
 
-
-    /// Register the user
+        // ---- רישום המשתמש ----
     private void registerUser(String fname, String lname, String phone, String email, String password, String age, String gender, String city) {
-        Log.d(TAG, "registerUser: Registering user...");
+        Log.d(TAG, "register: Registering user...");
 
-        /// create a new user object
-        User user = new User("oo",fname, lname, phone, email, password, age, gender, city);
+        User user = new User("oo",fname, lname, phone, email, password, age, gender, city); // יצירת אובייקט User
             createUserInDatabase(user);
         }
 
+        // ---- הוספת המשתמש למסד הנתונים ----
     private void createUserInDatabase(User user) {
         databaseService.createNewUser(user, new DatabaseService.DatabaseCallback<String>() {
             @Override
             public void onCompleted(String uid) {
                 user.setId(uid);
                 Log.d(TAG, "createUserInDatabase: User created successfully");
-                /// save the user to shared preferences
 
-                Log.d(TAG, "createUserInDatabase: Redirecting to MainActivity");
-                /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
-
-                SharedPreferences.Editor editor = sharedpreferences.edit();
+                SharedPreferences.Editor editor = sharedpreferences.edit(); // שמירת נתוני המשתמש ב-SharedPreferences
                 editor.putString("email", email);
                 editor.putString("password", password);
                 editor.commit();
 
-
-                Intent mainIntent = new Intent(Register.this, UserActivity.class);
-                /// clear the back stack (clear history) and start the MainActivity
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(mainIntent);
+                Intent goUserActivity = new Intent(Register.this, UserActivity.class); // מעבר למסך המשתמש
+                goUserActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
+                startActivity(goUserActivity);
             }
 
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "createUserInDatabase: Failed to create user", e);
-                /// show error message to user
-                Toast.makeText(Register.this, "Failed to register user", Toast.LENGTH_SHORT).show();
-                /// sign out the user if failed to register
-
+                Toast.makeText(Register.this, "Failed to register user", Toast.LENGTH_SHORT).show(); // הצגת הודעת שגיאה למשתמש
+                FirebaseAuth.getInstance().signOut(); // נטרול המשתמש אם הרישום למסד הנתונים נכשל
             }
         });
     }

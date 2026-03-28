@@ -28,7 +28,6 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
     EditText etCompany, etJobAddress, etJobPhone, etJobAge, etJobDetails, etJobType;
     String jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType, company;
     Button btnSubmitOffer;
-
     Spinner spCity,spTitle, spType;
 
     @Override
@@ -42,6 +41,12 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             return insets;
         });
 
+        initViews();
+        initListeners();
+        databaseService = DatabaseService.getInstance();
+    }
+
+    private void initViews() {
         etCompany = findViewById(R.id.etCompany);
         spCity = findViewById(R.id.spCity);
         spType = findViewById(R.id.spType);
@@ -51,16 +56,18 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
         etJobAge = findViewById(R.id.etJobAge);
         etJobDetails = findViewById(R.id.etJobDetails);
         btnSubmitOffer = findViewById(R.id.btnSubmitOffer);
+    }
 
+    private void initListeners() {
         btnSubmitOffer.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnSubmitOffer.getId()) {
-            Log.d(TAG, "onClick: Add Offer button clicked");
+        if (v == btnSubmitOffer) { // לחיצה על כפתור הגשת עבודה
+            Log.d(TAG, "onClick: submitOffer button clicked");
 
+            // שמירת הקלט שהמשתמש הזין
             company = etCompany.getText().toString();
             jobCity=spCity.getSelectedItem().toString();
             jobType = spType.getSelectedItem().toString();
@@ -70,31 +77,22 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             jobAge = etJobAge.getText().toString();
             jobDetails = etJobDetails.getText().toString();
 
-
-            databaseService = DatabaseService.getInstance();
-
             Log.d(TAG, "onClick: submitting offer...");
-
-            /// Register user
-            SubmitOffer(company, jobCity,jobType, jobTitle, jobAddress, jobPhone, jobAge, jobDetails);
+            SubmitOffer(company, jobCity,jobType, jobTitle, jobAddress, jobPhone, jobAge, jobDetails); // הגשת ההצעה לפי הנתונים שנקלטו
         }
     }
 
+    // ---- הגשת הצעת עבודה ----
     private void SubmitOffer(String company, String jobCity, String jobType, String jobTitle, String jobAddress, String jobPhone, String jobAge, String jobDetails) {
-        Log.d(TAG, "registerUser: Registering user...");
-
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         String uid= mAuth.getCurrentUser().getUid();
 
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
-
-               User newUser=new User(user);
-
+               User currentUser=new User(user);
                 String jobId=databaseService.generateJobId();
-                Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, jobId, jobPhone, jobTitle, jobType, newUser);
-                createJobInDatabase(job);
-
+                Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, jobId, jobPhone, jobTitle, jobType, currentUser);
+                createJobInDatabase(job); // הוספת job עבור currentUser במסד הנתונים
             }
 
             @Override
@@ -104,30 +102,22 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    // ---- הוספת העבודה החדשה למסד הנתונים ----
     private void createJobInDatabase(Job job) {
         databaseService.createNewJob(job, new DatabaseService.DatabaseCallback<Void>() {
             @Override
             public void onCompleted(Void object) {
                 Log.d(TAG, "createJobInDatabase: Job created successfully");
-                /// save the user to shared preferences
 
-                Log.d(TAG, "createJobInDatabase: Redirecting to MainActivity");
-                /// Redirect to MainActivity and clear back stack to prevent user from going back to register screen
-
-
-
-                Intent mainIntent = new Intent(SubmitOfferActivity.this, UserActivity.class);
-                /// clear the back stack (clear history) and start the MainActivity
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(mainIntent);
+                Intent goUserActivity = new Intent(SubmitOfferActivity.this, UserActivity.class);   // מעבר למסך המשתמש
+                goUserActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // מחיקת היסטוריית המסכים הקודמים
+                startActivity(goUserActivity);
+                Log.d(TAG, "createJobInDatabase: Redirecting to UserActivity");
             }
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "createUserInDatabase: Failed to create user", e);
-                /// show error message to user
-                Toast.makeText(SubmitOfferActivity.this, "Failed to register user", Toast.LENGTH_SHORT).show();
-                /// sign out the user if failed to register
-
+                Log.e(TAG, "createJobInDatabase: Failed to create job", e);
+                Toast.makeText(SubmitOfferActivity.this, "Failed to create job", Toast.LENGTH_SHORT).show(); // הצגת הודעת שגיאה למשתמש
             }
         });
     }

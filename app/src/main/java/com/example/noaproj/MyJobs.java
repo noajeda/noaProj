@@ -31,13 +31,11 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
     ArrayList<Job> jobArrayList=new ArrayList<>();
     RecyclerView rcOffers;
     TextView tv_offer_count;
-ImageView imgAddOffer;
+    ImageView imgAddOffer;
     OfferAdapter adapter;
     int totalOffers;
 
     String uid="";
-
-
     FirebaseAuth mAuth;
 
     @Override
@@ -51,77 +49,42 @@ ImageView imgAddOffer;
             return insets;
         });
 
+        initViews();
+        initListeners();
         mAuth=FirebaseAuth.getInstance();
         uid=  mAuth.getUid();
-        initViews();
         Log.d(TAG, "uid"+uid);
-
         if(!uid.isEmpty())
-                readJobs(uid);
+            readJobs(uid);
     }
-
-
-
-    private void readJobs(String uid) {
-        jobArrayList.clear();
-        databaseService.getCompanyJobList( uid ,new DatabaseService.DatabaseCallback<List<Job>>() {
-            @Override
-            public void onCompleted(List<Job> jobsList) {
-                if(jobsList!=null) {
-                    for(int i=0; i< jobsList.size(); i++){
-                        if(jobsList.get(i).getStatus().contains("approve"))
-                            jobArrayList.add(jobsList.get(i));
-                    }
-
-                    adapter.notifyDataSetChanged();
-                    totalOffers= jobArrayList.size();
-                    tv_offer_count.setText("Total offers:" + totalOffers);
-                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
-
-                }
-
-            }
-
-
-            @Override
-            public void onFailed(Exception e) {
-
-            }
-        });
-
-    }
-
     private void initViews() {
         tv_offer_count = findViewById(R.id.tv_MyJoboffer_count);
+        imgAddOffer = findViewById(R.id.imgAddOffer);
         databaseService = DatabaseService.getInstance();
-        Log.d(TAG, "databaseService initialized");
-
         rcOffers = findViewById(R.id.rvMyjobOffer);
-        Log.d(TAG, "rcOffers found: " + (rcOffers != null));
-
         rcOffers.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
         adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
             @Override
             public void onJobClick(Job job) {
-             //   jobArrayList.clear();
-              //  readJobs(uid);
             }
 
             @Override
-            public void onLongJobClick(Job job) {
+            public void onLongJobClick(Job job) { // הסרת עבודה
                 job.setStatus("delete");
-                DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
+                DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() { // עדכון במסד הנתונים שהעבודה הוסרה
                     @Override
                     public void onCompleted(Void object) {
                         jobArrayList.remove(job);
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(MyJobs.this, "The job is deleted", Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
+                        totalOffers= jobArrayList.size();
+                        tv_offer_count.setText("Total offers:" + totalOffers);
+                        Toast.makeText(MyJobs.this, "The job is deleted", Toast.LENGTH_SHORT).show(); // הצגת הודעה למשתמש
                     }
 
                     @Override
                     public void onFailed(Exception e) {
-
+                        Log.e(TAG, "onFailed: Failed to delete user", e);
                     }
                 });
             }
@@ -136,21 +99,52 @@ ImageView imgAddOffer;
             public void onReject(Job job) {
 
             }
+
+            @Override
+            public void onPhoneClick(Job job) {
+
+            }
         });
         rcOffers.setAdapter(adapter);
 
-        imgAddOffer = findViewById(R.id.imgAddOffer);
-        imgAddOffer.setOnClickListener((View.OnClickListener) this);
         Log.d(TAG, "initViews finished");
+    }
+    private void initListeners() {
+        imgAddOffer.setOnClickListener(this);
+    }
+
+    // ---- הצגת כל העבודות המאושרות של המשתמש במסך ----
+    private void readJobs(String uid) {
+        jobArrayList.clear();
+        databaseService.getCompanyJobList( uid ,new DatabaseService.DatabaseCallback<List<Job>>() { // קבלת רשימת כל העבודות של המשתמש
+            @Override
+            public void onCompleted(List<Job> jobsList) {
+                if(jobsList!=null) {
+                    for(int i=0; i< jobsList.size(); i++){
+                        if(jobsList.get(i).getStatus().contains("approve"))
+                            jobArrayList.add(jobsList.get(i)); // רשימה של כל העבודות המאושרות של המשתמש
+                    }
+
+                    adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
+                    totalOffers= jobArrayList.size();
+                    tv_offer_count.setText("Total offers:" + totalOffers);
+                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
+                }
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to getCompanyJobList", e);
+            }
+        });
+
     }
 
     @Override
     public void onClick(View v) {
-        if( v == imgAddOffer){
+        if( v == imgAddOffer){   // מעבר למסך הוספת משרה
             Intent goAddOffer = new Intent(this, SubmitOfferActivity.class);
             startActivity(goAddOffer);
         }
-
     }
-
 }

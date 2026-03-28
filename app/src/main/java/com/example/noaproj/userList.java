@@ -44,12 +44,29 @@ public class userList extends AppCompatActivity {
         });
 
         initViews();
+        setupRecyclerView();
+        loadUserList();
+    }
+
+    private void initViews() {
+        tv_user_count = findViewById(R.id.tv_user_count);
+        databaseService = DatabaseService.getInstance();
+        rcUsers = findViewById(R.id.rv_users_list);
+    }
+    private void setupRecyclerView() {   // יצירת ה-adapter וקישורו ל-recyclerView
+        rcUsers.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new UserAdapter(null);
+        rcUsers.setAdapter(adapter);
+    }
+
+     // ---- שליפת המשתמשים ממסד הנתונים והצגתם במסך המשתמש ----
+    private void loadUserList() {
         databaseService.getUserList(new DatabaseService.DatabaseCallback<List<User>>() {
             @Override
-            public void onCompleted(List<User> object) {
-                Log.d(TAG, "onCompleted: " + object);
-                adapter.setUserList(object);
-                totalUsers= object.size();
+            public void onCompleted(List<User> usersList) {
+                Log.d(TAG, "onCompleted: " + usersList);
+                adapter.setUserList(usersList);
+                totalUsers= usersList.size();
                 tv_user_count.setText("Total users: " + totalUsers);
             }
 
@@ -58,15 +75,5 @@ public class userList extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void initViews() {
-        tv_user_count = findViewById(R.id.tv_user_count);
-        databaseService = DatabaseService.getInstance();
-        rcUsers = findViewById(R.id.rv_users_list);
-        rcUsers.setLayoutManager(new LinearLayoutManager(this));
-        userList = new ArrayList<>();
-        adapter = new UserAdapter(null);
-        rcUsers.setAdapter(adapter);
     }
 }

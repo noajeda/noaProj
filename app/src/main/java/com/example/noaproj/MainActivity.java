@@ -25,28 +25,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup);
-        btnAboutApp = findViewById(R.id.btnAbout);
-        btnLogin.setOnClickListener(this);
-        btnSignup.setOnClickListener(this);
-        btnAboutApp.setOnClickListener(this);
+        initViews();
+        initListeners();
 
     }
 
+    private void initViews() {
+        btnLogin = findViewById(R.id.btnLogin);
+        btnSignup = findViewById(R.id.btnSignup);
+        btnAboutApp = findViewById(R.id.btnAbout);
+    }
+
+    private void initListeners() {
+        btnLogin.setOnClickListener(this);
+        btnSignup.setOnClickListener(this);
+        btnAboutApp.setOnClickListener(this);
+    }
+
+
+    // ---- יצירת מעבר ל3 מסכים ----
     @Override
     public void onClick(View v) {
-        if (v == btnLogin)
+        if (v == btnLogin)  // מסך התחברות
         {
             Intent goLog = new Intent(this, Login.class);
             startActivity(goLog);
         }
-        if (v == btnSignup)
+        if (v == btnSignup) // מסך הרשמה
         {
             Intent goReg = new Intent(this, Register.class);
             startActivity(goReg);
         }
-        if (v == btnAboutApp)
+        if (v == btnAboutApp) // מסך אודות
         {
             Intent goAb = new Intent(this, AboutApp.class);
             startActivity(goAb);

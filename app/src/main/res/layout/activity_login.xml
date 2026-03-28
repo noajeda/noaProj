@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:layoutDirection="ltr"
     tools:context=".Login">
 
 
@@ -23,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="32dp"
         android:text="דף התחברות"
         app:layout_constraintBottom_toTopOf="@+id/etLoginEmail"
         app:layout_constraintStart_toStartOf="@+id/etLoginEmail" />
@@ -32,7 +33,7 @@
         android:id="@+id/Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="37dp"
+        android:layout_marginEnd="26dp"
         android:text="אימייל"
         app:layout_constraintBaseline_toBaselineOf="@+id/etLoginEmail"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -41,7 +42,7 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="37dp"
+        android:layout_marginEnd="26dp"
         android:text="סיסמה"
         app:layout_constraintBaseline_toBaselineOf="@+id/etLoginPassword"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -50,23 +51,25 @@
         android:id="@+id/etLoginEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="29dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="text"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/etLoginPassword"
-        app:layout_constraintEnd_toEndOf="@+id/etLoginPassword" />
+        app:layout_constraintStart_toStartOf="@+id/etLoginPassword" />
 
     <EditText
         android:id="@+id/etLoginPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="22dp"
-        android:layout_marginBottom="41dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="42dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/tvLogToReg"
         app:layout_constraintEnd_toStartOf="@+id/password" />
 
@@ -75,7 +78,7 @@
         style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="237dp"
+        android:layout_marginBottom="235dp"
         android:text="submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,8 +88,8 @@
         android:id="@+id/tvLogToReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="33dp"
         android:text="עבור להרשמה"
         app:layout_constraintBottom_toTopOf="@+id/btnLoginSubmit"
         app:layout_constraintStart_toStartOf="@+id/btnLoginSubmit" />

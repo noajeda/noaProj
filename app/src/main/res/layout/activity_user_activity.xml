@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:layoutDirection="ltr"
     tools:context=".UserActivity">
 
     <LinearLayout
@@ -22,43 +23,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+
             <ImageView
                 android:id="@+id/imgSearchJob"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 app:srcCompat="@drawable/baseline_search_24"
 
                 />
 
             <EditText
                 android:id="@+id/etSearchJob"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
+                android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="     חפש בית עסק.."
+                android:textDirection="rtl"
+                android:gravity="right"
+                android:hint="חפש בית עסק.."
                 android:inputType="text" />
-
-
 
             <Button
                 android:id="@+id/btnFilter"
                 style="@style/ButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="2dp"
                 android:text="סינון" />
+
+            <Button
+                android:id="@+id/btnCleanALl"
+                style="@style/ButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="2dp"
+                android:text="נקה" />
+
 
             <ImageView
                 android:id="@+id/imgMenu"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:layout_margin="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="2dp"
                 app:srcCompat="@drawable/baseline_menu_24" />
 
         </LinearLayout>
@@ -78,12 +90,12 @@
         android:id="@+id/flMenu"
         android:layout_width="250dp"
         android:layout_height="0dp"
-        android:layout_marginStart="162dp"
-        android:orientation="vertical"
         android:visibility="gone"
+        android:orientation="vertical"
         android:padding="16dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -99,18 +111,18 @@
                 />
 
             <Button
+                android:id="@+id/btnMyCalls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="השיחות שלי"
+                />
+
+            <Button
                 android:id="@+id/btnNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="קבל התראה"
                 />
-
-            <Button
-                android:id="@+id/btnLogOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="התנתקות"
-             />
 
             <Button
                 android:id="@+id/btnUserList"
@@ -126,6 +138,13 @@
                 android:layout_height="wrap_content"
                 android:text="רשימת הצעות "
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnLogOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="התנתקות"
+                />
         </LinearLayout>
     </FrameLayout>
 

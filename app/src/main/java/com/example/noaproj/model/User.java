@@ -11,26 +11,12 @@ public class User {
     String gender;
     String city;
     boolean isAdmin;
-    String fcmToken;  // Firebase Cloud Messaging token
 
 
-
-
-    //  Constructor מלא – כולל isAdmin ו-fcmToken
-    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, boolean isAdmin, String fcmToken) {
-        this.id = id;
-        this.fName = fName;
-        this.lName = lName;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.age = age;
-        this.gender = gender;
-        this.city = city;
-        this.isAdmin = isAdmin;
-        this.fcmToken = fcmToken;
+    public User() {
     }
-    //  Constructor בלי לקבל fcmToken
+
+
     public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, boolean isAdmin) {
         this.id = id;
         this.fName = fName;
@@ -42,23 +28,8 @@ public class User {
         this.gender = gender;
         this.city = city;
         this.isAdmin = isAdmin;
-        this.fcmToken = null;
     }
-    //  Constructor בלי לקבל isAdmin
-    public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, String fcmToken) {
-        this.id = id;
-        this.fName = fName;
-        this.lName = lName;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.age = age;
-        this.gender = gender;
-        this.city = city;
-        this.isAdmin = false;
-        this.fcmToken = fcmToken;
-    }
-    //  Constructor בלי לקבל isAdmin ו-fcmToken
+
     public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city) {
         this.id = id;
         this.fName = fName;
@@ -70,8 +41,8 @@ public class User {
         this.gender = gender;
         this.city = city;
         this.isAdmin = false;
-        this.fcmToken = null;
     }
+
 
 
 
@@ -90,8 +61,6 @@ public class User {
     }
 
 
-    public User() {
-    }
     public String getAge() {
         return age;
     }
@@ -171,10 +140,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getFcmToken() {return fcmToken;}
-
-    public void setFcmToken(String token) {this.fcmToken = token;}
-
     @Override
     public String toString() {
         return "User{" +
@@ -188,7 +153,6 @@ public class User {
                 ", gender='" + gender + '\'' +
                 ", city='" + city + '\'' +
                 ", isAdmin='" + isAdmin + '\'' +
-                ", token='" + fcmToken + '\'' +
                 '}';
     }
 }
