@@ -46,13 +46,13 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         holder.tvTime.setText(sdf.format(new Date(call.getTime())));
 
-        if (call.getJob() != null) {    // שיחה יוצאת
-            holder.tvPhone.setText(call.getJob().getPhone());
+        if (call.getJob() != null) {    // נשמרה העבודה אליה התקשרו, שיחה יוצאת
+            holder.tvPhone.setText(call.getJob().getPhone()); // הצגת מס' הטלפון של מקום העבודה
             holder.tvNameCall.setText(call.getJob().getCompany());
             holder.imgPhone.setImageResource(R.drawable.baseline_call_received_24);
         }
-        else if (call.getUser() != null) {  // שיחה נכנסת
-            holder.tvPhone.setText(call.getUser().getPhone());
+        else if (call.getUser() != null) {  // נשמר המשתמש שהתקשר, שיחה נכנסת
+            holder.tvPhone.setText(call.getUser().getPhone()); // הצגת מס' הטלפון של המשתמש
             holder.tvNameCall.setText(call.getUser().getfName() + " " + call.getUser().getlName());
         }
     }

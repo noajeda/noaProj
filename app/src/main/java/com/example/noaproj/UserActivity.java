@@ -1,10 +1,6 @@
 package com.example.noaproj;
 
-import static android.content.ContentValues.TAG;
-
 import android.Manifest;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -30,18 +26,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noaproj.adapters.OfferAdapter;
-import com.example.noaproj.adapters.UserAdapter;
 import com.example.noaproj.model.Call;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
-import com.example.noaproj.services.AlarmReceiver;
 import com.example.noaproj.services.DatabaseService;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
@@ -321,7 +314,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             cbTitles.add(cb);    // שמירה ברשימה עבור בדיקה
         }
 
-        // btnApply
+        // ----שמירת תוצאות בArrayList----
         Button btnApplyFilter = bottomSheetDialog.findViewById(R.id.btnApplyFilter);
         if (btnApplyFilter != null) { // לחיצה על אישור
             btnApplyFilter.setOnClickListener(new View.OnClickListener() {

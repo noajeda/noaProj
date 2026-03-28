@@ -1,13 +1,7 @@
     package com.example.noaproj;
 
-    import android.annotation.SuppressLint;
-    import android.app.AlarmManager;
-    import android.app.PendingIntent;
-    import android.content.Intent;
     import android.content.pm.PackageManager;
-    import android.os.Build;
     import android.os.Bundle;
-    import android.os.Message;
     import android.telephony.SmsManager;
     import android.util.Log;
     import android.widget.EditText;
@@ -26,27 +20,14 @@
     import com.example.noaproj.adapters.OfferAdapter;
     import com.example.noaproj.model.Job;
     import com.example.noaproj.model.User;
-    import com.example.noaproj.services.AlarmReceiver;
     import com.example.noaproj.services.DatabaseService;
     import com.google.firebase.auth.FirebaseAuth;
-    import com.google.firebase.database.annotations.NotNull;
-    import com.google.firebase.messaging.FirebaseMessaging;
-    import com.google.firebase.messaging.RemoteMessage;
 
-    import java.io.IOException;
     import java.util.ArrayList;
-    import java.util.Calendar;
     import java.util.List;
-    import java.util.Random;
 
     import android.Manifest;
     import android.widget.Toast;
-
-    import okhttp3.MediaType;
-    import okhttp3.OkHttpClient;
-    import okhttp3.Request;
-    import okhttp3.RequestBody;
-    import okhttp3.Response;
 
     public class offer_list extends AppCompatActivity {
         private static final String TAG = "ReadOffers";

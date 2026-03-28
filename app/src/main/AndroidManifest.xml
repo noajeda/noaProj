@@ -28,10 +28,6 @@
             android:name=".services.JobAlarmService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".services.MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true" />
 
         <receiver
             android:name=".services.JobCheckReceiver"
@@ -41,10 +37,6 @@
         <activity
             android:name=".JobNotification"
             android:exported="false" />
-
-        <receiver
-            android:name=".services.AlarmReceiver"
-            android:exported="true" />
 
         <activity
             android:name=".MyJobs"

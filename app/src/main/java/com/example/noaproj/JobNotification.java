@@ -1,14 +1,9 @@
 package com.example.noaproj;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,14 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.noaproj.adapters.OfferAdapter;
-import com.example.noaproj.model.Job;
-import com.example.noaproj.services.AlarmReceiver;
-import com.example.noaproj.services.DatabaseService;
 import com.example.noaproj.services.JobAlarmService;
-import com.example.noaproj.services.JobCheckReceiver;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.slider.RangeSlider;
 
@@ -35,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobNotification extends AppCompatActivity {
-    ArrayList<Job> approveArraylist = new ArrayList<Job>();
-    private DatabaseService databaseService;
     private SharedPreferences prefs;
     Switch swNotification;
     BottomSheetDialog bottomSheetDialog;
@@ -57,41 +44,44 @@ public class JobNotification extends AppCompatActivity {
         initListeners();
     }
 
-    private void initListeners() {
-        swNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
-           // prefs.edit().putBoolean("notificationsEnabled", isChecked).apply();   // הפעל/כבה מתג
-
-            if(isChecked){
-                bottomSheetDialog.show();
-                showFilter(bottomSheetDialog);
-            }else{
-                Intent intent = new Intent(JobNotification.this, JobAlarmService.class);                intent.setAction("STOP");
-                intent.setAction("STOP");
-                startService(intent);
-            }
-
-        });
-
-    }
-
     private void initViews() {
-        databaseService = DatabaseService.getInstance();
-
         swNotification = findViewById(R.id.swNotification);
-        SharedPreferences prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
-        boolean enabled = prefs.getBoolean("notificationsEnabled", false);  // האם המתג הופעל בעבר
-        swNotification.setChecked(enabled); // השאר מופעל/כבוי
-
         bottomSheetDialog = new BottomSheetDialog(JobNotification.this);
         bottomSheetDialog.setContentView(R.layout.botton_sheet_filter);
 
+        prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
+        boolean enabled = prefs.getBoolean("notificationsEnabled", false);  // האם המתג הופעל בעבר
+        swNotification.setChecked(enabled); // השאר מופעל/כבוי
+
     }
 
+    private void initListeners() {
+        swNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){ // אם הסוויץ' הופעל
+                bottomSheetDialog.show(); // הצג את הדיאלוג
+                showFilter(bottomSheetDialog);
+            }
+            else{
+                prefs.edit().putBoolean("notificationsEnabled", false).apply(); // מעדכן שהסוויץ' נסגר
+                // מכבה את ההתראה
+                Intent intent = new Intent(JobNotification.this, JobAlarmService.class);
+                intent.setAction("STOP");
+                startService(intent);
+            }
+        });
+    }
 
-        private void showFilter(BottomSheetDialog bottomSheetDialog) {
-        // יצירת bottomSheetDialog
+    // יצירת bottomSheetDialog
+    private void showFilter(BottomSheetDialog bottomSheetDialog) {
+
+        LinearLayout layoutCities = bottomSheetDialog.findViewById(R.id.layoutCities);
+        LinearLayout layoutTypes = bottomSheetDialog.findViewById(R.id.layoutTypes);
+        LinearLayout layoutTitles = bottomSheetDialog.findViewById(R.id.layoutTitle);
+
+        //  ניקוי כל התוכן הקודם
+        layoutCities.removeAllViews();
+        layoutTypes.removeAllViews();
+        layoutTitles.removeAllViews();
 
         // ages
         RangeSlider sliderAge = bottomSheetDialog.findViewById(R.id.sliderAge);
@@ -100,11 +90,9 @@ public class JobNotification extends AppCompatActivity {
         initialValues.add(60f); // יד ימנית
         sliderAge.setValues(initialValues);
 
-
         // cities
-        LinearLayout layoutCities = bottomSheetDialog.findViewById(R.id.layoutCities);
         ArrayList<CheckBox> cbCites = new ArrayList<>();  // רשימת ערים עבור בדיקה
-        String[] cities = getResources().getStringArray(R.array.arrCity); // אופציות מהמאגר
+        String[] cities = getResources().getStringArray(R.array.arrCity); // מערך המכיל את כלל הערים
         for(int i = 0; i< cities.length; i++){
             String city = cities[i];
             CheckBox cb = new CheckBox(this);
@@ -113,9 +101,8 @@ public class JobNotification extends AppCompatActivity {
             cbCites.add(cb);    // שמירה ברשימה עבור בדיקה
         }
         // types
-        LinearLayout layoutTypes = bottomSheetDialog.findViewById(R.id.layoutTypes);
         ArrayList<CheckBox> cbTypes = new ArrayList<>();  // רשימת סוגים עבור בדיקה
-        String[] types = getResources().getStringArray(R.array.arrType);
+        String[] types = getResources().getStringArray(R.array.arrType); // מערך המכיל את כלל הסוגים
         for(int i = 0; i< types.length; i++){
             String type = types[i];
             CheckBox cb = new CheckBox(this);
@@ -125,22 +112,21 @@ public class JobNotification extends AppCompatActivity {
 
         }
         // titles
-        LinearLayout layoutTitles = bottomSheetDialog.findViewById(R.id.layoutTitle);
         ArrayList<CheckBox> cbTitles = new ArrayList<>(); // רשימת תפקידים עבור בדיקה
-        String[] titles = getResources().getStringArray(R.array.arrTitle);
+        String[] titles = getResources().getStringArray(R.array.arrTitle); // מערך המכיל את כלל התפקידים
         for(int i = 0; i< titles.length; i++){
             String title = titles[i];
             CheckBox cb = new CheckBox(this);
             cb.setText(title);
-            layoutTitles.addView(cb);
+            layoutTitles.addView(cb); // הוספה לתצוגה
             cbTitles.add(cb);    // שמירה ברשימה עבור בדיקה
         }
 
-             applied = false; // אתחול לפני לחיצה על אישור
+        applied = false; // אתחול לפני לחיצה על אישור
 
             // ----שמירת תוצאות בArrayList----
             Button btnApplyFilter = bottomSheetDialog.findViewById(R.id.btnApplyFilter);
-        if (btnApplyFilter != null) {    // אישור נלחץ
+        if (btnApplyFilter != null) {    // לחיצה על אישור
             btnApplyFilter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -173,9 +159,6 @@ public class JobNotification extends AppCompatActivity {
                     int maxAge = Math.round(values.get(1)); // היד הימנית
 
                  //   filterJobs(selectedCities, selectedTypes, selectedTitles, minAge, maxAge);
-
-                    SharedPreferences.Editor editor = prefs.edit();
-
                     // ----שמירת הנתונים בSharedPreferences----
                         // שמירת ערים
 
@@ -205,15 +188,14 @@ public class JobNotification extends AppCompatActivity {
 
                      */
 
+                    // שמירת כל הפרטים בהם בחר המשתמש ב-sharedPreferences
+                    SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("cities", TextUtils.join(",", selectedCities));
                     editor.putString("types", TextUtils.join(",", selectedTypes));
                     editor.putString("titles", TextUtils.join(",", selectedTitles));
-                    // שמירת טווח גיל
                     editor.putInt("minAge", minAge);
                     editor.putInt("maxAge", maxAge);
                     editor.putBoolean("notificationsEnabled", true);
-
-
                     editor.apply();
                     applied = true; // משתמש לחץ Apply
 
@@ -222,12 +204,12 @@ public class JobNotification extends AppCompatActivity {
                     bottomSheetDialog.dismiss(); // סגור תפריט
                 }
             });
+
             bottomSheetDialog.setOnDismissListener(dialog -> {
-                // אם הדיאלוג נסגר בלי Apply
+                // אם הדיאלוג נסגר ללא לחיצה על Apply
                 if(!applied){
                     swNotification.setChecked(false);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean("notificationsEnabled", true);// סוגר את הסוויץ
+                    prefs.edit().putBoolean("notificationsEnabled", false).apply();
                 }
             });
         }

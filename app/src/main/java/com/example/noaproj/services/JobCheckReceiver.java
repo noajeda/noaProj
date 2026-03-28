@@ -18,9 +18,7 @@ public class JobCheckReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
-
+       // שליפת כל הנתונים מהסינון שביצע המשתמש והפיכת המחרוזות לרשימות
         SharedPreferences prefs = context.getSharedPreferences("jobFilter", Context.MODE_PRIVATE);
         String citiesStr = prefs.getString("cities", "");
         List<String> cities;
@@ -53,9 +51,7 @@ public class JobCheckReceiver extends BroadcastReceiver {
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
             @Override
             public void onCompleted(List<Job> jobList) {
-                // קריאה של הסינון שהמשתמש בחר והפיכת המחרוזת לרשימה
-
-                // רשימה רק של עבודות מאושרות
+                // יצירת רשימה של כל העבודות המאושרות
                 ArrayList<Job> approveJobs = new ArrayList<>();
                 for(Job job : jobList){
                     if("approve".equals(job.getStatus()))
@@ -66,33 +62,35 @@ public class JobCheckReceiver extends BroadcastReceiver {
                 ArrayList<Job> filtered = filterJobs(approveJobs, cities, types, titles, minAge, maxAge);
 
                 // הוספה לרשימה עבודות שכבר בוצעה בעקבותיהם התראה
-                String sentIdsStr = prefs.getString("sentJobIds", "");
+                String sentIdsStr = prefs.getString("sentJobIds", ""); // מכילה את כל הIds של העבודות שנשלחו עבורן התראה
                 List<String> sentIds = new ArrayList<>();
                 if(!sentIdsStr.isEmpty()){
                     sentIds.addAll(Arrays.asList(sentIdsStr.split(",")));
                 }
 
-                // יצירת רשימה של העבודות שלא נשלחו עבורן התראה
+                // יצירת רשימה newJobs  של העבודות שלא נשלחו עבורן התראה, והוספת הIds שלהן לרשימה sentIds
                 ArrayList<Job> newJobs = new ArrayList<>();
                 for(int i = 0; i < filtered.size(); i++){
                     Job job = filtered.get(i);
                     if(!sentIds.contains(job.getId())){
-                        newJobs.add(job);
-                        sentIds.add(job.getId()); // מוסיפים כדי לא לשלוח שוב
+                        newJobs.add(job); // רשימת העבודות שכעת נשלחת עבורן התראה
+                        sentIds.add(job.getId()); // רשימת ה-Ids של כל העבודות שנשלחו עבורתן התראה
                     }
                 }
 
                 // שליחת Notification רק אם יש עבודות חדשות
                 if(newJobs.size() > 0){
                     NotificationHelper.sendNotification(context, newJobs.size());
-                    // שמירת ה-IDs שנשלחו
-                    prefs.edit().putString("sentJobIds", String.join(",", sentIds)).apply();
+                    prefs.edit().putString("sentJobIds", String.join(",", sentIds)).apply();  // שמירת ה-IDs שנשלחו
+
                 }
         }
             @Override
             public void onFailed(Exception e) {}
         });
     }
+
+    // ---- פעולה המחזירה את רשימת העבודות המתאימות על פי סינון המשתמש  ----
     private ArrayList<Job> filterJobs(ArrayList<Job> jobs, List<String> cities, List<String> types,
                                       List<String> titles, int minAge, int maxAge) {
         ArrayList<Job> filteredJobs = new ArrayList<>();
