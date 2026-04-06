@@ -91,12 +91,43 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         // ---- רישום המשתמש ----
     private void registerUser(String fname, String lname, String phone, String email, String password, String age, String gender, String city) {
         Log.d(TAG, "register: Registering user...");
-
-        User user = new User("oo",fname, lname, phone, email, password, age, gender, city); // יצירת אובייקט User
+        if(checkInput()){
+            User user = new User("oo",fname, lname, phone, email, password, age, gender, city); // יצירת אובייקט User
             createUserInDatabase(user);
         }
+        }
 
-        // ---- הוספת המשתמש למסד הנתונים ----
+    private boolean checkInput() {
+        boolean valid = true;
+        if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() ||
+                password.isEmpty() || phone.isEmpty() || age.isEmpty()) {
+            Toast.makeText(Register.this, "יש למלא את כל השדות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!fname.matches("[a-zA-Zא-ת]{2,}") || !lname.matches("[a-zA-Zא-ת]{2,}")) {
+            Toast.makeText(Register.this, "שם פרטי ושם משפחה חייבים להיות מורכבים לפחות מ-2 אותיות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (password.matches("\\d+")) {
+            Toast.makeText(Register.this, "סיסמה אינה יכולה להיות רק מספרים", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (password.length() < 6) {
+            Toast.makeText(this, "הסיסמה חייבת להכיל לפחות 6 תווים", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(Register.this, "אימייל לא תקין", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!phone.matches("\\d{9,10}")) {
+            Toast.makeText(Register.this, "מספר טלפון חייב להכיל 9-10 ספרות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        return valid;
+    }
+
+    // ---- הוספת המשתמש למסד הנתונים ----
     private void createUserInDatabase(User user) {
         databaseService.createNewUser(user, new DatabaseService.DatabaseCallback<String>() {
             @Override
@@ -117,7 +148,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "createUserInDatabase: Failed to create user", e);
-                Toast.makeText(Register.this, "Failed to register user", Toast.LENGTH_SHORT).show(); // הצגת הודעת שגיאה למשתמש
                 FirebaseAuth.getInstance().signOut(); // נטרול המשתמש אם הרישום למסד הנתונים נכשל
             }
         });

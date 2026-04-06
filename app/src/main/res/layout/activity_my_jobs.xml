@@ -14,9 +14,9 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="המשרות שהוספתי"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="9dp"
+        android:text="העבודות שלי"
         app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,10 +26,10 @@
         android:id="@+id/tv_MyJoboffer_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="סך המשרות: 0"
+        android:layout_marginEnd="27dp"
+        android:text="סך כל העבודות: 0"
         app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_MyJobs_title"
         app:layout_constraintTop_toTopOf="@+id/rvMyjobOffer" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -44,22 +44,16 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         void onPhoneClick(Job job);
 
     }
-        private final List<Job> jobList;
+    private final List<Job> jobList;
+    private final OfferAdapter.OnJobClickListener onJobClickListener;
+    User currentUser;
 
-        private final OfferAdapter.OnJobClickListener onJobClickListener;
+    public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
+        this.jobList = jobList;
+        this.onJobClickListener = onJobClickListener;
+        this.currentUser=currentUser;
 
-        User currentUser;
-
-
-
-        public OfferAdapter(List<Job> jobList, User currentUser, OnJobClickListener onJobClickListener) {
-            this.jobList = jobList;
-            this.onJobClickListener = onJobClickListener;
-            this.currentUser=currentUser;
-
-        }
-
-
+    }
 
     public OfferAdapter(List<Job> jobList, OnJobClickListener onJobClickListener) {
           this.jobList = jobList;
@@ -71,10 +65,6 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         jobList = new ArrayList<>();
         this.onJobClickListener = onJobClickListener;
     }
-
-
-
-
 
     @NonNull
     @Override
@@ -88,16 +78,13 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         Job job = jobList.get(position);
         if (job == null) return;
 
-        holder.tvJobTitle2.setText(job.getTitle());
-        holder.tvJobType2.setText(job.getType());
         holder.tvJobCompany2.setText(job.getCompany());
-        holder.tvAddress2.setText(job.getAddress());
-        holder.tvJobCity2.setText(job.getCity());
+        holder.tvJobTypeAndTitle.setText(job.getType() + ", " + job.getTitle());
+        holder.tvJobCityAndAddress.setText(job.getCity() + ", " + job.getAddress());
         holder.tvJobPhone2.setText(job.getPhone());
         holder.tvJobDetails2.setText(job.getDetails());
         holder.btnApprove.setVisibility(View.GONE);
         holder.btnReject.setVisibility(View.GONE);
-
         if (job.getUser() != null) {
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
@@ -128,7 +115,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
         holder.imgPhone.setOnClickListener(v -> {
           // לחיצה על תמונת הטלפון ומעבר לאפליקציית שיחות
-            String phone = holder.tvJobPhone2.getText().toString().trim();
+            String phone = job.getPhone().trim();
             Intent goCall = new Intent(Intent.ACTION_DIAL);
             goCall.setData(Uri.parse("tel:" + phone));
             v.getContext().startActivity(goCall);
@@ -137,7 +124,12 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
                 onJobClickListener.onPhoneClick(job);
             }
         });
-
+        holder.imgLocation.setOnClickListener(v -> {
+            String address = job.getAddress().trim();
+            String url = "https://www.google.com/maps/search/?api=1&query=" + Uri.encode(address);
+            Intent goMap = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            v.getContext().startActivity(goMap);
+        });
         holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);
@@ -195,9 +187,9 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvJobTitle2, tvJobType2, tvJobCompany2, tvAddress2, tvJobCity2, tvJobPhone2, tvJobDetails2,tvJobUser2;
+        TextView tvJobCompany2, tvJobTypeAndTitle, tvJobCityAndAddress, tvJobPhone2, tvJobDetails2,tvJobUser2;
         Button btnApprove, btnReject;
-        ImageView imgPhone;
+        ImageView imgPhone, imgLocation;
         //Chip chipRole;
 
 
@@ -205,11 +197,10 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgPhone = itemView.findViewById(R.id.imgPhone);
-            tvJobTitle2 = itemView.findViewById(R.id.tvJobTitle2);
-            tvJobType2 = itemView.findViewById(R.id.tvJobType2);
+            imgLocation = itemView.findViewById(R.id.imgLocation);
+            tvJobCityAndAddress = itemView.findViewById(R.id.tvJobCityAndAddress);
+            tvJobTypeAndTitle = itemView.findViewById(R.id.tvJobTypeAndTitle);
             tvJobCompany2 = itemView.findViewById(R.id.tvJobCompany2);
-            tvAddress2 = itemView.findViewById(R.id.tvAddress2);
-            tvJobCity2 = itemView.findViewById(R.id.tvJobCity2);
             tvJobPhone2 = itemView.findViewById(R.id.tvJobPhone2);
             tvJobDetails2 = itemView.findViewById(R.id.tvJobDetails2);
             tvJobUser2 = itemView.findViewById(R.id.tvJobUser2);

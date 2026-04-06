@@ -5,11 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".AboutApp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
         android:orientation="vertical">
 
         <TextView
@@ -17,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="20sp"
+            style="@style/TextStyle"
             android:layout_margin="10dp"
             android:text="אודות" />
 
@@ -27,6 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
+            android:gravity="center"
+            android:textStyle="bold"
             android:text="מטרת האפליקציה היא לאפשר למשתמשים לשתף ולחפש מקומות עבודה ביעילות, בהתאם לצרכים וליכולות שלהם." />
         <TextView
             android:id="@+id/textView3"
@@ -34,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20sp"
+            style="@style/TextStyle"
             android:layout_margin="10dp"
             android:text="אפשרויות שימוש באפליקציה" />
         <TextView
@@ -42,29 +47,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:text="חיפוש מקום עבודה תוך שימוש בכלי הסינון ( אזור, גיל וסוג עבודה)" />
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="• חיפוש מקום עבודה תוך שימוש בכלי הסינון ( אזור, גיל, סוג עבודה ותפקיד) ו/או חיפוש מקום עבודה מסוים" />
         <TextView
             android:id="@+id/tvexplain2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:text="הגשת בקשה להוסיף את מקום העבודה אותו תרצו לפרסם לאפליקציה" />
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="• הגשת בקשה להוסיף את מקום העבודה אותו תרצו לפרסם לאפליקציה" />
         <TextView
             android:id="@+id/tvexplain3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:text="שימוש בצ'אט ציבורי בו ניתן להתכתב עם שאר המשתמשים" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="30dp"
-            android:text="חזור" />
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="• הפעלת התראה בהתאמה אישית, אשר תשלח התראה למכשירכם כאשר מתווספת לאפליקציה עבודה המתאימה לסינון שבחרתם" />
 
     </LinearLayout>
 

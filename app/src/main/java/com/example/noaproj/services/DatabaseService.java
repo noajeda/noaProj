@@ -173,10 +173,10 @@ public class DatabaseService {
                 return;
             }
             List<T> tList = new ArrayList<>();
-            task.getResult().getChildren().forEach(dataSnapshot -> {
+            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                 T t = dataSnapshot.getValue(clazz);
                 tList.add(t);
-            });
+            }
 
             callback.onCompleted(tList);
         });
@@ -494,8 +494,8 @@ public class DatabaseService {
         writeData(CALLS_PATH + "/" + call.getUser().getId() + "/" + call.getId(), callUser, callback);
 
         // נכנסת – אצל מי שהתקבל
-        Call callCompany = new Call(call.getId(), call.getTime(), call.getJob().getUser()); // User = מי שקיבל את השיחה
-        writeData(COMPANY_JOBS_PATH + "/" + callCompany.getId() + "/" + call.getJob().getId() + "/calls/" + call.getId(), callCompany, callback);
+        Call callCompany = new Call(call.getId(), call.getTime(), call.getUser()); // User = מי שיצר את השיחה
+        writeData(COMPANY_JOBS_PATH + "/" + call.getJob().getUser().getId() + "/" + call.getJob().getId() + "/calls/" + call.getId(), callCompany, callback);
     }
 
 
@@ -584,7 +584,7 @@ public class DatabaseService {
                         if (outgoingCalls != null) combined.addAll(outgoingCalls);
                         if (incomingCalls != null) combined.addAll(incomingCalls);
 
-                        combined.sort((c1, c2) -> Long.compare(c1.getTime(), c2.getTime()));     // ממיינים לפי זמן עולה
+                        combined.sort((c1, c2) -> Long.compare(c2.getTime(), c1.getTime()));     // ממיינים לפי זמן עולה
                         callback.onCompleted(combined);
                     }
 

@@ -78,8 +78,8 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                         jobArrayList.remove(job);
                         adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
                         totalOffers= jobArrayList.size();
-                        tv_offer_count.setText("Total offers:" + totalOffers);
-                        Toast.makeText(MyJobs.this, "The job is deleted", Toast.LENGTH_SHORT).show(); // הצגת הודעה למשתמש
+                        tv_offer_count.setText("סך כל העבודות:" + totalOffers);
+                        Toast.makeText(MyJobs.this, "העבודה הוסרה!", Toast.LENGTH_SHORT).show(); // הצגת הודעה למשתמש
                     }
 
                     @Override
@@ -127,7 +127,7 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
 
                     adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
                     totalOffers= jobArrayList.size();
-                    tv_offer_count.setText("Total offers:" + totalOffers);
+                    tv_offer_count.setText("סך כל העבודות: " + totalOffers);
                     Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
                 }
             }

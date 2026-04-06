@@ -83,7 +83,7 @@ public class MyCalls extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();    // עדכון הadpater שמקושר לrecyclerView
                     countCalls = callArrayList.size();
-                    tv_MyCalloffer_count.setText("Total calls:" + countCalls);
+                    tv_MyCalloffer_count.setText("סך כל השיחות: " + countCalls);
                     Log.d(TAG, "tv_MyCalloffer_count found: " + (tv_MyCalloffer_count != null));
                 }
             }

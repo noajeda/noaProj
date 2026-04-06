@@ -1,7 +1,10 @@
 package com.example.noaproj;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,9 +12,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -28,6 +34,7 @@ public class JobNotification extends AppCompatActivity {
     Switch swNotification;
     BottomSheetDialog bottomSheetDialog;
     boolean applied;
+    private static final int NOTIFICATION_PERMISSION_CODE = 1;
 
 
     @Override
@@ -58,8 +65,20 @@ public class JobNotification extends AppCompatActivity {
     private void initListeners() {
         swNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){ // אם הסוויץ' הופעל
-                bottomSheetDialog.show(); // הצג את הדיאלוג
+                checkNotificationPermission();  // בדיקת הרשאת התראות
+
+                // אם אין הרשאה – לא ממשיכים
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                                != PackageManager.PERMISSION_GRANTED) {
+                    swNotification.setChecked(false);
+                    return;
+                }
+
+                // אם יש הרשאה – ממשיכים רגיל
+                bottomSheetDialog.show();  // הצג את הדיאלוג
                 showFilter(bottomSheetDialog);
+
             }
             else{
                 prefs.edit().putBoolean("notificationsEnabled", false).apply(); // מעדכן שהסוויץ' נסגר
@@ -214,6 +233,43 @@ public class JobNotification extends AppCompatActivity {
             });
         }
     }
+    private void checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_CODE
+                );
+            }
+        }
+    }
+
+    // ---- שליחת הודעה למשתמש בעת אישור/דחיית ההרשאה ----
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "הרשאה ניתנה!", Toast.LENGTH_SHORT).show();
+
+            }
+            else if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+                Toast.makeText(this, "יש לאשר הרשאה בהגדרות", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(this, "הרשאה נדחתה!", Toast.LENGTH_SHORT).show();
+
+                // אם המשתמש דחה – מכבים את המתג
+                swNotification.setChecked(false);
+                prefs.edit().putBoolean("notificationsEnabled", false).apply();
+            }
+        }
+    }
+
 
     /*
        private void setAlarm() {  // מפעיל התראה
@@ -230,7 +286,7 @@ public class JobNotification extends AppCompatActivity {
                 1000 * 10,
                 pendingIntent
         );
-    }
+
     private void cancelAlarm() { // מפסיק התראות
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, JobCheckReceiver.class);

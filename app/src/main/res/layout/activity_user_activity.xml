@@ -107,13 +107,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:text="המשרות שלי"
+                style="@style/ButtonStyle"
+                android:text="העבודות שלי"
                 />
 
             <Button
                 android:id="@+id/btnMyCalls"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:text="השיחות שלי"
                 />
 
@@ -121,14 +123,16 @@
                 android:id="@+id/btnNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="קבל התראה"
+                style="@style/ButtonStyle"
+                android:text="התראות"
                 />
 
             <Button
                 android:id="@+id/btnUserList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="רשימת מתחברים"
+                style="@style/ButtonStyle"
+                android:text="רשימת משתמשים"
                 android:visibility="gone"
                 />
 
@@ -136,13 +140,15 @@
                 android:id="@+id/btnJobList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="רשימת הצעות "
+                style="@style/ButtonStyle"
+                android:text="רשימת הצעות עבודה"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/btnLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:text="התנתקות"
                 />
         </LinearLayout>

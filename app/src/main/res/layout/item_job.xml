@@ -16,7 +16,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +36,23 @@
                 android:textSize="20sp"
                 android:text="Job User" />
         </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
+        <TextView
+            android:id="@+id/tvJobCompany2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginRight="10dp"
+            android:text="Job Company" />
+
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,34 +60,15 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvJobTitle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Job Title"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginRight="10dp"/>
-
-            <TextView
-                android:id="@+id/tvJobType2"
+                android:id="@+id/tvJobTypeAndTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginRight="10dp"
-                android:text="Job Type" />
+                android:text="Job Type And Title" />
 
-            <TextView
-                android:id="@+id/tvJobCompany2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginRight="10dp"
-                android:text="Job Company" />
         </LinearLayout>
 
         <LinearLayout
@@ -79,25 +77,24 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvAddress2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginRight="10dp"
-                android:text="Job Address" />
+            <ImageView
+                android:id="@+id/imgLocation"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_location_on_24"
+                />
 
             <TextView
-                android:id="@+id/tvJobCity2"
+                android:id="@+id/tvJobCityAndAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginRight="10dp"
-                android:text="Job City" />
+                android:text="Job City And Address" />
+
+
 
         </LinearLayout>
 
@@ -106,6 +103,13 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgPhone"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:src="@drawable/baseline_local_phone_24"
+                />
 
             <TextView
                 android:id="@+id/tvJobPhone2"
@@ -117,12 +121,6 @@
                 android:textSize="18sp"
                 android:text="Job Phone" />
 
-            <ImageView
-                android:id="@+id/imgPhone"
-                android:layout_width="35dp"
-                android:layout_height="25dp"
-                android:src="@drawable/baseline_phone_enabled_24"
-                />
         </LinearLayout>
 
         <LinearLayout
@@ -134,11 +132,11 @@
                 android:id="@+id/tvJobDetails2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:gravity="center"
-                android:inputType="text"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:maxLines="10"
+                android:ellipsize="none"
                 android:text="Job Details" />
         </LinearLayout>
 

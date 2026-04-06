@@ -47,7 +47,7 @@ public class User {
 
 
     public User(User  user){
-
+        if (user == null) return;
         this.id = user.getId();
         this.email = user.getEmail();
         this.fName = user.getfName();

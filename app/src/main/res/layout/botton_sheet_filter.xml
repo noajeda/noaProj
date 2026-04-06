@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/tvTitleFilter"
@@ -18,14 +19,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/TextStyle"
-            android:text="סינון" />
+            android:text="מצא עבודה" />
 
         <TextView
             android:id="@+id/tvTitleMinAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyle"
-            android:text="גיל מינימלי" />
+            android:text="טווח גילים" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/sliderAge"
@@ -59,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyle"
-            android:text="סוג עבודה" />
+            android:text="סוג העבודה" />
 
 
         <ScrollView
@@ -77,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextStyle"
-            android:text="סוג עבודה" />
+            android:text="תפקיד העבודה" />
 
 
 

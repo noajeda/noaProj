@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginTop="49dp"
+        android:gravity="center"
         android:text="מלא את פרטי העבודה המבוקשת"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

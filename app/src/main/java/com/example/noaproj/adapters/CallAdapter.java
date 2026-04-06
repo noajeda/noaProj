@@ -49,7 +49,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         if (call.getJob() != null) {    // נשמרה העבודה אליה התקשרו, שיחה יוצאת
             holder.tvPhone.setText(call.getJob().getPhone()); // הצגת מס' הטלפון של מקום העבודה
             holder.tvNameCall.setText(call.getJob().getCompany());
-            holder.imgPhone.setImageResource(R.drawable.baseline_call_received_24);
+            holder.imgPhone.setImageResource(R.drawable.baseline_call_made_24);
         }
         else if (call.getUser() != null) {  // נשמר המשתמש שהתקשר, שיחה נכנסת
             holder.tvPhone.setText(call.getUser().getPhone()); // הצגת מס' הטלפון של המשתמש

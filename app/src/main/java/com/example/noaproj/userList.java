@@ -67,7 +67,7 @@ public class userList extends AppCompatActivity {
                 Log.d(TAG, "onCompleted: " + usersList);
                 adapter.setUserList(usersList);
                 totalUsers= usersList.size();
-                tv_user_count.setText("Total users: " + totalUsers);
+                tv_user_count.setText("סך כל המשתמשים: " + totalUsers);
             }
 
             @Override

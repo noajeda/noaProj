@@ -44,17 +44,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         User user = userList.get(position);
         if (user == null) return;
 
-        holder.tvName.setText(user.getfName() + "" + user.getlName());
+        holder.tvName.setText(user.getfName() + " " + user.getlName());
         holder.tvEmail.setText(user.getEmail());
         holder.tvPhone.setText(user.getPhone());
         
         // Set initials
         String initials = "";
         if (user.getfName() != null && !user.getfName().isEmpty()) {
-            initials += user.getfName().charAt(0);
+            initials += user.getfName().charAt(0) + ".";
         }
         if (user.getlName() != null && !user.getlName().isEmpty()) {
-            initials += user.getlName().charAt(0);
+            initials += user.getlName().charAt(0) + ".";
         }
         holder.tvInitials.setText(initials.toUpperCase());
         

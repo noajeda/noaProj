@@ -68,12 +68,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         setupRecyclerView();
         loadCurrentUser();
         approvejoblist();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    1
-            );
-        }
     }
 
     private void initViews(){
@@ -139,7 +133,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         public void onCompleted(Void object) {
                             approveArraylist.remove(job);
                             adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
-                            Toast.makeText(UserActivity.this, "The job is deleted", Toast.LENGTH_SHORT).show(); // הצגת הודעה
+                            Toast.makeText(UserActivity.this, "העבודה הוסרה!", Toast.LENGTH_SHORT).show(); // הצגת הודעה
                         }
 
                         @Override
