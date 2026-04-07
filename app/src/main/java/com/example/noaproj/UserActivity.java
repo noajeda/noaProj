@@ -1,11 +1,9 @@
 package com.example.noaproj;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -252,12 +250,12 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(goNotification);
         }
         if(v == btnUserList){ // מעבר למסך רשימת משתמשים
-            Intent goUserList = new Intent(this, userList.class);
+            Intent goUserList = new Intent(this, UserList.class);
             startActivity(goUserList);
 
         }
         if(v == btnJobList){ // מעבר למסך רשימת הצעות עבודה
-            Intent goJobList = new Intent(this, offer_list.class);
+            Intent goJobList = new Intent(this, OfferList.class);
             startActivity(goJobList);
         }
         if(v == btnLogOut){ // התנתקות מהמשתמש
@@ -401,8 +399,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void isAdmin(){     // האם המשתמש מנהל
         if(currentUser!=null) {
             if (currentUser.getIsAdmin()) {
-                btnUserList.setVisibility(View.VISIBLE);     // show btnUserList
-                btnJobList.setVisibility(View.VISIBLE);      // show btnJobList
+                btnUserList.setVisibility(View.VISIBLE);     // הצג btnUserList
+                btnJobList.setVisibility(View.VISIBLE);      // הצג btnJobList
             }
         }
     }

@@ -29,7 +29,7 @@
     import android.Manifest;
     import android.widget.Toast;
 
-    public class offer_list extends AppCompatActivity {
+    public class OfferList extends AppCompatActivity {
         private static final String TAG = "ReadOffers";
         DatabaseService databaseService;
         ArrayList<Job> jobArrayList = new ArrayList<>();
@@ -88,7 +88,7 @@
 
                         @Override
                         public void onApprove(Job job) {  // לחיצה על כפתור אישור העבודה
-                            if (ContextCompat.checkSelfPermission(offer_list.this, Manifest.permission.SEND_SMS)
+                            if (ContextCompat.checkSelfPermission(OfferList.this, Manifest.permission.SEND_SMS)
                                     == PackageManager.PERMISSION_GRANTED) {
                                 // ✔ יש הרשאה → מבצעים הכל
                                 sendApprovalSMS(job);
@@ -165,7 +165,7 @@
                     String msg = "העבודה '" + job.getTitle() + "' שהעלת באפליקציית NewJobs אושרה!"; // יצירת תוכן ההודעה
                     String userPhone = job.getUser().getPhone();
                     smsManager.sendTextMessage(userPhone, null, msg, null, null); // שליחת הSMS
-                    Toast.makeText(offer_list.this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show(); // הצגת הודעה למנהל שהSMS נשלח
+                    Toast.makeText(OfferList.this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show(); // הצגת הודעה למנהל שהSMS נשלח
                 }
 
 

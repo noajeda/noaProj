@@ -42,10 +42,10 @@
             android:name=".MyJobs"
             android:exported="false" />
         <activity
-            android:name=".offer_list"
+            android:name=".OfferList"
             android:exported="false" />
         <activity
-            android:name=".userList"
+            android:name=".UserList"
             android:exported="false" />
         <activity
             android:name=".SubmitOfferActivity"

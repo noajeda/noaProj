@@ -1,10 +1,7 @@
 package com.example.noaproj;
 
-import android.health.connect.datatypes.units.Length;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Adapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,7 +19,7 @@ import com.example.noaproj.services.DatabaseService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class userList extends AppCompatActivity {
+public class UserList extends AppCompatActivity {
     private static final String TAG = "ReadUsers";
     DatabaseService databaseService;
     ArrayList<User> userList;
