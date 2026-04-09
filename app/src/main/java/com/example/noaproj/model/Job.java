@@ -10,9 +10,6 @@ public class Job {
     String age;
     String details;
     User user;
-
-
-
     String company;
     String status;
 

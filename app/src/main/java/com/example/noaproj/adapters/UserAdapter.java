@@ -48,7 +48,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.tvEmail.setText(user.getEmail());
         holder.tvPhone.setText(user.getPhone());
         
-        // Set initials
         String initials = "";
         if (user.getfName() != null && !user.getfName().isEmpty()) {
             initials += user.getfName().charAt(0) + ".";

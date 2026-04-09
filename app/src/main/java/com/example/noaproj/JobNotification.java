@@ -64,7 +64,7 @@ public class JobNotification extends AppCompatActivity {
 
     private void initListeners() {
         swNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){ // אם הסוויץ' הופעל
+            if(isChecked){ // אם המתג הופעל
                 checkNotificationPermission();  // בדיקת הרשאת התראות
 
                 // אם אין הרשאה – לא ממשיכים
@@ -75,13 +75,13 @@ public class JobNotification extends AppCompatActivity {
                     return;
                 }
 
-                // אם יש הרשאה – ממשיכים רגיל
+                // אם יש הרשאה ממשיכים רגיל
                 bottomSheetDialog.show();  // הצג את הדיאלוג
                 showFilter(bottomSheetDialog);
 
             }
             else{
-                prefs.edit().putBoolean("notificationsEnabled", false).apply(); // מעדכן שהסוויץ' נסגר
+                prefs.edit().putBoolean("notificationsEnabled", false).apply(); // מעדכן שהמתג נכבה
                 // מכבה את ההתראה
                 Intent intent = new Intent(JobNotification.this, JobAlarmService.class);
                 intent.setAction("STOP");

@@ -29,11 +29,11 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ReadUserOffers";
     DatabaseService databaseService;
     ArrayList<Job> jobArrayList=new ArrayList<>();
-    RecyclerView rcOffers;
-    TextView tv_offer_count;
+    RecyclerView rvMyjobs;
+    TextView tv_myJobs_count;
     ImageView imgAddOffer;
     OfferAdapter adapter;
-    int totalOffers;
+    int totalJobs;
 
     String uid="";
     FirebaseAuth mAuth;
@@ -58,12 +58,17 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
             readJobs(uid);
     }
     private void initViews() {
-        tv_offer_count = findViewById(R.id.tv_MyJoboffer_count);
+        tv_myJobs_count = findViewById(R.id.tv_MyJoboffer_count);
         imgAddOffer = findViewById(R.id.imgAddOffer);
         databaseService = DatabaseService.getInstance();
-        rcOffers = findViewById(R.id.rvMyjobOffer);
-        rcOffers.setLayoutManager(new LinearLayoutManager(this));
+        rvMyjobs = findViewById(R.id.rvMyjobOffer);
+        rvMyjobs.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
+        setUpJobsAdapter();
+        Log.d(TAG, "initViews finished");
+    }
+
+    private void setUpJobsAdapter() {
         adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
             @Override
             public void onJobClick(Job job) {
@@ -77,8 +82,8 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                     public void onCompleted(Void object) {
                         jobArrayList.remove(job);
                         adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
-                        totalOffers= jobArrayList.size();
-                        tv_offer_count.setText("סך כל העבודות:" + totalOffers);
+                        totalJobs= jobArrayList.size();
+                        tv_myJobs_count.setText("סך כל העבודות:" + totalJobs);
                         Toast.makeText(MyJobs.this, "העבודה הוסרה!", Toast.LENGTH_SHORT).show(); // הצגת הודעה למשתמש
                     }
 
@@ -105,10 +110,9 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
-        rcOffers.setAdapter(adapter);
-
-        Log.d(TAG, "initViews finished");
+        rvMyjobs.setAdapter(adapter);
     }
+
     private void initListeners() {
         imgAddOffer.setOnClickListener(this);
     }
@@ -126,9 +130,9 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                     }
 
                     adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
-                    totalOffers= jobArrayList.size();
-                    tv_offer_count.setText("סך כל העבודות: " + totalOffers);
-                    Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
+                    totalJobs= jobArrayList.size();
+                    tv_myJobs_count.setText("סך כל העבודות: " + totalJobs);
+                    Log.d(TAG, "tv_offer_count found: " + (tv_myJobs_count != null));
                 }
             }
 

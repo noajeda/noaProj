@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class SubmitOfferActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "AddOfferActivity";
     private DatabaseService databaseService;
-    EditText etCompany, etJobAddress, etJobPhone, etJobAge, etJobDetails, etJobType;
+    EditText etCompany, etJobAddress, etJobPhone, etJobAge, etJobDetails;
     String jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType, company;
     Button btnSubmitOffer;
     Spinner spCity,spTitle, spType;
@@ -115,7 +115,6 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "createJobInDatabase: Failed to create job", e);
-                Toast.makeText(SubmitOfferActivity.this, "Failed to create job", Toast.LENGTH_SHORT).show(); // הצגת הודעת שגיאה למשתמש
             }
         });
     }

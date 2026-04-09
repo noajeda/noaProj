@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import com.example.noaproj.model.Job;
-import com.example.noaproj.services.DatabaseService;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

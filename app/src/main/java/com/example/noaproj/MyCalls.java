@@ -20,10 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noaproj.adapters.CallAdapter;
-import com.example.noaproj.adapters.OfferAdapter;
 import com.example.noaproj.model.Call;
-import com.example.noaproj.model.Job;
-import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
 
 import java.util.ArrayList;
