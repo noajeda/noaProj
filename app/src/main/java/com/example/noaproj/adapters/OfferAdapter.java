@@ -124,12 +124,17 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
                 onJobClickListener.onPhoneClick(job);
             }
         });
+
         holder.imgLocation.setOnClickListener(v -> {
+            // לחיצה על תמונת סמן מיקום ומעבר לGoogleMaps
             String address = job.getAddress().trim();
-            String url = "https://www.google.com/maps/search/?api=1&query=" + Uri.encode(address);
+            String city = job.getCity().trim();
+            String fullAddress = address + ", " + city;
+            String url = "https://www.google.com/maps/search/?api=1&query=" + Uri.encode(fullAddress);
             Intent goMap = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             v.getContext().startActivity(goMap);
         });
+
         holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);

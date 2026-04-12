@@ -52,7 +52,7 @@ public class UserList extends AppCompatActivity {
     }
     private void setupRecyclerView() {   // יצירת ה-adapter וקישורו ל-recyclerView
         rcUsers.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new UserAdapter(null);
+        adapter = new UserAdapter();
         rcUsers.setAdapter(adapter);
     }
 

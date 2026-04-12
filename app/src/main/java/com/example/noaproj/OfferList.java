@@ -207,15 +207,28 @@
 
         // ---- שליחת הודעת הדחייה ----
         public void sendRejectionSMS(Job job, String reason) {
+            job.setStatus("disapprove");
+            DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
+
+                @Override
+                public void onCompleted(Void object) {
                 String userPhone = job.getUser().getPhone();
-                String msg = "העבודה '" + job.getTitle() + "' שהעלת באפליקציית NewJobs נדחתה!" +"\n" + "סיבת הדחייה: " + reason; // יצירת תוכן ההודעה
-                SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(userPhone, null, msg, null, null); // שליחת הSMS
-                jobArrayList.remove(job);
+                String msg = "העבודה '" + job.getTitle() + "' שהעלת באפליקציית NewJobs נדחתה!" + "\n" + "סיבת הדחייה: " + reason; // יצירת תוכן ההודעה
+                    SmsManager smsManager = SmsManager.getDefault();
+                    ArrayList<String> parts = smsManager.divideMessage(msg);
+                    smsManager.sendMultipartTextMessage(userPhone, null, parts, null, null);
                 adapter.notifyDataSetChanged();
                 totalOffers = jobArrayList.size();
                 tv_offer_count.setText("Total offers:" + totalOffers);
-                Toast.makeText(this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show();  // הצגת הודעה למנהל שהSMS נשלח
+                Toast.makeText(OfferList.this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show();  // הצגת הודעה למנהל שהSMS נשלח
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+
+            }
+        });
+
         }
 
         // ---- בקשת הרשאה מהמנהל לשליחת SMS

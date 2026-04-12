@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.example.noaproj.services.DatabaseService;
@@ -41,7 +42,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         initViews();
         initListeners();
 
@@ -69,9 +69,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if (v == btnLogin) { // לחיצה על התחברות
             Log.d(TAG, "onClick: Login button clicked");
 
+
             // קבלת המייל והסיסמה שהמשתמש הזין
-            String email = etEmail.getText().toString();
-            String password = etPassword.getText().toString();
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
             Log.d(TAG, "onClick: Email: " + email);
             Log.d(TAG, "onClick: Password: " + password);

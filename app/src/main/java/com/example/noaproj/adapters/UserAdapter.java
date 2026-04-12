@@ -6,36 +6,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.noaproj.R;
 import com.example.noaproj.model.User;
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
-
-    public interface OnUserClickListener {
-        void onUserClick(User user);
-        void onLongUserClick(User user);
-    }
-
     private final List<User> userList;
-    private final OnUserClickListener onUserClickListener;
-    public UserAdapter(@Nullable final OnUserClickListener onUserClickListener) {
+
+    public UserAdapter() {
         userList = new ArrayList<>();
-        this.onUserClickListener = onUserClickListener;
     }
 
     @NonNull
     @Override
-    public UserAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_user, parent, false);
         return new ViewHolder(view);
     }
 
@@ -47,7 +38,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.tvName.setText(user.getfName() + " " + user.getlName());
         holder.tvEmail.setText(user.getEmail());
         holder.tvPhone.setText(user.getPhone());
-        
+
         String initials = "";
         if (user.getfName() != null && !user.getfName().isEmpty()) {
             initials += user.getfName().charAt(0) + ".";
@@ -56,29 +47,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             initials += user.getlName().charAt(0) + ".";
         }
         holder.tvInitials.setText(initials.toUpperCase());
-        
-        /*/ Show admin chip if user is admin
-        if (user.isAdmin()) {
-            holder.chipRole.setVisibility(View.VISIBLE);
-            holder.chipRole.setText("Admin");
-        } else {
-            holder.chipRole.setVisibility(View.GONE);
-        }
-        /*/
-
-        holder.itemView.setOnClickListener(v -> {
-            if (onUserClickListener != null) {
-                onUserClickListener.onUserClick(user);
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(v -> {
-            if (onUserClickListener != null) {
-                onUserClickListener.onLongUserClick(user);
-            }
-            return true;
-        });
-
     }
 
     @Override
@@ -92,27 +60,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void addUser(User user) {
-        userList.add(user);
-        notifyItemInserted(userList.size() - 1);
-    }
-    public void updateUser(User user) {
-        int index = userList.indexOf(user);
-        if (index == -1) return;
-        userList.set(index, user);
-        notifyItemChanged(index);
-    }
-
-    public void removeUser(User user) {
-        int index = userList.indexOf(user);
-        if (index == -1) return;
-        userList.remove(index);
-        notifyItemRemoved(index);
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView tvName, tvEmail, tvPhone, tvInitials;
-        //Chip chipRole;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -120,7 +70,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvEmail = itemView.findViewById(R.id.tvLname_userList);
             tvPhone = itemView.findViewById(R.id.tvPhone_userList);
             tvInitials = itemView.findViewById(R.id.tvInitials_userList);
-           // chipRole = itemView.findViewById(R.id.chip_user_role);
         }
     }
 }
