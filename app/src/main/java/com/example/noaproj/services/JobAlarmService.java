@@ -7,16 +7,19 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class JobAlarmService extends Service {
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent == null || intent.getAction() == null) {
+            return START_STICKY;
+        }
         String action = intent.getAction();
         if ("START".equals(action)) {
             startAlarm();
-        }
-        if ("STOP".equals(action)) {
+        } else if ("STOP".equals(action)) {
             stopAlarm();
         }
+
         return START_STICKY;
     }
 

@@ -115,6 +115,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             Toast.makeText(this, "הסיסמה חייבת להכיל לפחות 6 תווים", Toast.LENGTH_SHORT).show();
             valid = false;
         }
+        else if (age.length() < 16) {
+            Toast.makeText(this, "האפליקציה מיועדת לגיל 16+", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
         else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(Register.this, "אימייל לא תקין", Toast.LENGTH_SHORT).show();
             valid = false;

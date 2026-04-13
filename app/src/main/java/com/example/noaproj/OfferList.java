@@ -90,11 +90,10 @@
                         public void onApprove(Job job) {  // לחיצה על כפתור אישור העבודה
                             if (ContextCompat.checkSelfPermission(OfferList.this, Manifest.permission.SEND_SMS)
                                     == PackageManager.PERMISSION_GRANTED) {
-                                // ✔ יש הרשאה → מבצעים הכל
                                 sendApprovalSMS(job);
 
                             } else {
-                                // ❗ אין הרשאה → מבקשים
+                                // אם אין הרשאה, מבקשים
                                 checkSMSPermission();
                             }
                         }
@@ -108,9 +107,6 @@
                         }
                     });
                     rcOffers.setAdapter(adapter);
-                    /*   if (currentUser.getIsAdmin()) {
-                        readNewJobs();
-                    } else return; */
                 }
 
                 @Override
@@ -231,12 +227,12 @@
 
         }
 
-        // ---- בקשת הרשאה מהמנהל לשליחת SMS
+        // ----  בקשת הרשאה מהמנהל לשליחת SMS ----
         private void checkSMSPermission() {
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_GRANTED) {
-                return; // ✔ יש הרשאה
+                return; // יש הרשאה
             }
 
             //
@@ -250,13 +246,10 @@
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
             if (requestCode == SMS_PERMISSION_CODE) {
-
+                 // אם יש תוצאה והיא מתן הרשאה
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "הרשאה ניתנה!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
-                        Toast.makeText(this, "יש לאשר הרשאה בהגדרות", Toast.LENGTH_LONG).show();
-                    } else {
                         Toast.makeText(this, "הרשאה נדחתה!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -361,7 +354,7 @@
             );
         }
                 /*/
-    }
+
 
 
     /*/

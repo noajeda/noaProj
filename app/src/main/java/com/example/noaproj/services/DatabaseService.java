@@ -419,11 +419,6 @@ public class DatabaseService {
     }
 
 
-    public void updateRejectJob(@NotNull Job job, @Nullable DatabaseCallback<Void> callback) {
-        deleteJob(JOBS_PATH + "/" + job.getId(), callback);
-        writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
-    }
-
 
     /// get a job from the database
     /// @param jobId the id of the job to get

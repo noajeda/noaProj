@@ -82,6 +82,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         holder.tvJobTypeAndTitle.setText(job.getType() + ", " + job.getTitle());
         holder.tvJobCityAndAddress.setText(job.getCity() + ", " + job.getAddress());
         holder.tvJobPhone2.setText(job.getPhone());
+        holder.tvJobAge2.setText( "גיל העסקה מינימלי: " + job.getAge());
         holder.tvJobDetails2.setText(job.getDetails());
         holder.btnApprove.setVisibility(View.GONE);
         holder.btnReject.setVisibility(View.GONE);
@@ -192,7 +193,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvJobCompany2, tvJobTypeAndTitle, tvJobCityAndAddress, tvJobPhone2, tvJobDetails2,tvJobUser2;
+        TextView tvJobCompany2, tvJobTypeAndTitle, tvJobCityAndAddress, tvJobPhone2, tvJobAge2, tvJobDetails2,tvJobUser2;
         Button btnApprove, btnReject;
         ImageView imgPhone, imgLocation;
         //Chip chipRole;
@@ -207,6 +208,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             tvJobTypeAndTitle = itemView.findViewById(R.id.tvJobTypeAndTitle);
             tvJobCompany2 = itemView.findViewById(R.id.tvJobCompany2);
             tvJobPhone2 = itemView.findViewById(R.id.tvJobPhone2);
+            tvJobAge2 = itemView.findViewById(R.id.tvJobAge2);
             tvJobDetails2 = itemView.findViewById(R.id.tvJobDetails2);
             tvJobUser2 = itemView.findViewById(R.id.tvJobUser2);
             btnApprove = itemView.findViewById(R.id.btnApprove);

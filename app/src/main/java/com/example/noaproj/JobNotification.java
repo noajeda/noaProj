@@ -67,7 +67,7 @@ public class JobNotification extends AppCompatActivity {
             if(isChecked){ // אם המתג הופעל
                 checkNotificationPermission();  // בדיקת הרשאת התראות
 
-                // אם אין הרשאה – לא ממשיכים
+                // נעצר אם אין הרשאה
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                         ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                                 != PackageManager.PERMISSION_GRANTED) {
@@ -75,7 +75,7 @@ public class JobNotification extends AppCompatActivity {
                     return;
                 }
 
-                // אם יש הרשאה ממשיכים רגיל
+
                 bottomSheetDialog.show();  // הצג את הדיאלוג
                 showFilter(bottomSheetDialog);
 
@@ -253,12 +253,10 @@ public class JobNotification extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            // אם יש תוצאה והיא מתן הרשאה
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "הרשאה ניתנה!", Toast.LENGTH_SHORT).show();
 
-            }
-            else if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
-                Toast.makeText(this, "יש לאשר הרשאה בהגדרות", Toast.LENGTH_LONG).show();
             }
             else {
                 Toast.makeText(this, "הרשאה נדחתה!", Toast.LENGTH_SHORT).show();
