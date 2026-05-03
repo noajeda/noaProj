@@ -28,6 +28,7 @@ import com.example.noaproj.model.Call;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
+import com.example.noaproj.services.JobAlarmService;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,9 +64,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
         initListeners();
-        setupRecyclerView();
         loadCurrentUser();
-        approvejoblist();
+        setupRecyclerView();
     }
 
     private void initViews(){
@@ -116,11 +116,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupRecyclerView(){ // יצירת ה-adapter וקישורו ל-recyclerView
         rvApproveJobs.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new OfferAdapter(new OfferAdapter.OnJobClickListener() {
+        adapter = new OfferAdapter(approveArraylist, new OfferAdapter.OnJobClickListener() {
             @Override
             public void onJobClick(Job job) {
-                approveArraylist.clear();
-                approvejoblist();
             }
             @Override
             public void onLongJobClick(Job job) {
@@ -157,9 +155,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 createCallInDatabase(call); // הוספת call למסד הנתונים
             }
         });
-        adapter.setJobList(approveArraylist);
         rvApproveJobs.setAdapter(adapter);
+        approvejoblist();
     }
+
     private void approvejoblist() {
         databaseService = DatabaseService.getInstance();
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
@@ -172,7 +171,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d(TAG, "Job ID: " + jobList.get(i).getId() + ", Status: " + jobList.get(i).getStatus());
 
                 }
-                adapter.setJobList(approveArraylist);
+                adapter.notifyDataSetChanged();
                 Log.d(TAG, "onCompleted: " + approveArraylist);
             }
 
@@ -182,6 +181,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        approvejoblist();
+    }
+
     private void createCallInDatabase(Call call) {
         String id = databaseService.generateCallId();   // יצירת id עבור call חדש
         call.setId(id);
@@ -197,15 +203,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
     }
-
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        approveArraylist.clear();
-        approvejoblist();
-    }
-     */
 
     @Override
     public void onClick(View v) {
@@ -386,14 +383,19 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     // ---- התנתקות מהמשתמש ----
     private void logOut() {
-        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        prefs.edit().clear().apply();
+        SharedPreferences prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear().apply();
+        editor.putBoolean("notificationsEnabled", false).apply(); // מעדכן שהמתג נכבה
 
-        Intent intent = new Intent(UserActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        // מכבה את ההתראה
+        Intent stop = new Intent(UserActivity.this, JobAlarmService.class);
+        stop.setAction("STOP");
+        startService(stop);
 
-        finish();
+        Intent logout = new Intent(UserActivity.this, MainActivity.class);
+        logout.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(logout);
     }
 
     private void isAdmin(){     // האם המשתמש מנהל

@@ -16,8 +16,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.Toast;
-
 
 import com.example.noaproj.services.DatabaseService;
 
@@ -69,22 +67,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if (v == btnLogin) { // לחיצה על התחברות
             Log.d(TAG, "onClick: Login button clicked");
 
-
             // קבלת המייל והסיסמה שהמשתמש הזין
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-
-            Log.d(TAG, "onClick: Email: " + email);
-            Log.d(TAG, "onClick: Password: " + password);
-
-            Log.d(TAG, "onClick: Validating input...");
-            /// Validate input
-                /*/ if (!checkInput(email, password)) {
-                    /// stop if input is invalid
-                    return;
-                } /*/
-
-            Log.d(TAG, "onClick: Logging in user...");
             loginUser(email, password); // חיבור המשתמש
         }
         if (v == tvRegister) { // לחיצה על הרשמה
@@ -103,7 +88,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 editor.putString("email", email);
                 editor.putString("password", password);
                 editor.commit();
-                Log.d(TAG, "onCompleted: User logged in: " + uid.toString());
 
                 Intent mainIntent = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
                 mainIntent.putExtra("uid", uid);  // מעבירים את המזהה היחודי של המשתמש

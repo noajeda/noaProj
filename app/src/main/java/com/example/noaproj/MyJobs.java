@@ -132,7 +132,7 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                     adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
                     totalJobs= jobArrayList.size();
                     tv_myJobs_count.setText("סך כל העבודות: " + totalJobs);
-                    Log.d(TAG, "tv_offer_count found: " + (tv_myJobs_count != null));
+                    Log.d(TAG, "tv_job_count found: " + (tv_myJobs_count != null));
                 }
             }
 

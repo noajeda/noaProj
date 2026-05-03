@@ -1,16 +1,11 @@
 package com.example.noaproj.adapters;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.noaproj.R;
-import com.example.noaproj.UserActivity;
-import com.example.noaproj.model.Call;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
-import com.example.noaproj.services.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,17 +82,6 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
 
-
-
-        /*/ Show admin chip if user is admin
-        if (user.isAdmin()) {
-            holder.chipRole.setVisibility(View.VISIBLE);
-            holder.chipRole.setText("Admin");
-        } else {
-            holder.chipRole.setVisibility(View.GONE);
-        }
-        /*/
-
         holder.itemView.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onJobClick(job);
@@ -139,7 +120,6 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);
-
             }
         });
 
@@ -170,35 +150,10 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         notifyDataSetChanged();
     }
 
-
-
-
-
-    public void addJob(Job job) {
-        jobList.add(job);
-        notifyItemInserted(jobList.size() - 1);
-    }
-    public void updateJob(Job job) {
-        int index = jobList.indexOf(job);
-        if (index == -1) return;
-        jobList.set(index, job);
-        notifyItemChanged(index);
-    }
-
-    public void removeJob(Job job) {
-        int index = jobList.indexOf(job);
-        if (index == -1) return;
-        jobList.remove(index);
-        notifyItemRemoved(index);
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvJobCompany2, tvJobTypeAndTitle, tvJobCityAndAddress, tvJobPhone2, tvJobAge2, tvJobDetails2,tvJobUser2;
         Button btnApprove, btnReject;
         ImageView imgPhone, imgLocation;
-        //Chip chipRole;
-
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

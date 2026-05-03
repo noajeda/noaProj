@@ -36,14 +36,22 @@ public class NotificationHelper {
             manager.createNotificationChannel(channel);
         }
 
+        // תוכן ההודעה
+        String text;
+        if (newJobsCount == 1) {
+            text = "יש עבודה חדשה שמתאימה לבקשתך!";
+        } else {
+            text = "יש " + newJobsCount + " עבודות חדשות שמתאימות לבקשתך!";
+        }
+
         // בניית ההודעה
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo2)
                 .setContentTitle("עבודות חדשות")
-                .setContentText("יש " + newJobsCount + " עבודות חדשות שמתאימות לבקשתך!")
+                .setContentText(text)
                 .setAutoCancel(true);
 
         // שליחת Notification עם מזהה יחודי
-        manager.notify(1, builder.build());
+        manager.notify((int) System.currentTimeMillis(), builder.build());
     }
 }

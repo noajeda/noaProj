@@ -83,9 +83,9 @@ public class JobNotification extends AppCompatActivity {
             else{
                 prefs.edit().putBoolean("notificationsEnabled", false).apply(); // מעדכן שהמתג נכבה
                 // מכבה את ההתראה
-                Intent intent = new Intent(JobNotification.this, JobAlarmService.class);
-                intent.setAction("STOP");
-                startService(intent);
+                Intent stop = new Intent(JobNotification.this, JobAlarmService.class);
+                stop.setAction("STOP");
+                startService(stop);
             }
         });
     }
@@ -177,36 +177,6 @@ public class JobNotification extends AppCompatActivity {
                     int minAge = Math.round(values.get(0)); // היד השמאלית
                     int maxAge = Math.round(values.get(1)); // היד הימנית
 
-                 //   filterJobs(selectedCities, selectedTypes, selectedTitles, minAge, maxAge);
-                    // ----שמירת הנתונים בSharedPreferences----
-                        // שמירת ערים
-
-                    /*/
-                      String citiesString = "";
-                    for(int i = 0; i < selectedCities.size(); i++){
-                        if(i > 0) citiesString += ",";
-                        citiesString += selectedCities.get(i);
-                    }
-                    editor.putString("cities", citiesString);
-
-                    // שמירת סוגים
-                    String typesString = "";
-                    for(int i = 0; i < selectedTypes.size(); i++){
-                        if(i > 0) typesString += ",";
-                        typesString += selectedTypes.get(i);
-                    }
-                    editor.putString("types", typesString);
-
-                    // שמירת תפקידים
-                    String titlesString = "";
-                    for(int i = 0; i < selectedTitles.size(); i++){
-                        if(i > 0) titlesString += ",";
-                        titlesString += selectedTitles.get(i);
-                    }
-                    editor.putString("titles", titlesString);
-
-                     */
-
                     // שמירת כל הפרטים בהם בחר המשתמש ב-sharedPreferences
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("cities", TextUtils.join(",", selectedCities));
@@ -267,64 +237,4 @@ public class JobNotification extends AppCompatActivity {
             }
         }
     }
-
-
-    /*
-       private void setAlarm() {  // מפעיל התראה
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, JobCheckReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, 0, intent, PendingIntent.FLAG_IMMUTABLE
-        );
-
-        // הפעלה כל 10 שניות
-        alarmManager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(),
-                1000 * 10,
-                pendingIntent
-        );
-
-    private void cancelAlarm() { // מפסיק התראות
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, JobCheckReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this,
-                0,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
-
-        alarmManager.cancel(pendingIntent);
-    }
-     */
-
-
-    /*/
-    private void filterJobs(ArrayList<String> selectedCities, ArrayList<String> selectedTypes, ArrayList<String> selectedTitles, int minAge, int maxAge){
-        ArrayList<Job> filteredJobs = new ArrayList<>();
-        for(int i=0; i<approveArraylist.size(); i++) {
-            Job job = approveArraylist.get(i);
-            boolean match = true;
-            if (!selectedCities.isEmpty()) {
-                match = match && selectedCities.contains(job.getCity());
-            }
-
-            if (!selectedTypes.isEmpty()) {
-                match = match && selectedTypes.contains(job.getType());
-            }
-
-            if (!selectedTitles.isEmpty()) {
-                match = match && selectedTitles.contains(job.getTitle());
-            }
-            if(Integer.parseInt(job.getAge()) < minAge || Integer.parseInt(job.getAge()) > maxAge)
-                match= false;
-
-            if (match) {     // בדיקה האם ישנה עבודה התואמת לדרישות
-                filteredJobs.add(job);
-            }
-        }
-    }
-     */
 }

@@ -2,16 +2,11 @@ package com.example.noaproj;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -73,7 +68,6 @@ public class MyCalls extends AppCompatActivity {
             @Override
             public void onCompleted(List<Call> callsList) {
                 if (callsList != null) {
-                    //Log.d(TAG, "onCompleted: " + jobsList);
                     callArrayList.clear();
                     for (int i = 0; i < callsList.size(); i++) {
                         callArrayList.add(callsList.get(i));    // הוספת כל השיחות לרשימה

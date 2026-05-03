@@ -26,21 +26,24 @@ public class JobAlarmService extends Service {
     // ---- הפעל התראה ----
     private void startAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         Intent intent = new Intent(this, JobCheckReceiver.class);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
                 0,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        alarmManager.setRepeating( // הפעל את ההתראה כל 10 שניות
+        // הפעלה ראשונה מיד
+        alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis(),
-                1000 * 10,
                 pendingIntent
         );
     }
+
 
     // ---- עצור התראה ----
     private void stopAlarm() {

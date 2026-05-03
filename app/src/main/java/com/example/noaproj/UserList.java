@@ -16,13 +16,11 @@ import com.example.noaproj.model.User;
 import com.example.noaproj.adapters.UserAdapter;
 import com.example.noaproj.services.DatabaseService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserList extends AppCompatActivity {
     private static final String TAG = "ReadUsers";
     DatabaseService databaseService;
-    ArrayList<User> userList;
     RecyclerView rcUsers;
     TextView tv_user_count;
 

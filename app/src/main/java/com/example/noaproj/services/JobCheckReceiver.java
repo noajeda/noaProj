@@ -1,5 +1,7 @@
 package com.example.noaproj.services;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,9 @@ public class JobCheckReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        final PendingResult pendingResult = goAsync();
+
        // שליפת כל הנתונים מהסינון שביצע המשתמש והפיכת המחרוזות לרשימות
         SharedPreferences prefs = context.getSharedPreferences("jobFilter", Context.MODE_PRIVATE);
         String citiesStr = prefs.getString("cities", "");
@@ -48,43 +53,68 @@ public class JobCheckReceiver extends BroadcastReceiver {
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
             @Override
             public void onCompleted(List<Job> jobList) {
-                // יצירת רשימה של כל העבודות המאושרות
-                ArrayList<Job> approveJobs = new ArrayList<>();
-                for(Job job : jobList){
-                    if("approve".equals(job.getStatus()))
-                        approveJobs.add(job);
-                }
-
-                // יצירת הרשימה המסוננת
-                ArrayList<Job> filtered = filterJobs(approveJobs, cities, types, titles, minAge, maxAge);
-
-                // הוספה לרשימה עבודות שכבר בוצעה בעקבותיהם התראה
-                String sentIdsStr = prefs.getString("sentJobIds", ""); // מכילה את כל הIds של העבודות שנשלחו עבורן התראה
-                List<String> sentIds = new ArrayList<>();
-                if(!sentIdsStr.isEmpty()){
-                    sentIds.addAll(Arrays.asList(sentIdsStr.split(",")));
-                }
-
-                // יצירת רשימה newJobs  של העבודות שלא נשלחו עבורן התראה, והוספת הIds שלהן לרשימה sentIds
-                ArrayList<Job> newJobs = new ArrayList<>();
-                for(int i = 0; i < filtered.size(); i++){
-                    Job job = filtered.get(i);
-                    if(!sentIds.contains(job.getId())){
-                        newJobs.add(job); // רשימת העבודות שכעת נשלחת עבורן התראה
-                        sentIds.add(job.getId()); // רשימת ה-Ids של כל העבודות שנשלחו עבורתן התראה
+                try {
+                    // יצירת רשימה של כל העבודות המאושרות
+                    ArrayList<Job> approveJobs = new ArrayList<>();
+                    for (Job job : jobList) {
+                        if ("approve".equals(job.getStatus()))
+                            approveJobs.add(job);
                     }
-                }
 
-                // שליחת Notification רק אם יש עבודות חדשות
-                if(newJobs.size() > 0){
-                    NotificationHelper.sendNotification(context, newJobs.size());
-                    prefs.edit().putString("sentJobIds", String.join(",", sentIds)).apply();  // שמירת ה-IDs שנשלחו
+                    // יצירת הרשימה המסוננת
+                    ArrayList<Job> filtered = filterJobs(approveJobs, cities, types, titles, minAge, maxAge);
 
+                    // הוספה לרשימה עבודות שכבר בוצעה בעקבותיהם התראה
+                    String sentIdsStr = prefs.getString("sentJobIds", ""); // מכילה את כל הIds של העבודות שנשלחו עבורן התראה
+                    List<String> sentIds = new ArrayList<>();
+                    if (!sentIdsStr.isEmpty()) {
+                        sentIds.addAll(Arrays.asList(sentIdsStr.split(",")));
+                    }
+
+                    // יצירת רשימה newJobs  של העבודות שלא נשלחו עבורן התראה, והוספת הIds שלהן לרשימה sentIds
+                    ArrayList<Job> newJobs = new ArrayList<>();
+                    for (int i = 0; i < filtered.size(); i++) {
+                        Job job = filtered.get(i);
+                        if (!sentIds.contains(job.getId())) {
+                            newJobs.add(job); // רשימת העבודות שכעת נשלחת עבורן התראה
+                            sentIds.add(job.getId()); // רשימת ה-Ids של כל העבודות שנשלחו עבורתן התראה
+                        }
+                    }
+
+                    // שליחת Notification רק אם יש עבודות חדשות
+                    if (newJobs.size() > 0) {
+                        NotificationHelper.sendNotification(context, newJobs.size());
+                        prefs.edit().putString("sentJobIds", String.join(",", sentIds)).apply();  // שמירת ה-IDs שנשלחו
+
+                    }
+                    scheduleNext(context);
                 }
-        }
+                catch(Exception e) {
+                    Log.e("JobCheckReceiver", "Error in onCompleted: " + e.getMessage());
+                } finally {
+                    pendingResult.finish();
+                }
+            }
             @Override
             public void onFailed(Exception e) {}
         });
+    }
+    private void scheduleNext(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, JobCheckReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        // הפעל את ההתראה בעוד 20 שניות
+        alarmManager.set(
+                AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis() + 1000 * 20,
+                pendingIntent
+        );
     }
 
     // ---- פעולה המחזירה את רשימת העבודות המתאימות על פי סינון המשתמש  ----
@@ -94,32 +124,24 @@ public class JobCheckReceiver extends BroadcastReceiver {
         for(Job job : jobs){
             boolean match = true;
 
-            Log.d("FILTER_DEBUG", "Checking job: " + job.getTitle() + " / " + job.getType() + " / " + job.getCity() + " / age " + job.getAge());
-
             if (!cities.isEmpty()) {
                 boolean cityMatch = cities.contains(job.getCity());
-                Log.d("FILTER_DEBUG", "City match? " + cityMatch);
                 match = match && cityMatch;
             }
 
             if (!types.isEmpty()) {
                 boolean typeMatch = types.contains(job.getType());
-                Log.d("FILTER_DEBUG", "Type match? " + typeMatch);
                 match = match && typeMatch;
             }
 
             if (!titles.isEmpty()) {
                 boolean titleMatch = titles.contains(job.getTitle());
-                Log.d("FILTER_DEBUG", "Title match? " + titleMatch);
                 match = match && titleMatch;
             }
 
             int age = Integer.parseInt(job.getAge());
             boolean ageMatch = (age >= minAge && age <= maxAge);
-            Log.d("FILTER_DEBUG", "Age match? " + ageMatch);
             match = match && ageMatch;
-
-            Log.d("FILTER_DEBUG", "Final match? " + match);
 
             if(match){
                 filteredJobs.add(job);

@@ -1,8 +1,5 @@
 package com.example.noaproj.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noaproj.R;
 import com.example.noaproj.model.Call;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -42,9 +37,10 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         Call call = callList.get(position);
         if (call == null) return;
 
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        holder.tvTime.setText(sdf.format(new Date(call.getTime())));
+        Date date = new Date(call.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        holder.tvTime.setText(dateFormat.format(date) + "\n" + timeFormat.format(date));
 
         if (call.getJob() != null) {    // נשמרה העבודה אליה התקשרו, שיחה יוצאת
             holder.tvPhone.setText(call.getJob().getPhone()); // הצגת מס' הטלפון של מקום העבודה
