@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
-        android:text="סך השיחות: 0"
+        android:text="סך כל השיחות: 0"
         app:layout_constraintBottom_toTopOf="@+id/rvMyCalls"
         app:layout_constraintEnd_toEndOf="@+id/tv_MyCalls_title"
         app:layout_constraintTop_toTopOf="@+id/rvMyCalls" />
