@@ -213,7 +213,7 @@
                     smsManager.sendMultipartTextMessage(userPhone, null, parts, null, null);
                 adapter.notifyDataSetChanged();
                 totalOffers = jobArrayList.size();
-                tv_offer_count.setText("Total offers:" + totalOffers);
+                tv_offer_count.setText("סך כל ההצעות: " + totalOffers);
                 Toast.makeText(OfferList.this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show();  // הצגת הודעה למנהל שהSMS נשלח
             }
 

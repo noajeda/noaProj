@@ -119,6 +119,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new OfferAdapter(approveArraylist, new OfferAdapter.OnJobClickListener() {
             @Override
             public void onJobClick(Job job) {
+                Call call = new Call("oo", job,  System.currentTimeMillis(), currentUser);
+                createCallInDatabase(call); // הוספת call למסד הנתונים
+
+
             }
             @Override
             public void onLongJobClick(Job job) {

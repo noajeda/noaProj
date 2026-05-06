@@ -121,36 +121,7 @@ public class DatabaseService {
         return databaseReference.child(path).push().getKey();
     }
 
-    private <T> void runTransaction(@NotNull final String path, @NotNull final Class<T> clazz, @NotNull UnaryOperator<T> function, @NotNull final DatabaseCallback<T> callback) {
-        readData(path).runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                T currentValue = currentData.getValue(clazz);
-                if (currentValue == null) {
-                    currentValue = function.apply(null);
-                } else {
-                    currentValue = function.apply(currentValue);
-                }
-                currentData.setValue(currentValue);
-                return Transaction.success(currentData);
-            }
 
-            @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                if (error != null) {
-                    Log.e(TAG, "Transaction failed", error.toException());
-                    callback.onFailed(error.toException());
-                    return;
-                }
-                T result = currentData != null ? currentData.getValue(clazz) : null;
-                callback.onCompleted(result);
-            }
-
-
-        });
-
-    }
 
     // ---- יצירת משתמש חדש
     public void createNewUser(@NotNull final User user,
