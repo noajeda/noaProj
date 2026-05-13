@@ -12,10 +12,8 @@ public class User {
     String city;
     boolean isAdmin;
 
-
     public User() {
     }
-
 
     public User(String id, String fName, String lName, String phone, String email, String password, String age, String gender, String city, boolean isAdmin) {
         this.id = id;
@@ -43,23 +41,15 @@ public class User {
         this.isAdmin = false;
     }
 
-
-
-
     public User(User  user){
         if (user == null) return;
         this.id = user.getId();
         this.email = user.getEmail();
         this.fName = user.getfName();
-
-
         this.lName = user.getlName();
-
         this.phone = user.getPhone();
         this.isAdmin= user.getIsAdmin();
-
     }
-
 
     public String getAge() {
         return age;

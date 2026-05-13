@@ -1,6 +1,7 @@
 package com.example.noaproj.adapters;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -18,15 +18,12 @@ import com.example.noaproj.R;
 import com.example.noaproj.model.Job;
 import com.example.noaproj.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapters.OfferAdapter.ViewHolder> {
 
     public interface OnJobClickListener {
-        void onJobClick(Job job);
-
         void onLongJobClick(Job job);
 
         void onApprove(Job job);
@@ -49,14 +46,9 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
 
     public OfferAdapter(List<Job> jobList, OnJobClickListener onJobClickListener) {
           this.jobList = jobList;
-            this.onJobClickListener = onJobClickListener;
-      }
-
-
-    public OfferAdapter(@Nullable final OfferAdapter.OnJobClickListener onJobClickListener) {
-        jobList = new ArrayList<>();
-        this.onJobClickListener = onJobClickListener;
+          this.onJobClickListener = onJobClickListener;
     }
+
 
     @NonNull
     @Override
@@ -82,12 +74,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             holder.tvJobUser2.setText(job.getUser().getfName() + " " + job.getUser().getlName());
         }
 
-        holder.itemView.setOnClickListener(v -> {
-            if (onJobClickListener != null) {
-                onJobClickListener.onJobClick(job);
-            }
-        });
-
+        // לחיצה ארוכה על הפריט
         holder.itemView.setOnLongClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onLongJobClick(job);
@@ -95,20 +82,20 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             return true;
         });
 
-        holder.imgPhone.setOnClickListener(v -> {
-          // לחיצה על תמונת הטלפון ומעבר לאפליקציית שיחות
-            String phone = job.getPhone().trim();
-            Intent goCall = new Intent(Intent.ACTION_DIAL);
-            goCall.setData(Uri.parse("tel:" + phone));
-            v.getContext().startActivity(goCall);
+        // עיצוב מס' טלפון
+        holder.tvJobPhone2.setPaintFlags(holder.tvJobPhone2.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        holder.tvJobPhone2.setTextColor(holder.tvJobCompany2.getTextColors());
+        // לחיצה על מס' טלפון או אייקון טלפון
+        View.OnClickListener phoneClickListener = v -> {
+            holder.tvJobPhone2.setTextColor(android.graphics.Color.parseColor("#1E88E5"));
+            phoneClick(v, job);
+        };
+        holder.imgPhone.setOnClickListener(phoneClickListener);
+        holder.tvJobPhone2.setOnClickListener(phoneClickListener);
 
-            if (onJobClickListener != null) {
-                onJobClickListener.onPhoneClick(job);
-            }
-        });
 
+        // לחיצה על אייקון סמן מיקום ומעבר לGoogleMaps
         holder.imgLocation.setOnClickListener(v -> {
-            // לחיצה על תמונת סמן מיקום ומעבר לGoogleMaps
             String address = job.getAddress().trim();
             String city = job.getCity().trim();
             String fullAddress = address + ", " + city;
@@ -117,25 +104,28 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
             v.getContext().startActivity(goMap);
         });
 
+        // לחיצה על אישור
         holder.btnApprove.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onApprove(job);
             }
         });
 
+        // לחיצה על דחייה
         holder.btnReject.setOnClickListener(v -> {
             if (onJobClickListener != null) {
                 onJobClickListener.onReject(job);
-
             }
-
         });
 
         if (currentUser!= null && currentUser.getIsAdmin()) {
             holder.btnApprove.setVisibility(View.VISIBLE);
             holder.btnReject.setVisibility(View.VISIBLE);
         }
-
+         else {
+        holder.btnApprove.setVisibility(View.GONE);
+        holder.btnReject.setVisibility(View.GONE);
+         }
 
     }
 
@@ -148,6 +138,17 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         jobList.clear();
         jobList.addAll(jobs);
         notifyDataSetChanged();
+    }
+
+    // מעבר לאפליקציית שיחות
+    private void phoneClick(View v, Job job) {
+        String phone = job.getPhone().trim();
+        Intent goCall = new Intent(Intent.ACTION_DIAL);
+        goCall.setData(Uri.parse("tel:" + phone));
+        v.getContext().startActivity(goCall);
+        if (onJobClickListener != null) {
+            onJobClickListener.onPhoneClick(job);
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +26,7 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
     EditText etCompany, etJobAddress, etJobPhone, etJobAge, etJobDetails;
     String jobCity, jobAddress, jobTitle, jobPhone, jobAge, jobDetails, jobType, company;
     Button btnSubmitOffer;
-    Spinner spCity,spTitle, spType;
+    Spinner spCity, spTitle, spType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
 
         initViews();
         initListeners();
-        databaseService = DatabaseService.getInstance();
     }
 
     private void initViews() {
@@ -53,6 +53,7 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
         etJobAge = findViewById(R.id.etJobAge);
         etJobDetails = findViewById(R.id.etJobDetails);
         btnSubmitOffer = findViewById(R.id.btnSubmitOffer);
+        databaseService = DatabaseService.getInstance();
     }
 
     private void initListeners() {
@@ -66,7 +67,7 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
 
             // שמירת הקלט שהמשתמש הזין
             company = etCompany.getText().toString();
-            jobCity=spCity.getSelectedItem().toString();
+            jobCity = spCity.getSelectedItem().toString();
             jobType = spType.getSelectedItem().toString();
             jobTitle = spTitle.getSelectedItem().toString();
             jobAddress = etJobAddress.getText().toString();
@@ -74,21 +75,22 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             jobAge = etJobAge.getText().toString();
             jobDetails = etJobDetails.getText().toString();
 
-            Log.d(TAG, "onClick: submitting offer...");
-            SubmitOffer(company, jobCity,jobType, jobTitle, jobAddress, jobPhone, jobAge, jobDetails); // הגשת ההצעה לפי הנתונים שנקלטו
+            if (checkInput()) {
+                Log.d(TAG, "onClick: submitting offer...");
+                SubmitOffer(company, jobCity, jobType, jobTitle, jobAddress, jobPhone, jobAge, jobDetails); // הגשת ההצעה לפי הנתונים שנקלטו
+            }
         }
     }
 
     // ---- הגשת הצעת עבודה ----
     private void SubmitOffer(String company, String jobCity, String jobType, String jobTitle, String jobAddress, String jobPhone, String jobAge, String jobDetails) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid= mAuth.getCurrentUser().getUid();
-
+        String uid = mAuth.getCurrentUser().getUid();
         databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
             public void onCompleted(User user) {
-               User currentUser=new User(user);
-                String jobId=databaseService.generateJobId();
-                Job job = new Job(jobAddress, jobAge, jobCity, company,jobDetails, jobId, jobPhone, jobTitle, jobType, currentUser);
+                User currentUser = new User(user);
+                String jobId = databaseService.generateJobId();
+                Job job = new Job(jobAddress, jobAge, jobCity, company, jobDetails, jobId, jobPhone, jobTitle, jobType, currentUser);
                 createJobInDatabase(job); // הוספת job עבור currentUser במסד הנתונים
             }
 
@@ -98,6 +100,7 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+
 
     // ---- הוספת העבודה החדשה למסד הנתונים ----
     private void createJobInDatabase(Job job) {
@@ -111,10 +114,28 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
                 startActivity(goUserActivity);
                 Log.d(TAG, "createJobInDatabase: Redirecting to UserActivity");
             }
+
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "createJobInDatabase: Failed to create job", e);
             }
         });
+    }
+
+    private boolean checkInput() {
+        boolean valid = true;
+        if (company.isEmpty() || jobAddress.isEmpty() || jobPhone.isEmpty() || jobAge.isEmpty()) {
+            Toast.makeText(SubmitOfferActivity.this, "חובה למלא את כלל השדות, פרט לשדה הבחירה \" פרטים נוספים \" ", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!jobPhone.matches("\\d{9,10}")) {
+            Toast.makeText(this, "מספר טלפון חייב להכיל 9-10 ספרות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (Integer.parseInt(jobAge) < 16) {
+            Toast.makeText(this, "האפליקציה מיועדת לגיל 16+", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        return valid;
     }
 }

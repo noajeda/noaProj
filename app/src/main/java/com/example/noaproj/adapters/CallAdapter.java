@@ -38,8 +38,8 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         if (call == null) return;
 
         Date date = new Date(call.getTime());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); // תאריך
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault()); // שעה
         holder.tvTime.setText(dateFormat.format(date) + "\n" + timeFormat.format(date));
 
         if (call.getJob() != null) {    // נשמרה העבודה אליה התקשרו, שיחה יוצאת
@@ -51,6 +51,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             holder.tvPhone.setText(call.getUser().getPhone()); // הצגת מס' הטלפון של המשתמש
             holder.tvNameCall.setText(call.getUser().getfName() + " " + call.getUser().getlName());
         }
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.noaproj;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -51,6 +52,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "UserActivity";
 
     User currentUser;
+
+    BottomSheetDialog bottomSheetDialog;
+    private ArrayList<CheckBox> cbCites = new ArrayList<>();
+    private ArrayList<CheckBox> cbTypes = new ArrayList<>();
+    private ArrayList<CheckBox> cbTitles = new ArrayList<>();
+    private RangeSlider sliderAge;
+
+    String[] cities, types, titles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +74,15 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
         initListeners();
-        loadCurrentUser();
+        setupBottomSheet();
+
+        databaseService = DatabaseService.getInstance();
         setupRecyclerView();
+        loadCurrentUser();
+
     }
 
-    private void initViews(){
+    private void initViews() {
         imgMenu = findViewById(R.id.imgMenu);
         btnFilter = findViewById(R.id.btnFilter);
         btnCleanAll = findViewById(R.id.btnCleanALl);
@@ -83,6 +97,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         flMenu = findViewById(R.id.flMenu);
         etSearchJob = findViewById(R.id.etSearchJob);
         imgSearchJob = findViewById(R.id.imgSearchJob);
+
         Log.d(TAG, "Views initialized");
     }
     private void initListeners() {
@@ -97,33 +112,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         btnJobList.setOnClickListener(this);
         imgSearchJob.setOnClickListener(this);
     }
-    private void loadCurrentUser() { // שליפת המשתמש הנוכחי ממסד הנתונים
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid = mAuth.getCurrentUser().getUid();
-        databaseService = DatabaseService.getInstance();
-        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
-            @Override
-            public void onCompleted(User user) {
-                currentUser = new User(user);
-            }
-
-            @Override
-            public void onFailed(Exception e) {
-
-            }
-        });
-    }
 
     private void setupRecyclerView(){ // יצירת ה-adapter וקישורו ל-recyclerView
         rvApproveJobs.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new OfferAdapter(approveArraylist, new OfferAdapter.OnJobClickListener() {
-            @Override
-            public void onJobClick(Job job) {
-                Call call = new Call("oo", job,  System.currentTimeMillis(), currentUser);
-                createCallInDatabase(call); // הוספת call למסד הנתונים
-
-
-            }
+        adapter = new OfferAdapter(new ArrayList<>(approveArraylist), new OfferAdapter.OnJobClickListener() {
             @Override
             public void onLongJobClick(Job job) {
                 if (currentUser != null && currentUser.getIsAdmin()) {
@@ -132,7 +124,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void onCompleted(Void object) {
                             approveArraylist.remove(job);
-                            adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
+                            adapter.setJobList(new ArrayList<>(approveArraylist)); // עדכון הadpater שמקושר לrecyclerView
                             Toast.makeText(UserActivity.this, "העבודה הוסרה!", Toast.LENGTH_SHORT).show(); // הצגת הודעה
                         }
 
@@ -154,77 +146,68 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onPhoneClick(Job job) {  //לחיצה על תמונת הטלפון
-                Call call = new Call("oo", job,  System.currentTimeMillis(), currentUser);
-                createCallInDatabase(call); // הוספת call למסד הנתונים
+            public void onPhoneClick(Job job) {  //לחיצה על מס'/אייקון הטלפון
+                if (currentUser != null) {
+                    Call call = new Call("oo", job, System.currentTimeMillis(), currentUser);
+                    createCallInDatabase(call); // הוספת call למסד הנתונים
+                }
             }
         });
         rvApproveJobs.setAdapter(adapter);
-        approvejoblist();
     }
 
+    private void loadCurrentUser() { // שליפת המשתמש הנוכחי ממסד הנתונים
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String uid = mAuth.getCurrentUser().getUid();
+        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+            @Override
+            public void onCompleted(User user) {
+                currentUser = new User(user);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to get user", e);
+            }
+        });
+    }
+    // ---- הצגת כל העבודות המאושרות ----
     private void approvejoblist() {
-        databaseService = DatabaseService.getInstance();
         databaseService.getJobList(new DatabaseService.DatabaseCallback<List<Job>>() {
             @Override
             public void onCompleted(List<Job> jobList) {
                 approveArraylist.clear();
                 for (int i= 0; i<jobList.size(); i++){
                     if(jobList.get(i).getStatus().contains("approve"))
-                        approveArraylist.add(jobList.get(i));
+                        approveArraylist.add(jobList.get(i)); // רשימה המכילה את כל העבודות המאושרות
                     Log.d(TAG, "Job ID: " + jobList.get(i).getId() + ", Status: " + jobList.get(i).getStatus());
-
                 }
-                adapter.notifyDataSetChanged();
-                Log.d(TAG, "onCompleted: " + approveArraylist);
+                adapter.setJobList(new ArrayList<>(approveArraylist));
             }
 
             @Override
             public void onFailed(Exception e) {
-
+                Log.e(TAG, "onFailed: Failed to get joblist", e);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        approvejoblist();
-    }
-
-    private void createCallInDatabase(Call call) {
-        String id = databaseService.generateCallId();   // יצירת id עבור call חדש
-        call.setId(id);
-        if(currentUser != null){
-            databaseService.createNewCall(  call, new DatabaseService.DatabaseCallback<Void>(){ // הוספת call לdatabase
-                public void onCompleted(Void object) {
-                    Log.d(TAG, "createCallInDatabase: Call created successfully");
-                }
-                @Override
-                public void onFailed(Exception e) {
-                    Log.e(TAG, "createCallInDatabase: Failed to create call", e);
-                }
-            });
-        }
     }
 
     @Override
     public void onClick(View v) {
         // ---- במסך הראשי ----
         if(v == btnFilter){ // כפתור סינון הפותח דיאלוג
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(UserActivity.this); // הכרזה על דיאלוג
-            bottomSheetDialog.setContentView(R.layout.botton_sheet_filter); // קישור הדיאלוג למסך התצוגה
             bottomSheetDialog.show();
-            showFilter(bottomSheetDialog); // יצירת תוכן הדיאלוג
         }
-        if(v == btnCleanAll){ // ניקוי הסינון והצגת כלל העבודות
+        else if(v == btnCleanAll){ // ניקוי הסינון והצגת כלל העבודות
             cleanAll();
         }
-        if(v == imgSearchJob){ // חיפוש בית עסק מסוים
+        else if(v == imgSearchJob){ // חיפוש בית עסק מסוים
             searchJob();
         }
+
+
         // ---- בתפריט הנפתח ----
-        if(v == imgMenu && !isMenuOpen){ // תמונת התפריט נלחצה, התפריט נפתח
+        else if(v == imgMenu && !isMenuOpen){ // תמונת התפריט נלחצה, התפריט נפתח
             flMenu.setVisibility(View.VISIBLE);
             flMenu.setBackgroundColor(Color.parseColor("#CCFFFFFF"));
             isAdmin();
@@ -238,68 +221,84 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             btnJobList.setVisibility(View.GONE);
             isMenuOpen = false;
         }
-        if(v == btnMyOffersJobs){ // מעבר למסך המשרות שלי
+        else if(v == btnMyOffersJobs){ // מעבר למסך העבודות שלי
             Intent goMyOffersJobs = new Intent(this, MyJobs.class);
             startActivity(goMyOffersJobs);
         }
-        if(v == btnMyCalls){ // מעבר למסך השיחות שלי
+        else  if(v == btnMyCalls){ // מעבר למסך השיחות שלי
             Intent goMyCalls = new Intent (this, MyCalls.class);
             startActivity(goMyCalls);
         }
-        if(v == btnNotification){ // מעבר למסך הוספת התראה
+        else if(v == btnNotification){ // מעבר למסך הוספת התראה
             Intent goNotification = new Intent(this, JobNotification.class);
             startActivity(goNotification);
         }
-        if(v == btnUserList){ // מעבר למסך רשימת משתמשים
+        else if(v == btnUserList){ // מעבר למסך רשימת משתמשים
             Intent goUserList = new Intent(this, UserList.class);
             startActivity(goUserList);
 
         }
-        if(v == btnJobList){ // מעבר למסך רשימת הצעות עבודה
+        else if(v == btnJobList){ // מעבר למסך רשימת הצעות עבודה
             Intent goJobList = new Intent(this, OfferList.class);
             startActivity(goJobList);
         }
-        if(v == btnLogOut){ // התנתקות מהמשתמש
+        else  if(v == btnLogOut){ // התנתקות מהמשתמש
             logOut();
         }
     }
 
-    // ---- יצירת דיאלוג הסינון ----
-    private void showFilter(BottomSheetDialog bottomSheetDialog) {
-        RangeSlider sliderAge = bottomSheetDialog.findViewById(R.id.sliderAge);
+
+    // ---- בניית הדיאלוג ----
+    private void setupBottomSheet() {
+
+        bottomSheetDialog = new BottomSheetDialog(UserActivity.this); // הכרזה על דיאלוג
+        bottomSheetDialog.setContentView(R.layout.botton_sheet_filter); // קישור הדיאלוג למסך התצוגה
+
+        LinearLayout layoutCities = bottomSheetDialog.findViewById(R.id.layoutCities);
+        LinearLayout layoutTypes = bottomSheetDialog.findViewById(R.id.layoutTypes);
+        LinearLayout layoutTitles = bottomSheetDialog.findViewById(R.id.layoutTitle);
+
+        cities = getResources().getStringArray(R.array.arrCity); // מערך המכיל את כלל הערים
+        types = getResources().getStringArray(R.array.arrType); // מערך המכיל את כלל הסוגים
+        titles = getResources().getStringArray(R.array.arrTitle); // מערך המכיל את כלל התפקידים
+
+        // ניקוי התצוגה כדי שלא יהיו כפילויות
+        layoutCities.removeAllViews();
+        layoutTypes.removeAllViews();
+        layoutTitles.removeAllViews();
+        // ניקוי הרשימות כדי שלא יכילו אובייקטים ישנים
+        cbCites.clear();
+        cbTypes.clear();
+        cbTitles.clear();
+
+
+        // ages
+        sliderAge = bottomSheetDialog.findViewById(R.id.sliderAge);
         List<Float> initialValues = new ArrayList<>();
         initialValues.add(16f); // יד שמאלית
         initialValues.add(60f); // יד ימנית
         sliderAge.setValues(initialValues);
 
         // cities
-        LinearLayout layoutCities = bottomSheetDialog.findViewById(R.id.layoutCities);
-        ArrayList<CheckBox> cbCites = new ArrayList<>();  // רשימת ערים עבור בדיקה
-        String[] cities = getResources().getStringArray(R.array.arrCity); // מערך המכיל את כלל הערים
-        for(int i = 0; i< cities.length; i++){
+        for (int i = 0; i < cities.length; i++) {
             String city = cities[i];
             CheckBox cb = new CheckBox(this);
             cb.setText(city);
-            layoutCities.addView(cb);   // הוספה לתצוגה
+            layoutCities.addView(cb);   // הוספת הרשימה לתצוגה
             cbCites.add(cb);    // שמירה ברשימה עבור בדיקה
         }
+
         // types
-        LinearLayout layoutTypes = bottomSheetDialog.findViewById(R.id.layoutTypes);
-        ArrayList<CheckBox> cbTypes = new ArrayList<>();  // רשימת סוגים עבור בדיקה
-        String[] types = getResources().getStringArray(R.array.arrType); // מערך המכיל את כלל הסוגים
-        for(int i = 0; i< types.length; i++){
+        for (int i = 0; i < types.length; i++) {
             String type = types[i];
             CheckBox cb = new CheckBox(this);
             cb.setText(type);
             layoutTypes.addView(cb);  // הוספה לתצוגה
             cbTypes.add(cb);    // שמירה ברשימה עבור בדיקה
-
         }
+
         // titles
-        LinearLayout layoutTitles = bottomSheetDialog.findViewById(R.id.layoutTitle);
-        ArrayList<CheckBox> cbTitles = new ArrayList<>(); // רשימת תפקידים עבור בדיקה
-        String[] titles = getResources().getStringArray(R.array.arrTitle); // מערך המכיל את כלל התפקידים
-        for(int i = 0; i< titles.length; i++){
+        for (int i = 0; i < titles.length; i++) {
             String title = titles[i];
             CheckBox cb = new CheckBox(this);
             cb.setText(title);
@@ -307,46 +306,73 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             cbTitles.add(cb);    // שמירה ברשימה עבור בדיקה
         }
 
-        // ----שמירת תוצאות בArrayList----
+        // הגדרת כפתור האישור
         Button btnApplyFilter = bottomSheetDialog.findViewById(R.id.btnApplyFilter);
-        if (btnApplyFilter != null) { // לחיצה על אישור
-            btnApplyFilter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ArrayList<String> selectedCities = new ArrayList<>(); // הערים שנבחרו
-                    for (int i = 0; i < cities.length; i++) {
-                        CheckBox cb = cbCites.get(i);
-                        if (cb.isChecked()) {
-                            selectedCities.add(cb.getText().toString());  // שמירה
-                        }
-                    }
-                    ArrayList<String> selectedTypes = new ArrayList<>(); // הסוגים שנבחרו
-                    for (int i = 0; i < types.length; i++) {
-                        CheckBox cb = cbTypes.get(i);
-                        if (cb.isChecked()) {
-                            selectedTypes.add(cb.getText().toString());  // שמירה
-                        }
-                    }
-                    ArrayList<String> selectedTitles = new ArrayList<>(); // התפקידים שנבחרו
-                    for (int i = 0; i < titles.length; i++) {
-                        CheckBox cb = cbTitles.get(i);
-                        if (cb.isChecked()) {
-                            selectedTitles.add(cb.getText().toString());  // שמירה
-                        }
-                    }
+        if (btnApplyFilter != null) {
+            btnApplyFilter.setOnClickListener(v -> applyFilter());
+        }
 
-                    // טווח גילים
-                    List<Float> values = sliderAge.getValues();
-                    int minAge = Math.round(values.get(0)); // היד השמאלית
-                    int maxAge = Math.round(values.get(1)); // היד הימנית
-
-                    filterJobs(selectedCities, selectedTypes, selectedTitles, minAge, maxAge);
-                    bottomSheetDialog.dismiss(); // סגירה
-                }
-            });
+        // הגדרת כפתור הניקוי
+        Button btnCleanFilter = bottomSheetDialog.findViewById(R.id.btnCleanFilter);
+        if (btnCleanFilter != null) {
+            btnCleanFilter.setOnClickListener(v-> cleanFilter());
         }
     }
 
+    // ---- הפעלת הסינון ----
+    private void applyFilter() {
+        // ---- שמירת התוצאות ברשימה ----
+        ArrayList<String> selectedCities = new ArrayList<>(); // הערים שנבחרו
+        for (int i = 0; i < cities.length; i++) {
+            CheckBox cb = cbCites.get(i);
+            if (cb.isChecked()) {
+                selectedCities.add(cb.getText().toString());  // שמירה
+            }
+        }
+
+        ArrayList<String> selectedTypes = new ArrayList<>(); // הסוגים שנבחרו
+        for (int i = 0; i < types.length; i++) {
+            CheckBox cb = cbTypes.get(i);
+            if (cb.isChecked()) {
+                selectedTypes.add(cb.getText().toString());  // שמירה
+            }
+        }
+
+        ArrayList<String> selectedTitles = new ArrayList<>(); // התפקידים שנבחרו
+        for (int i = 0; i < titles.length; i++) {
+            CheckBox cb = cbTitles.get(i);
+            if (cb.isChecked()) {
+                selectedTitles.add(cb.getText().toString());  // שמירה
+            }
+        }  // טווח גילים
+        List<Float> values = sliderAge.getValues();
+        int minAge = Math.round(values.get(0)); // היד השמאלית
+        int maxAge = Math.round(values.get(1)); // היד הימנית
+
+        filterJobs(selectedCities, selectedTypes, selectedTitles, minAge, maxAge);
+
+        bottomSheetDialog.dismiss(); // סגור תפריט
+    }
+
+    // ---- ניקוי הסינון ----
+    private void cleanFilter(){
+        for (CheckBox cb : cbCites) {
+            cb.setChecked(false);
+        }
+
+        for (CheckBox cb : cbTypes) {
+            cb.setChecked(false);
+        }
+
+        for (CheckBox cb : cbTitles) {
+            cb.setChecked(false);
+        }
+
+        List<Float> resetValues = new ArrayList<>();
+        resetValues.add(16f);
+        resetValues.add(60f);
+        sliderAge.setValues(resetValues);
+    }
     // ---- הצגת עבודות במסך המשתמש על פי קטגוריות הסינון ----
     private void filterJobs(ArrayList<String> selectedCities, ArrayList<String> selectedTypes, ArrayList<String> selectedTitles, int minAge, int maxAge){
         ArrayList<Job> filteredJobs = new ArrayList<>();
@@ -364,6 +390,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             if (!selectedTitles.isEmpty()) {
                 match = match && selectedTitles.contains(job.getTitle());
             }
+
             if(Integer.parseInt(job.getAge()) < minAge || Integer.parseInt(job.getAge()) > maxAge)
                 match= false;
 
@@ -390,7 +417,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear().apply();
-        editor.putBoolean("notificationsEnabled", false).apply(); // מעדכן שהמתג נכבה
 
         // מכבה את ההתראה
         Intent stop = new Intent(UserActivity.this, JobAlarmService.class);
@@ -411,6 +437,29 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     private void cleanAll(){   // ניקוי הסינון והצגת כלל העבודות המאושרות
+        approvejoblist();
+    }
+
+    // ---- יצירת שיחה לאחר לחיצה על אייקון/מס' טלפון ----
+    private void createCallInDatabase(Call call) {
+        String id = databaseService.generateCallId();   // יצירת id עבור call חדש
+        call.setId(id);
+        if(currentUser != null){
+            databaseService.createNewCall(  call, new DatabaseService.DatabaseCallback<Void>(){ // הוספת call לdatabase
+                public void onCompleted(Void object) {
+                    Log.d(TAG, "createCallInDatabase: Call created successfully");
+                }
+                @Override
+                public void onFailed(Exception e) {
+                    Log.e(TAG, "createCallInDatabase: Failed to create call", e);
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         approvejoblist();
     }
 }

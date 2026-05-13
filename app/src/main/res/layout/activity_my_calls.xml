@@ -14,10 +14,9 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="31dp"
         android:text="השיחות שלי"
-        app:layout_constraintBottom_toTopOf="@+id/rvMyCalls"
+        app:layout_constraintBottom_toTopOf="@+id/tv_MyCalloffer_count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,11 +25,12 @@
         android:id="@+id/tv_MyCalloffer_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="23dp"
         android:text="סך כל השיחות: 0"
         app:layout_constraintBottom_toTopOf="@+id/rvMyCalls"
         app:layout_constraintEnd_toEndOf="@+id/tv_MyCalls_title"
-        app:layout_constraintTop_toTopOf="@+id/rvMyCalls" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_MyCalls_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyCalls"
@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_MyCalls_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MyCalloffer_count"
         tools:listitem="@layout/item_call">
 
     </androidx.recyclerview.widget.RecyclerView>

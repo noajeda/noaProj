@@ -45,7 +45,6 @@ public class UserList extends AppCompatActivity {
 
     private void initViews() {
         tv_user_count = findViewById(R.id.tv_user_count);
-        databaseService = DatabaseService.getInstance();
         rcUsers = findViewById(R.id.rv_users_list);
     }
     private void setupRecyclerView() {   // יצירת ה-adapter וקישורו ל-recyclerView
@@ -56,18 +55,20 @@ public class UserList extends AppCompatActivity {
 
      // ---- שליפת המשתמשים ממסד הנתונים והצגתם במסך המשתמש ----
     private void loadUserList() {
+        databaseService = DatabaseService.getInstance();
         databaseService.getUserList(new DatabaseService.DatabaseCallback<List<User>>() {
             @Override
             public void onCompleted(List<User> usersList) {
-                Log.d(TAG, "onCompleted: " + usersList);
-                adapter.setUserList(usersList);
-                totalUsers= usersList.size();
-                tv_user_count.setText("סך כל המשתמשים: " + totalUsers);
+                if (usersList != null) {
+                    Log.d(TAG, "onCompleted: " + usersList);
+                    adapter.setUserList(usersList);
+                    totalUsers = usersList.size();
+                    tv_user_count.setText("סך כל המשתמשים: " + totalUsers);
+                }
             }
-
             @Override
             public void onFailed(Exception e) {
-
+                Log.e(TAG, "onFailed: Failed to get userlist", e);
             }
         });
     }

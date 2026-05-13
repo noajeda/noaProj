@@ -49,31 +49,28 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
             return insets;
         });
 
-        initViews();
-        initListeners();
         mAuth=FirebaseAuth.getInstance();
         uid=  mAuth.getUid();
-        Log.d(TAG, "uid"+uid);
-        if(!uid.isEmpty())
-            readJobs(uid);
+
+        initViews();
+        initRecycler();
+        initListeners();
     }
     private void initViews() {
         tv_myJobs_count = findViewById(R.id.tv_MyJoboffer_count);
         imgAddOffer = findViewById(R.id.imgAddOffer);
-        databaseService = DatabaseService.getInstance();
         rvMyjobs = findViewById(R.id.rvMyjobOffer);
+        Log.d(TAG, "initViews finished");
+    }
+
+    private void initRecycler(){
         rvMyjobs.setLayoutManager(new LinearLayoutManager(this));
         jobArrayList = new ArrayList<>();
         setUpJobsAdapter();
-        Log.d(TAG, "initViews finished");
     }
 
     private void setUpJobsAdapter() {
         adapter = new OfferAdapter(jobArrayList, new OfferAdapter.OnJobClickListener(){
-            @Override
-            public void onJobClick(Job job) {
-            }
-
             @Override
             public void onLongJobClick(Job job) { // הסרת עבודה
                 job.setStatus("delete");
@@ -93,7 +90,6 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                     }
                 });
             }
-
 
             @Override
             public void onApprove(Job job) {
@@ -119,16 +115,16 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
 
     // ---- הצגת כל העבודות המאושרות של המשתמש במסך ----
     private void readJobs(String uid) {
-        jobArrayList.clear();
+        databaseService = DatabaseService.getInstance();
         databaseService.getCompanyJobList( uid ,new DatabaseService.DatabaseCallback<List<Job>>() { // קבלת רשימת כל העבודות של המשתמש
             @Override
             public void onCompleted(List<Job> jobsList) {
                 if(jobsList!=null) {
+                    jobArrayList.clear();
                     for(int i=0; i< jobsList.size(); i++){
                         if(jobsList.get(i).getStatus().contains("approve"))
                             jobArrayList.add(jobsList.get(i)); // רשימה של כל העבודות המאושרות של המשתמש
                     }
-
                     adapter.notifyDataSetChanged(); // עדכון הadpater שמקושר לrecyclerView
                     totalJobs= jobArrayList.size();
                     tv_myJobs_count.setText("סך כל העבודות: " + totalJobs);
@@ -141,12 +137,18 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
                 Log.e(TAG, "onFailed: Failed to getCompanyJobList", e);
             }
         });
-
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        readJobs(uid);
+    }
+
+
+    @Override
     public void onClick(View v) {
-        if( v == imgAddOffer){   // מעבר למסך הוספת משרה
+        if( v == imgAddOffer){   // מעבר למסך הוספת עבודה
             Intent goAddOffer = new Intent(this, SubmitOfferActivity.class);
             startActivity(goAddOffer);
         }

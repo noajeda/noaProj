@@ -47,39 +47,37 @@
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            Log.d(TAG, "onCreate started");
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_offer_list);
-            Log.d(TAG, "onCreate started");
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
             initViews();
-            setUpOfferAdapter();
+            initRecycler();
         }
 
         private void initViews() {
             tv_offer_count = findViewById(R.id.tv_offer_count);
-            databaseService = DatabaseService.getInstance();
             rcOffers = findViewById(R.id.rv_users_list);
+        }
+        private void initRecycler() {
             rcOffers.setLayoutManager(new LinearLayoutManager(this));
             jobArrayList = new ArrayList<>();
+            setUpOfferAdapter();
         }
 
+        // ---- מציאת המשתמש הנוכחי, יצירת ה-adapter וקישורו לרשימה ----
         private void setUpOfferAdapter() {
             mAuth = FirebaseAuth.getInstance();
             uid = mAuth.getCurrentUser().getUid();
+            databaseService = DatabaseService.getInstance();
             databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
                 @Override
                 public void onCompleted(User user) {
                     currentUser = user;
                     adapter = new OfferAdapter(jobArrayList, currentUser, new OfferAdapter.OnJobClickListener() {
-                        @Override
-                        public void onJobClick(Job job) {
-                        }
-
                         @Override
                         public void onLongJobClick(Job job) {
                         }
@@ -105,14 +103,15 @@
                         }
                     });
                     rcOffers.setAdapter(adapter);
+                    readNewJobs();
                 }
 
                 @Override
                 public void onFailed(Exception e) {
-
+                    Log.e(TAG, "onFailed: Failed to get user", e);
                 }
             });
-            readNewJobs();
+
         }
 
         // ---- שליפת העבודות החדשות ממסד הנתונים והצגתם במסך המנהל ----
@@ -121,8 +120,8 @@
                 @Override
                 public void onCompleted(List<Job> jobsList) {
                     if (jobsList != null) {
+                        jobArrayList.clear();
                         for (int i = 0; i < jobsList.size(); i++) {
-                            Log.d(TAG, "Job " + i + ": " + jobsList.get(i));
                             if (jobsList.get(i).getStatus().contains("new")) {
                                 jobArrayList.add(jobsList.get(i));
                             }
@@ -130,13 +129,12 @@
                         adapter.notifyDataSetChanged();
                         totalOffers = jobArrayList.size();
                         tv_offer_count.setText("סך כל ההצעות: " + totalOffers);
-                        Log.d(TAG, "tv_offer_count found: " + (tv_offer_count != null));
                     }
                 }
 
                 @Override
                 public void onFailed(Exception e) {
-
+                    Log.e(TAG, "onFailed: Failed to get joblist", e);
                 }
             });
 
@@ -146,10 +144,8 @@
         public void sendApprovalSMS(Job job) {
             job.setStatus("approve");
             DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {  // עדכון סטטוס העבודה במסד הנתונים
-
                 @Override
                 public void onCompleted(Void object) {
-                    //    sendUserNotification(job.getUser().getId(), "מאושר", "העבודה אושרה בהצלחה");
                     jobArrayList.remove(job);
                     adapter.notifyDataSetChanged(); // עדכון רשימת העבודות במסך המנהל
                     totalOffers = jobArrayList.size();
@@ -162,10 +158,9 @@
                     Toast.makeText(OfferList.this, "SMS נשלח למשתמש", Toast.LENGTH_SHORT).show(); // הצגת הודעה למנהל שהSMS נשלח
                 }
 
-
                 @Override
                 public void onFailed(Exception e) {
-
+                    Log.e(TAG, "onFailed: Failed to update job", e);
                 }
             });
         }
@@ -201,16 +196,16 @@
 
         // ---- שליחת הודעת הדחייה ----
         public void sendRejectionSMS(Job job, String reason) {
-            job.setStatus("disapprove");
-            DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {
-
+            job.setStatus("delete");
+            DatabaseService.getInstance().updateJob(job, new DatabaseService.DatabaseCallback<Void>() {  // עדכון סטטוס העבודה במסד הנתונים
                 @Override
                 public void onCompleted(Void object) {
                 String userPhone = job.getUser().getPhone();
                 String msg = "העבודה '" + job.getTitle() + "' שהעלת באפליקציית NewJobs נדחתה!" + "\n" + "סיבת הדחייה: " + reason; // יצירת תוכן ההודעה
-                    SmsManager smsManager = SmsManager.getDefault();
-                    ArrayList<String> parts = smsManager.divideMessage(msg);
-                    smsManager.sendMultipartTextMessage(userPhone, null, parts, null, null);
+                SmsManager smsManager = SmsManager.getDefault();
+                ArrayList<String> parts = smsManager.divideMessage(msg);
+                smsManager.sendMultipartTextMessage(userPhone, null, parts, null, null);
+                jobArrayList.remove(job);
                 adapter.notifyDataSetChanged();
                 totalOffers = jobArrayList.size();
                 tv_offer_count.setText("סך כל ההצעות: " + totalOffers);
@@ -219,6 +214,7 @@
 
             @Override
             public void onFailed(Exception e) {
+                Log.e(TAG, "onFailed: Failed to update job", e);
 
             }
         });
@@ -227,13 +223,10 @@
 
         // ----  בקשת הרשאה מהמנהל לשליחת SMS ----
         private void checkSMSPermission() {
-
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_GRANTED) {
                 return; // יש הרשאה
             }
-
-            //
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.SEND_SMS},
                     SMS_PERMISSION_CODE);
@@ -242,7 +235,6 @@
         @Override
         public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
             if (requestCode == SMS_PERMISSION_CODE) {
                  // אם יש תוצאה והיא מתן הרשאה
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -251,5 +243,12 @@
                         Toast.makeText(this, "הרשאה נדחתה!", Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            if (currentUser != null && adapter != null)
+                readNewJobs();
         }
     }

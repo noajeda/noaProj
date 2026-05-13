@@ -15,9 +15,10 @@ public class JobAlarmService extends Service {
         }
         String action = intent.getAction();
         if ("START".equals(action)) {
-            startAlarm();
-        } else if ("STOP".equals(action)) {
-            stopAlarm();
+            startAlarm(); // הפעל
+        }
+        else if ("STOP".equals(action)) {
+            stopAlarm(); // עצור
         }
 
         return START_STICKY;
@@ -26,36 +27,34 @@ public class JobAlarmService extends Service {
     // ---- הפעל התראה ----
     private void startAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent jobCheckIntent = new Intent(this, JobCheckReceiver.class);
 
-        Intent intent = new Intent(this, JobCheckReceiver.class);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+        PendingIntent jobCheckPendingIntent = PendingIntent.getBroadcast(
                 this,
                 0,
-                intent,
+                jobCheckIntent,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
-
-        // הפעלה ראשונה מיד
+        // הפעלה ראשונה
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis(),
-                pendingIntent
+                jobCheckPendingIntent
         );
     }
-
 
     // ---- עצור התראה ----
     private void stopAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, JobCheckReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+        Intent jobCheckIntent = new Intent(this, JobCheckReceiver.class);
+
+        PendingIntent jobCheckPendingIntent = PendingIntent.getBroadcast(
                 this,
                 0,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
+                jobCheckIntent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
-        alarmManager.cancel(pendingIntent);
+        alarmManager.cancel(jobCheckPendingIntent);    // עוצר את ההתראות
     }
     @Override
     public IBinder onBind(Intent intent) {

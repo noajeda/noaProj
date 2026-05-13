@@ -13,6 +13,8 @@ public class Job {
     String company;
     String status;
 
+    public Job() {
+    }
 
     public Job(String address, String age, String city, String company, String details, String id, String phone, String title, String type, User user) {
         this.address = address;
@@ -48,9 +50,6 @@ public class Job {
 
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public Job() {
     }
 
     public String getAddress() {

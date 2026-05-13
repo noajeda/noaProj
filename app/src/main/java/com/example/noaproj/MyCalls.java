@@ -1,7 +1,5 @@
 package com.example.noaproj;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyCalls extends AppCompatActivity {
+    private static final String TAG = "MyCallsActivity";
     TextView tv_MyCalloffer_count;
     RecyclerView rcCalls;
     ArrayList<Call> callArrayList;
@@ -40,31 +39,25 @@ public class MyCalls extends AppCompatActivity {
             return insets;
         });
         initViews();
+        initRecycler();
     }
 
     private void initViews() {
         tv_MyCalloffer_count = findViewById(R.id.tv_MyCalloffer_count);
-        databaseService = DatabaseService.getInstance();
-        Log.d(TAG, "databaseService initialized");
-
         rcCalls = findViewById(R.id.rvMyCalls);
-        Log.d(TAG, "rcCalls found: " + (rcCalls != null));
+    }
 
+    private void initRecycler() { //יצירת ה-adapter וקישורו לRecyclerView
         rcCalls.setLayoutManager(new LinearLayoutManager(this));
         callArrayList = new ArrayList<>();
-
         adapter = new CallAdapter(callArrayList);
         rcCalls.setAdapter(adapter);
-        Log.d(TAG, "initViews finished");
-
-        readCalls();
-
     }
 
     // ---- הצגת כל השיחות במסך ----
     private void readCalls() {
-
-        databaseService.listenToCallList(new DatabaseService.DatabaseCallback<List<Call>>() {  // מעבר על כל השיחות שבמסד הנתונים
+        databaseService = DatabaseService.getInstance();
+        databaseService.loadCallList(new DatabaseService.DatabaseCallback<List<Call>>() {  // מעבר על כל השיחות שבמסד הנתונים
             @Override
             public void onCompleted(List<Call> callsList) {
                 if (callsList != null) {
@@ -75,15 +68,19 @@ public class MyCalls extends AppCompatActivity {
                     adapter.notifyDataSetChanged();    // עדכון הadpater שמקושר לrecyclerView
                     countCalls = callArrayList.size();
                     tv_MyCalloffer_count.setText("סך כל השיחות: " + countCalls);
-                    Log.d(TAG, "tv_MyCalloffer_count found: " + (tv_MyCalloffer_count != null));
                 }
             }
 
             @Override
             public void onFailed(Exception e) {
-
+                Log.e(TAG, "onFailed: Failed to read calls", e);
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readCalls();
     }
 }
 

@@ -26,12 +26,12 @@ public class NotificationHelper {
                 return; // אין הרשאה, חוזרים
             }
         }
-        // יצירת ערוץ Notification (Android 8 ומעלה)
+        // יצירת ערוץ Notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             );
             manager.createNotificationChannel(channel);
         }

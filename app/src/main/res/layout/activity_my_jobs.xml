@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="27dp"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="17dp"
         android:text="סך כל העבודות: 0"
         app:layout_constraintBottom_toTopOf="@+id/rvMyjobOffer"
         app:layout_constraintEnd_toEndOf="@+id/tv_MyJobs_title"

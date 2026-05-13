@@ -14,16 +14,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
+
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.UnaryOperator;
 
 public class DatabaseService {
 
@@ -55,22 +52,22 @@ public class DatabaseService {
         return instance;
     }
 
-    // ---- כתיבת נתונים במסד הנתונים בנתיב מסוים ----
+    // ---- כתיבת נתונים בנתיב מסוים ----
     private void writeData(@NotNull final String path, @NotNull final Object data, final @Nullable DatabaseCallback<Void> callback) {
-        readData(path).setValue(data, (error, ref) -> {
+        readData(path).setValue(data, (error, ref) -> {   // נכנסים לנתיב ושומרים שם את האובייקט
             if (error != null) {
                 if (callback == null) return;
                 callback.onFailed(error.toException());
             } else {
                 if (callback == null) return;
-                callback.onCompleted(null);
+                callback.onCompleted(null); //
             }
         });
     }
 
-    // ---- מחיקת נתונים ממסד הנתונים בנתיב מסוים ----
+    // ---- מחיקת נתונים בנתיב מסוים ----
     private void deleteData(@NotNull final String path, @Nullable final DatabaseCallback<Void> callback) {
-        readData(path).removeValue((error, ref) -> {
+        readData(path).removeValue((error, ref) -> {     // נכנסים לנתיב ומוחקים את מה שבתוכו
             if (error != null) {
                 if (callback == null) return;
                 callback.onFailed(error.toException());
@@ -82,57 +79,54 @@ public class DatabaseService {
     }
 
     private DatabaseReference readData(@NotNull final String path) {
-        return databaseReference.child(path);
+        return databaseReference.child(path);     // קבלת reference לנתיב
     }
 
-    // שליפת אובייקט ממסד הנתונים
+    // שליפת אובייקט
     private <T> void getData(@NotNull final String path, @NotNull final Class<T> clazz, @NotNull final DatabaseCallback<T> callback) {
-        readData(path).get().addOnCompleteListener(task -> {
+        readData(path).get().addOnCompleteListener(task -> { // קריאת הנתונים של הנתיב
             if (!task.isSuccessful()) {
                 Log.e(TAG, "Error getting data", task.getException());
                 callback.onFailed(task.getException());
                 return;
             }
-            T data = task.getResult().getValue(clazz);
+            T data = task.getResult().getValue(clazz); // האובייקט שהתקבל בנתיב
             callback.onCompleted(data);
         });
     }
 
-    // שליפת רשימת אובייקטיםם ממסד הנתונים
+    // שליפת רשימת אובייקטים
     private <T> void getDataList(@NotNull final String path, @NotNull final Class<T> clazz, @NotNull final DatabaseCallback<List<T>> callback) {
-        readData(path).get().addOnCompleteListener(task -> {
+        readData(path).get().addOnCompleteListener(task -> { // קריאת הנתונים של הנתיב
             if (!task.isSuccessful()) {
                 Log.e(TAG, "Error getting data", task.getException());
                 callback.onFailed(task.getException());
                 return;
             }
             List<T> tList = new ArrayList<>();
-            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) { //  עבור כל אחד מהילדים בנתיב
                 T t = dataSnapshot.getValue(clazz);
-                tList.add(t);
+                tList.add(t); // להוסיף לרשימה
             }
-
             callback.onCompleted(tList);
         });
     }
 
-    // ייצור מזהה יחודי חדש במסד הנתונים
+    // ייצור מזהה יחודי חדש
     private String generateNewId(@NotNull final String path) {
         return databaseReference.child(path).push().getKey();
     }
 
-
-
     // ---- יצירת משתמש חדש
-    public void createNewUser(@NotNull final User user,
-                              @Nullable final DatabaseCallback<String> callback) {
+    public void createNewUser(@NotNull final User user, @Nullable final DatabaseCallback<String> callback) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())  // יצירת משתמש ב-Firebase Auth
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d("TAG", "createUserWithEmail:success");
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         user.setId(uid);
+                        // שמירת המשתמש במסד הנתונים
                         writeData(USERS_PATH + "/" + uid, user, new DatabaseCallback<Void>() {
                             @Override
                             public void onCompleted(Void v) {
@@ -152,20 +146,17 @@ public class DatabaseService {
                 });
     }
 
-
     // ---- חיבור המשתמש באמצעות אימייל וסיסמה ----
     public static void LoginUser(@NotNull final String email, final String password,
                                  @Nullable final DatabaseCallback<String> callback) {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(email, password)   // התחברות ל-Firebase Auth
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d("TAG", "createUserWithEmail:success");
-
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         callback.onCompleted(uid);
-
                     } else {
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
 
@@ -175,53 +166,45 @@ public class DatabaseService {
                 });
     }
 
-    // השגת משתמש מסויים באמצעות מזהה יחודי
+    // שליפת משתמש מסויים באמצעות מזהה יחודי
     public void getUser(@NotNull final String uid, @NotNull final DatabaseCallback<User> callback) {
         getData(USERS_PATH + "/" + uid, User.class, callback);
     }
 
-    // ---- השגת רשימת כל המשתמשים ממסד הנתונים ----
+    // ---- שליפת רשימת כל המשתמשים ----
     public void getUserList(@NotNull final DatabaseCallback<List<User>> callback) {
         getDataList(USERS_PATH, User.class, callback);
     }
 
+    // ---- יצירת עבודה חדשה ב2 נתיבים ----
     public void createNewJob(@NotNull final Job job, @Nullable final DatabaseCallback<Void> callback) {
         writeData(JOBS_PATH + "/" + job.getId(), job, callback);
         writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, callback);
 
     }
 
+    // ---- עדכון פרטי עבודה ----
     public void updateJob(@NotNull Job job, @Nullable DatabaseCallback<Void> callback) {
-
         writeData(JOBS_PATH + "/" + job.getId(), job, callback);
         writeData(COMPANY_JOBS_PATH + "/" + job.getUser().getId() + "/" + job.getId(), job, null);
     }
 
-    public void getJob(@NotNull final String jobId, @NotNull final DatabaseCallback<Job> callback) {
-        getData(JOBS_PATH + "/" + jobId, Job.class, callback);
-    }
-
-    public void getCompanyJob(@NotNull final String comanyId, @NotNull final String jobId, @NotNull final DatabaseCallback<Job> callback) {
-        getData(COMPANY_JOBS_PATH + "/" + comanyId + "/" + jobId, Job.class, callback);
-    }
-
+    // ---- שליפת רשימת כל העבודות ----
     public void getJobList(@NotNull final DatabaseCallback<List<Job>> callback) {
         getDataList(JOBS_PATH, Job.class, callback);
     }
 
+    // ---- שליפת רשימת כל העבודות של משתמש מסויים ----
     public void getCompanyJobList(@NotNull final String companyId, @NotNull final DatabaseCallback<List<Job>> callback) {
         getDataList(COMPANY_JOBS_PATH + "/" + companyId + "/", Job.class, callback);
     }
 
+    // ---- יצירת מזהה יחודי לעבודה ----
     public String generateJobId() {
         return generateNewId(JOBS_PATH);
     }
 
-    public void deleteJob(@NotNull final String jobId, @Nullable final DatabaseCallback<Void> callback) {
-        deleteData(JOBS_PATH + "/" + jobId, callback);
-
-    }
-
+    // ---- יצירת שיחה חדשה ----
     public void createNewCall(@NotNull final Call call, @Nullable final DatabaseCallback<Void> callback) {
         // יוצאת – אצל מי שהתקשר
         Call callUser = new Call(call.getId(), call.getJob(), call.getTime());
@@ -232,22 +215,24 @@ public class DatabaseService {
         writeData(COMPANY_JOBS_PATH + "/" + call.getJob().getUser().getId() + "/" + call.getJob().getId() + "/calls/" + call.getId(), callCompany, callback);
     }
 
+    // ---- יצירת מזהה יחודי לשיחה ----
     public String generateCallId() {
         return generateNewId(CALLS_PATH);
     }
 
-    // ---- רשימת שיחות יוצאות ----
+    // ---- רשימת שיחות יוצאות של משתמש מסוים ----
     private void readOutgoingCalls(String uid, DatabaseService.DatabaseCallback<List<Call>> callback) {
-        readData(DatabaseService.CALLS_PATH + "/" + uid) // ניגשים לנתונים של calls
+        readData(DatabaseService.CALLS_PATH + "/" + uid) // שליפת calls של משתמש מסוים
                 .addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         List<Call> outgoingCalls = new ArrayList<>();
-                        for (DataSnapshot callSnapshot : snapshot.getChildren()) { // מעבר על כל השיחות
-                            Call call = callSnapshot.getValue(Call.class); // המרת כל נתון שהתקבל לאובייקט מסוג call
-                            if (call != null) outgoingCalls.add(call);
+                        for (DataSnapshot callSnapshot : snapshot.getChildren()) { // מעבר על כל השיחות היוצאות של המשתמש
+                            Call call = callSnapshot.getValue(Call.class);
+                            if (call != null)
+                                outgoingCalls.add(call);
                         }
-                        callback.onCompleted(outgoingCalls);  // החזרת כל הcalls
+                        callback.onCompleted(outgoingCalls);  // החזרת רשימה של calls
                     }
 
                     @Override
@@ -257,9 +242,9 @@ public class DatabaseService {
                 });
     }
 
-    // ---- רשימת שיחות נכנסות ----
+    // ---- רשימת שיחות נכנסות של משתמש מסוים ----
     private void readIncomingCalls(String uid, DatabaseService.DatabaseCallback<List<Call>> callback) {
-        getCompanyJobList(uid, new DatabaseService.DatabaseCallback<List<Job>>() {        // קורא את כל ה-Jobs של המשתמש
+        getCompanyJobList(uid, new DatabaseService.DatabaseCallback<List<Job>>() {   // שליפת jobs של משתמש מסוים
             @Override
             public void onCompleted(List<Job> jobsList) {
                 List<Call> incomingCalls = new ArrayList<>();
@@ -269,31 +254,31 @@ public class DatabaseService {
                 }
 
                 final int totalJobs = jobsList.size();
-                final int[] processedJobs = {0};
+                final int[] completedJobs = {0};
 
-                for (Job job : jobsList) {      // קוראים את כל השיחות עבור כל job
-                    readData(DatabaseService.COMPANY_JOBS_PATH + "/" + uid + "/" + job.getId() + "/calls")  // קריאת Job ספציפי
+                for (Job job : jobsList) {      // שליפת calls של כל העבודות של המשתמש
+                    readData(DatabaseService.COMPANY_JOBS_PATH + "/" + uid + "/" + job.getId() + "/calls")  // שליפת calls של עבודה ספציפית
                             .get().addOnCompleteListener(task -> {
-                                processedJobs[0]++;
-                                if (task.isSuccessful() && task.getResult() != null) {
-                                    for (DataSnapshot callSnapshot : task.getResult().getChildren()) { // קריאת כל השיחות של job
-                                        Call call = callSnapshot.getValue(Call.class);    // המרת כל נתון שהתקבל לאובייקט מסוג call
-                                        if (call != null) incomingCalls.add(call);
+                                if (task.isSuccessful() && task.getResult() != null) { // אם יש לעבודה שיחות
+                                    for (DataSnapshot callSnapshot : task.getResult().getChildren()) { // שליפת כל השיחות של העבודה
+                                        Call call = callSnapshot.getValue(Call.class);
+                                        if (call != null)
+                                            incomingCalls.add(call);
                                     }
                                 }
-                                // אם סיימנו את כל ה-Jobs מחזירים את הרשימה
-                                if (processedJobs[0] == totalJobs) {
+                                completedJobs[0]++;
+                                // אם עברנו על כל ה-Jobs מחזירים את הרשימה
+                                if (completedJobs[0] == totalJobs) {
                                     callback.onCompleted(incomingCalls);
                                 }
                             }).addOnFailureListener(e -> {
-                                processedJobs[0]++;
-                                if (processedJobs[0] == totalJobs) {
+                                completedJobs[0]++;
+                                if (completedJobs[0] == totalJobs) {
                                     callback.onCompleted(incomingCalls);
                                 }
                             });
                 }
             }
-
             @Override
             public void onFailed(Exception e) {
                 callback.onFailed(e);
@@ -302,14 +287,14 @@ public class DatabaseService {
     }
 
 
-    // ---- קריאה של כלל השיחות ----
-    public void listenToCallList(@NotNull final DatabaseCallback<List<Call>> callback) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();      // המשתמש הנוכחי
-        readOutgoingCalls(uid, new DatabaseCallback<List<Call>>() {
+    // ---- קריאה של כלל השיחות של משתמש מסוים ----
+    public void loadCallList(@NotNull final DatabaseCallback<List<Call>> callback) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();    // המשתמש הנוכחי
+        readOutgoingCalls(uid, new DatabaseCallback<List<Call>>() { // רשימה של כל השיחות היוצאות
             @Override
             public void onCompleted(List<Call> outgoingCalls) {
 
-                readIncomingCalls(uid, new DatabaseCallback<List<Call>>() {
+                readIncomingCalls(uid, new DatabaseCallback<List<Call>>() { // רשימה של כל השיחות הנכנסות
                     @Override
                     public void onCompleted(List<Call> incomingCalls) {
                         List<Call> combined = new ArrayList<>();

@@ -6,6 +6,9 @@ public class Call {
     long time;
     User user;
 
+    public Call() {
+    }
+
     public Call(String id, Job job, long time, User user) {
         this.id = id;
         this.job = job;
@@ -23,14 +26,9 @@ public class Call {
 
     public Call(String id, Job job, long time) {
         this.id = id;
-
         this.time = time;
         this.job=job;
-
     }
-
-
-
 
     public String getId() {
         return id;
@@ -63,10 +61,6 @@ public class Call {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public Call() {
-    }
-
 
 
     @Override

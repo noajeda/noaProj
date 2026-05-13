@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.noaproj.services.DatabaseService;
 
@@ -28,7 +29,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private TextView tvRegister;
     public static final String MyPREFERENCES = "MyPrefs" ;
     SharedPreferences sharedpreferences;
-    String email2, pass2;
+    String email1, password1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             return insets;
         });
         initViews();
+        initData();
         initListeners();
-
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        email2=sharedpreferences.getString("email","");
-        pass2=sharedpreferences.getString("password","");
-        etEmail.setText(email2);
-        etPassword.setText(pass2);
     }
 
     private void initViews() {
@@ -55,6 +51,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         etPassword = findViewById(R.id.etLoginPassword);
         btnLogin = findViewById(R.id.btnLoginSubmit);
         tvRegister = findViewById(R.id.tvLogToReg);
+    }
+    private void initData(){
+        // כתיבה אוטומטית של פריטh ההתחברות הקודמים, במידה וקיימים
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        email1=sharedpreferences.getString("email","");
+        password1=sharedpreferences.getString("password","");
+        etEmail.setText(email1);
+        etPassword.setText(password1);
     }
 
     private void initListeners() {
@@ -70,7 +74,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             // קבלת המייל והסיסמה שהמשתמש הזין
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-            loginUser(email, password); // חיבור המשתמש
+            if(email.isEmpty() || password.isEmpty())
+                Toast.makeText(Login.this,"יש למלא את שני השדות", Toast.LENGTH_SHORT).show();
+            else
+                loginUser(email, password); // חיבור המשתמש
         }
         if (v == tvRegister) { // לחיצה על הרשמה
             Intent goRegister = new Intent(Login.this, Register.class);
@@ -78,6 +85,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    // ---- חיבור המשתמש ----
     private void loginUser(String email, String password) {
         DatabaseService.LoginUser(email, password, new DatabaseService.DatabaseCallback<String>() { // חיבור המשתמש
             @Override
@@ -87,18 +95,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putString("email", email);
                 editor.putString("password", password);
-                editor.commit();
+                editor.apply();
 
-                Intent mainIntent = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
-                mainIntent.putExtra("uid", uid);  // מעבירים את המזהה היחודי של המשתמש
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
-                startActivity(mainIntent);
+                Intent goMain = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
+                goMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
+                startActivity(goMain);
             }
 
             @Override
             public void onFailed(Exception e) {
                 Log.e(TAG, "onFailed: Failed to retrieve user data", e);
-                etPassword.setError("Invalid email or password"); // הצגת הודעת שגיאה למשתמש
+                etPassword.setError("הסיסמה או האימייל אינם נכונים"); // הצגת הודעת שגיאה למשתמש
                 etPassword.requestFocus();
             }
         });

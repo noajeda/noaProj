@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.noaproj.model.User;
 import com.example.noaproj.services.DatabaseService;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "RegisterActivity";
@@ -90,45 +89,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         // ---- רישום המשתמש ----
     private void registerUser(String fname, String lname, String phone, String email, String password, String age, String gender, String city) {
         Log.d(TAG, "register: Registering user...");
-        if(checkInput()){
-            User user = new User("oo",fname, lname, phone, email, password, age, gender, city); // יצירת אובייקט User
+        if (checkInput()) {
+            User user = new User("oo", fname, lname, phone, email, password, age, gender, city);
             createUserInDatabase(user);
         }
         }
-
-    private boolean checkInput() {
-        boolean valid = true;
-        if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() ||
-                password.isEmpty() || phone.isEmpty() || age.isEmpty()) {
-            Toast.makeText(Register.this, "יש למלא את כל השדות", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (!fname.matches("[a-zA-Zא-ת]{2,}") || !lname.matches("[a-zA-Zא-ת]{2,}")) {
-            Toast.makeText(Register.this, "שם פרטי ושם משפחה חייבים להיות מורכבים לפחות מ-2 אותיות", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (password.matches("\\d+")) {
-            Toast.makeText(Register.this, "סיסמה אינה יכולה להיות רק מספרים", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (password.length() < 6) {
-            Toast.makeText(this, "הסיסמה חייבת להכיל לפחות 6 תווים", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (age.length() < 16) {
-            Toast.makeText(this, "האפליקציה מיועדת לגיל 16+", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(Register.this, "אימייל לא תקין", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        else if (!phone.matches("\\d{9,10}")) {
-            Toast.makeText(Register.this, "מספר טלפון חייב להכיל 9-10 ספרות", Toast.LENGTH_SHORT).show();
-            valid = false;
-        }
-        return valid;
-    }
 
     // ---- הוספת המשתמש למסד הנתונים ----
     private void createUserInDatabase(User user) {
@@ -141,7 +106,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 SharedPreferences.Editor editor = sharedpreferences.edit(); // שמירת נתוני המשתמש ב-SharedPreferences
                 editor.putString("email", email);
                 editor.putString("password", password);
-                editor.commit();
+                editor.apply();
 
                 Intent goUserActivity = new Intent(Register.this, UserActivity.class); // מעבר למסך המשתמש
                 goUserActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
@@ -150,9 +115,45 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "createUserInDatabase: Failed to create user", e);
-                FirebaseAuth.getInstance().signOut(); // נטרול המשתמש אם הרישום למסד הנתונים נכשל
+                // בדיקה האם השגיאה היא כי המשתמש כבר קיים
+                if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+                    Toast.makeText(Register.this, "האימייל כבר קיים במערכת!", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private boolean checkInput() {
+        boolean valid = true;
+        if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() ||
+                password.isEmpty() || phone.isEmpty() || age.isEmpty()) {
+            Toast.makeText(Register.this, "יש למלא את כל השדות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!fname.matches("[a-zA-Zא-ת]{2,}") || !lname.matches("[a-zA-Zא-ת]{2,}")) {
+            Toast.makeText(Register.this, "שם פרטי/משפחה חייב להיות מורכב לפחות מ-2 אותיות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (password.matches("\\d+")) {
+            Toast.makeText(Register.this, "סיסמה אינה יכולה להיות רק מספרים", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (password.length() < 6) {
+            Toast.makeText(this, "הסיסמה חייבת להכיל לפחות 6 תווים", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(Register.this, "אימייל לא תקין", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (!phone.matches("\\d{9,10}")) {
+            Toast.makeText(Register.this, "מספר טלפון חייב להכיל 9-10 ספרות", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        else if (Integer.parseInt(age) < 16) {
+            Toast.makeText(this, "האפליקציה מיועדת לגיל 16+", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        return valid;
     }
 }

@@ -51,12 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent goLog = new Intent(this, Login.class);
             startActivity(goLog);
         }
-        if (v == btnSignup) // מסך הרשמה
+        else if (v == btnSignup) // מסך הרשמה
         {
             Intent goReg = new Intent(this, Register.class);
             startActivity(goReg);
         }
-        if (v == btnAboutApp) // מסך אודות
+        else if (v == btnAboutApp) // מסך אודות
         {
             Intent goAb = new Intent(this, AboutApp.class);
             startActivity(goAb);

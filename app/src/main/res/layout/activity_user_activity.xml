@@ -36,13 +36,13 @@
 
             <EditText
                 android:id="@+id/etSearchJob"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:textDirection="rtl"
                 android:gravity="right"
-                android:hint="חפש בית עסק.."
+                android:hint="חפש בית עסק"
                 android:inputType="text" />
 
             <Button
@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginLeft="10dp"
                 app:srcCompat="@drawable/baseline_menu_24" />
 
         </LinearLayout>
