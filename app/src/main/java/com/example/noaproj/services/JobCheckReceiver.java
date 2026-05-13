@@ -107,7 +107,7 @@ public class JobCheckReceiver extends BroadcastReceiver {
         });
     }
     private void scheduleNext(Context context) {
-        if (prefs.getBoolean("notificationsEnabled", false))
+        if (!prefs.getBoolean("notificationsEnabled", false))
             return; // המשתמש כיבה, לא מתזמנים שוב
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -123,7 +123,7 @@ public class JobCheckReceiver extends BroadcastReceiver {
         // הפעל את ההתראה בעוד 20 שניות
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 1000 * 20,
+                System.currentTimeMillis() + 1000 * 60 * 15,
                 schedulePendingIntent
         );
     }

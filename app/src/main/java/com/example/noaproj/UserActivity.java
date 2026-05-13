@@ -158,18 +158,20 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadCurrentUser() { // שליפת המשתמש הנוכחי ממסד הנתונים
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid = mAuth.getCurrentUser().getUid();
-        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
-            @Override
-            public void onCompleted(User user) {
-                currentUser = new User(user);
-            }
+        String uid = mAuth.getUid();
+        if(uid != null) {
+            databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+                @Override
+                public void onCompleted(User user) {
+                    currentUser = new User(user);
+                }
 
-            @Override
-            public void onFailed(Exception e) {
-                Log.e(TAG, "onFailed: Failed to get user", e);
-            }
-        });
+                @Override
+                public void onFailed(Exception e) {
+                    Log.e(TAG, "onFailed: Failed to get user", e);
+                }
+            });
+        }
     }
     // ---- הצגת כל העבודות המאושרות ----
     private void approvejoblist() {

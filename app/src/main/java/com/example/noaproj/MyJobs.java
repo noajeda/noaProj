@@ -35,7 +35,7 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
     OfferAdapter adapter;
     int totalJobs;
 
-    String uid="";
+    String uid=null;
     FirebaseAuth mAuth;
 
     @Override

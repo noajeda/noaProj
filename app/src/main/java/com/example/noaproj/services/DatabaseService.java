@@ -65,18 +65,6 @@ public class DatabaseService {
         });
     }
 
-    // ---- מחיקת נתונים בנתיב מסוים ----
-    private void deleteData(@NotNull final String path, @Nullable final DatabaseCallback<Void> callback) {
-        readData(path).removeValue((error, ref) -> {     // נכנסים לנתיב ומוחקים את מה שבתוכו
-            if (error != null) {
-                if (callback == null) return;
-                callback.onFailed(error.toException());
-            } else {
-                if (callback == null) return;
-                callback.onCompleted(null);
-            }
-        });
-    }
 
     private DatabaseReference readData(@NotNull final String path) {
         return databaseReference.child(path);     // קבלת reference לנתיב
@@ -124,7 +112,7 @@ public class DatabaseService {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d("TAG", "createUserWithEmail:success");
-                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String uid = FirebaseAuth.getInstance().getUid();
                         user.setId(uid);
                         // שמירת המשתמש במסד הנתונים
                         writeData(USERS_PATH + "/" + uid, user, new DatabaseCallback<Void>() {
@@ -155,7 +143,7 @@ public class DatabaseService {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d("TAG", "createUserWithEmail:success");
-                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String uid = FirebaseAuth.getInstance().getUid();
                         callback.onCompleted(uid);
                     } else {
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
@@ -289,7 +277,7 @@ public class DatabaseService {
 
     // ---- קריאה של כלל השיחות של משתמש מסוים ----
     public void loadCallList(@NotNull final DatabaseCallback<List<Call>> callback) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();    // המשתמש הנוכחי
+        String uid = FirebaseAuth.getInstance().getUid();    // המשתמש הנוכחי
         readOutgoingCalls(uid, new DatabaseCallback<List<Call>>() { // רשימה של כל השיחות היוצאות
             @Override
             public void onCompleted(List<Call> outgoingCalls) {

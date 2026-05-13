@@ -85,20 +85,22 @@ public class SubmitOfferActivity extends AppCompatActivity implements View.OnCli
     // ---- הגשת הצעת עבודה ----
     private void SubmitOffer(String company, String jobCity, String jobType, String jobTitle, String jobAddress, String jobPhone, String jobAge, String jobDetails) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String uid = mAuth.getCurrentUser().getUid();
-        databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
-            public void onCompleted(User user) {
-                User currentUser = new User(user);
-                String jobId = databaseService.generateJobId();
-                Job job = new Job(jobAddress, jobAge, jobCity, company, jobDetails, jobId, jobPhone, jobTitle, jobType, currentUser);
-                createJobInDatabase(job); // הוספת job עבור currentUser במסד הנתונים
-            }
+        String uid = mAuth.getUid();
+        if (uid != null) {
+            databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+                public void onCompleted(User user) {
+                    User currentUser = new User(user);
+                    String jobId = databaseService.generateJobId();
+                    Job job = new Job(jobAddress, jobAge, jobCity, company, jobDetails, jobId, jobPhone, jobTitle, jobType, currentUser);
+                    createJobInDatabase(job); // הוספת job עבור currentUser במסד הנתונים
+                }
 
-            @Override
-            public void onFailed(Exception e) {
-                Log.e(TAG, "SubmitOffer: Failed to load user", e);
-            }
-        });
+                @Override
+                public void onFailed(Exception e) {
+                    Log.e(TAG, "SubmitOffer: Failed to load user", e);
+                }
+            });
+        }
     }
 
 
