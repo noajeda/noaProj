@@ -39,7 +39,7 @@
         OfferAdapter adapter;
         int totalOffers;
 
-        String uid = "";
+        String uid = null;
         FirebaseAuth mAuth;
         User currentUser = null;
         private static final int SMS_PERMISSION_CODE = 1; // קוד זיהוי להרשאה
@@ -71,47 +71,50 @@
         // ---- מציאת המשתמש הנוכחי, יצירת ה-adapter וקישורו לרשימה ----
         private void setUpOfferAdapter() {
             mAuth = FirebaseAuth.getInstance();
-            uid = mAuth.getCurrentUser().getUid();
-            databaseService = DatabaseService.getInstance();
-            databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
-                @Override
-                public void onCompleted(User user) {
-                    currentUser = user;
-                    adapter = new OfferAdapter(jobArrayList, currentUser, new OfferAdapter.OnJobClickListener() {
-                        @Override
-                        public void onLongJobClick(Job job) {
-                        }
-
-                        @Override
-                        public void onApprove(Job job) {  // לחיצה על כפתור אישור העבודה
-                            if (ContextCompat.checkSelfPermission(OfferList.this, Manifest.permission.SEND_SMS)
-                                    == PackageManager.PERMISSION_GRANTED) {
-                                sendApprovalSMS(job);
-
-                            } else {
-                                // אם אין הרשאה, מבקשים
-                                checkSMSPermission();
+            uid = mAuth.getUid();
+            if (uid != null) {
+                databaseService = DatabaseService.getInstance();
+                databaseService.getUser(uid, new DatabaseService.DatabaseCallback<User>() {
+                    @Override
+                    public void onCompleted(User user) {
+                        currentUser = user;
+                        adapter = new OfferAdapter(jobArrayList, currentUser, new OfferAdapter.OnJobClickListener() {
+                            @Override
+                            public void onLongJobClick(Job job) {
                             }
-                        }
-                        @Override
-                        public void onReject(Job job) { // לחיצה על כפתור דחיית העבודה
-                            showRejectReasonDialog(job); // פתיחת דיאלוג שמציג את סיבת הדחייה
-                        }
 
-                        @Override
-                        public void onPhoneClick(Job job) {
-                        }
-                    });
-                    rcOffers.setAdapter(adapter);
-                    readNewJobs();
-                }
+                            @Override
+                            public void onApprove(Job job) {  // לחיצה על כפתור אישור העבודה
+                                if (ContextCompat.checkSelfPermission(OfferList.this, Manifest.permission.SEND_SMS)
+                                        == PackageManager.PERMISSION_GRANTED) {
+                                    sendApprovalSMS(job);
 
-                @Override
-                public void onFailed(Exception e) {
-                    Log.e(TAG, "onFailed: Failed to get user", e);
-                }
-            });
+                                } else {
+                                    // אם אין הרשאה, מבקשים
+                                    checkSMSPermission();
+                                }
+                            }
 
+                            @Override
+                            public void onReject(Job job) { // לחיצה על כפתור דחיית העבודה
+                                showRejectReasonDialog(job); // פתיחת דיאלוג שמציג את סיבת הדחייה
+                            }
+
+                            @Override
+                            public void onPhoneClick(Job job) {
+                            }
+                        });
+                        rcOffers.setAdapter(adapter);
+                        readNewJobs();
+                    }
+
+                    @Override
+                    public void onFailed(Exception e) {
+                        Log.e(TAG, "onFailed: Failed to get user", e);
+                    }
+                });
+
+            }
         }
 
         // ---- שליפת העבודות החדשות ממסד הנתונים והצגתם במסך המנהל ----
