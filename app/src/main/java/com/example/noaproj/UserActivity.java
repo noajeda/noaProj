@@ -45,7 +45,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView rvApproveJobs;
     FrameLayout flMenu;
     private DatabaseService databaseService;
-    private FirebaseAuth mAuth;
     ArrayList<Job> approveArraylist = new ArrayList<Job>();
 
     EditText etSearchJob;
@@ -54,7 +53,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     User currentUser;
 
     BottomSheetDialog bottomSheetDialog;
-    private ArrayList<CheckBox> cbCites = new ArrayList<>();
+    private ArrayList<CheckBox> cbCities = new ArrayList<>();
     private ArrayList<CheckBox> cbTypes = new ArrayList<>();
     private ArrayList<CheckBox> cbTitles = new ArrayList<>();
     private RangeSlider sliderAge;
@@ -269,7 +268,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         layoutTypes.removeAllViews();
         layoutTitles.removeAllViews();
         // ניקוי הרשימות כדי שלא יכילו אובייקטים ישנים
-        cbCites.clear();
+        cbCities.clear();
         cbTypes.clear();
         cbTitles.clear();
 
@@ -287,7 +286,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             CheckBox cb = new CheckBox(this);
             cb.setText(city);
             layoutCities.addView(cb);   // הוספת הרשימה לתצוגה
-            cbCites.add(cb);    // שמירה ברשימה עבור בדיקה
+            cbCities.add(cb);    // שמירה ברשימה עבור בדיקה
         }
 
         // types
@@ -326,7 +325,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         // ---- שמירת התוצאות ברשימה ----
         ArrayList<String> selectedCities = new ArrayList<>(); // הערים שנבחרו
         for (int i = 0; i < cities.length; i++) {
-            CheckBox cb = cbCites.get(i);
+            CheckBox cb = cbCities.get(i);
             if (cb.isChecked()) {
                 selectedCities.add(cb.getText().toString());  // שמירה
             }
@@ -358,7 +357,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     // ---- ניקוי הסינון ----
     private void cleanFilter(){
-        for (CheckBox cb : cbCites) {
+        for (CheckBox cb : cbCities) {
             cb.setChecked(false);
         }
 

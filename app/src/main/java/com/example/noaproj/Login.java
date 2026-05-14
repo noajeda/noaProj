@@ -97,9 +97,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 editor.putString("password", password);
                 editor.apply();
 
-                Intent goMain = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
-                goMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
-                startActivity(goMain);
+                Intent goUserActivity = new Intent(Login.this, UserActivity.class); // מעבר למסך המשתמש
+                goUserActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // מחיקת היסטוריית המסכים הקודמים
+                startActivity(goUserActivity);
             }
 
             @Override

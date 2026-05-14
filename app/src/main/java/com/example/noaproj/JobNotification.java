@@ -35,7 +35,7 @@ public class JobNotification extends AppCompatActivity {
     boolean applied;
     private static final int NOTIFICATION_PERMISSION_CODE = 1;
 
-    private ArrayList<CheckBox> cbCites = new ArrayList<>();
+    private ArrayList<CheckBox> cbCities = new ArrayList<>();
     private ArrayList<CheckBox> cbTypes = new ArrayList<>();
     private ArrayList<CheckBox> cbTitles = new ArrayList<>();
     private RangeSlider sliderAge;
@@ -110,7 +110,7 @@ public class JobNotification extends AppCompatActivity {
         layoutTypes.removeAllViews();
         layoutTitles.removeAllViews();
         // ניקוי הרשימות כדי שלא יכילו אובייקטים ישנים
-        cbCites.clear();
+        cbCities.clear();
         cbTypes.clear();
         cbTitles.clear();
 
@@ -127,7 +127,7 @@ public class JobNotification extends AppCompatActivity {
             CheckBox cb = new CheckBox(this);
             cb.setText(city);
             layoutCities.addView(cb);   // הוספה לתצוגה
-            cbCites.add(cb);    // שמירה ברשימה עבור בדיקה
+            cbCities.add(cb);    // שמירה ברשימה עבור בדיקה
         }
 
         // types
@@ -174,7 +174,7 @@ public class JobNotification extends AppCompatActivity {
         // ---- שמירת התוצאות ברשימה ----
         ArrayList<String> selectedCities = new ArrayList<>(); // הערים שנבחרו
         for (int i = 0; i < cities.length; i++) {
-            CheckBox cb = cbCites.get(i);
+            CheckBox cb = cbCities.get(i);
             if (cb.isChecked()) {
                 selectedCities.add(cb.getText().toString());  // שמירה
             }
@@ -222,7 +222,7 @@ public class JobNotification extends AppCompatActivity {
 
     // ---- ניקוי הסיינון ----
     private void cleanFilter(){
-        for (CheckBox cb : cbCites) {
+        for (CheckBox cb : cbCities) {
             cb.setChecked(false);
         }
 
