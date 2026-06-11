@@ -220,7 +220,7 @@ public class JobNotification extends AppCompatActivity {
         bottomSheetDialog.dismiss(); // סגור תפריט
     }
 
-    // ---- ניקוי הסיינון ----
+    // ---- ניקוי הסינון ----
     private void cleanFilter(){
         for (CheckBox cb : cbCities) {
             cb.setChecked(false);
