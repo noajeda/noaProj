@@ -48,8 +48,7 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo2)
                 .setContentTitle("עבודות חדשות")
-                .setContentText(text)
-                .setAutoCancel(true);
+                .setContentText(text);
 
         // שליחת Notification עם מזהה יחודי
         manager.notify((int) System.currentTimeMillis(), builder.build());
