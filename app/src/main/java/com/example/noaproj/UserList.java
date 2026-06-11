@@ -43,6 +43,7 @@ public class UserList extends AppCompatActivity {
         loadUserList();
     }
 
+    // רשימת משתמשים
     private void initViews() {
         tv_user_count = findViewById(R.id.tv_user_count);
         rcUsers = findViewById(R.id.rv_users_list);
