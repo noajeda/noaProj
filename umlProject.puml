@@ -1,0 +1,451 @@
+@startuml
+class com.example.noaproj.JobNotification {
+- SharedPreferences prefs
+~ Switch swNotification
+~ BottomSheetDialog bottomSheetDialog
+~ boolean applied
+- {static} int NOTIFICATION_PERMISSION_CODE
+- ArrayList<CheckBox> cbCities
+- ArrayList<CheckBox> cbTypes
+- ArrayList<CheckBox> cbTitles
+- RangeSlider sliderAge
+~ String[] cities
+# void onCreate(Bundle)
+- void initViews()
+- void initData()
+- void initSwitchListener()
+- void setupBottomSheet()
+- void applyFilter()
+- void cleanFilter()
+- boolean hasNotificationPermission()
+- void requestNotificationPermission()
++ void onRequestPermissionsResult(int,String[],int[])
+}
+
+
+class com.example.noaproj.services.DatabaseService {
+- {static} String TAG
+- {static} String USERS_PATH
+- {static} DatabaseService instance
+- DatabaseReference databaseReference
++ {static} DatabaseService getInstance()
+- void writeData(String,Object,DatabaseCallback<Void>)
+- DatabaseReference readData(String)
+- void getData(String,Class<T>,DatabaseCallback<T>)
+- void getDataList(String,Class<T>,DatabaseCallback<List<T>>)
+- String generateNewId(String)
++ void createNewUser(User,DatabaseCallback<String>)
++ {static} void LoginUser(String,String,DatabaseCallback<String>)
++ void getUser(String,DatabaseCallback<User>)
++ void getUserList(DatabaseCallback<List<User>>)
++ void createNewJob(Job,DatabaseCallback<Void>)
++ void updateJob(Job,DatabaseCallback<Void>)
++ void getJobList(DatabaseCallback<List<Job>>)
++ void getCompanyJobList(String,DatabaseCallback<List<Job>>)
++ String generateJobId()
++ void createNewCall(Call,DatabaseCallback<Void>)
++ String generateCallId()
+- void readOutgoingCalls(String,DatabaseService.DatabaseCallback<List<Call>>)
+- void readIncomingCalls(String,DatabaseService.DatabaseCallback<List<Call>>)
++ void loadCallList(DatabaseCallback<List<Call>>)
+}
+
+
+interface com.example.noaproj.services.DatabaseService$DatabaseCallback {
++ void onCompleted(T)
++ void onFailed(Exception)
+}
+
+class com.example.noaproj.Splash {
+~ ImageView imgSplash
+# void onCreate(Bundle)
+}
+
+
+class com.example.noaproj.Login {
+- {static} String TAG
+- EditText etEmail
+- Button btnLogin
+- TextView tvRegister
++ {static} String MyPREFERENCES
+~ SharedPreferences sharedpreferences
+~ String email1
+# void onCreate(Bundle)
+- void initViews()
+- void initData()
+- void initListeners()
++ void onClick(View)
+- void loginUser(String,String)
+}
+
+
+class com.example.noaproj.Register {
+- {static} String TAG
+- DatabaseService databaseService
++ {static} String MyPREFERENCES
+~ SharedPreferences sharedpreferences
+~ Button btnSubmit
+~ EditText etFname
+~ String fname
+~ Spinner spUserGender
+# void onCreate(Bundle)
+- void initViews()
+- void initListeners()
++ void onClick(View)
+- void registerUser(String,String,String,String,String,String,String,String)
+- void createUserInDatabase(User)
+- boolean checkInput()
+}
+
+
+class com.example.noaproj.MainActivity {
+~ Button btnLogin
+# void onCreate(Bundle)
+- void initViews()
+- void initListeners()
++ void onClick(View)
+}
+
+
+class com.example.noaproj.UserList {
+- {static} String TAG
+~ DatabaseService databaseService
+~ RecyclerView rcUsers
+~ TextView tv_user_count
+~ UserAdapter adapter
+~ int totalUsers
+# void onCreate(Bundle)
+- void initViews()
+- void setupRecyclerView()
+- void loadUserList()
+}
+
+
+class com.example.noaproj.UserActivity {
+~ Button btnFilter
+~ ImageView imgMenu
+- boolean isMenuOpen
+~ OfferAdapter adapter
+~ RecyclerView rvApproveJobs
+~ FrameLayout flMenu
+- DatabaseService databaseService
+~ ArrayList<Job> approveArraylist
+~ EditText etSearchJob
+- {static} String TAG
+~ User currentUser
+~ BottomSheetDialog bottomSheetDialog
+- ArrayList<CheckBox> cbCities
+- ArrayList<CheckBox> cbTypes
+- ArrayList<CheckBox> cbTitles
+- RangeSlider sliderAge
+~ String[] cities
+# void onCreate(Bundle)
+- void initViews()
+- void initListeners()
+- void setupRecyclerView()
+- void loadCurrentUser()
+- void approvejoblist()
++ void onClick(View)
+- void setupBottomSheet()
+- void applyFilter()
+- void cleanFilter()
+- void filterJobs(ArrayList<String>,ArrayList<String>,ArrayList<String>,int,int)
+- void searchJob()
+- void logOut()
+- void isAdmin()
+- void cleanAll()
+- void createCallInDatabase(Call)
+# void onResume()
+}
+
+
+class com.example.noaproj.ExampleInstrumentedTest {
++ void useAppContext()
+}
+
+class com.example.noaproj.adapters.CallAdapter {
+- List<Call> callList
++ CallAdapter.ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(CallAdapter.ViewHolder,int)
++ int getItemCount()
+}
+
+
+class com.example.noaproj.adapters.CallAdapter$ViewHolder {
+~ TextView tvNameCall
+~ ImageView imgPhone
+}
+
+class com.example.noaproj.MyCalls {
+- {static} String TAG
+~ TextView tv_MyCalloffer_count
+~ RecyclerView rcCalls
+~ ArrayList<Call> callArrayList
+- DatabaseService databaseService
+~ CallAdapter adapter
+~ int countCalls
+# void onCreate(Bundle)
+- void initViews()
+- void initRecycler()
+- void readCalls()
+# void onResume()
+}
+
+
+class com.example.noaproj.services.NotificationHelper {
+- {static} String CHANNEL_ID
+- {static} String CHANNEL_NAME
++ {static} void sendNotification(Context,int)
+}
+
+
+class com.example.noaproj.services.JobAlarmService {
++ int onStartCommand(Intent,int,int)
+- void startAlarm()
+- void stopAlarm()
++ IBinder onBind(Intent)
+}
+
+class com.example.noaproj.adapters.UserAdapter {
+- List<User> userList
++ ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(ViewHolder,int)
++ int getItemCount()
++ void setUserList(List<User>)
+}
+
+
+class com.example.noaproj.adapters.UserAdapter$ViewHolder {
+~ TextView tvName
+}
+
+class com.example.noaproj.model.Call {
+~ String id
+~ Job job
+~ long time
+~ User user
++ String getId()
++ void setId(String)
++ Job getJob()
++ void setJob(Job)
++ long getTime()
++ void setTime(long)
++ User getUser()
++ void setUser(User)
++ String toString()
+}
+
+
+class com.example.noaproj.adapters.OfferAdapter {
+- List<Job> jobList
+- OfferAdapter.OnJobClickListener onJobClickListener
+~ User currentUser
++ OfferAdapter.ViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(OfferAdapter.ViewHolder,int)
++ int getItemCount()
++ void setJobList(List<Job>)
+- void phoneClick(View,Job)
+}
+
+
+interface com.example.noaproj.adapters.OfferAdapter$OnJobClickListener {
+~ void onLongJobClick(Job)
+~ void onApprove(Job)
+~ void onReject(Job)
+~ void onPhoneClick(Job)
+}
+
+class com.example.noaproj.adapters.OfferAdapter$ViewHolder {
+~ TextView tvJobCompany2
+~ Button btnApprove
+~ ImageView imgPhone
+}
+
+class com.example.noaproj.services.JobCheckReceiver {
+~ SharedPreferences prefs
++ void onReceive(Context,Intent)
+- void scheduleNext(Context)
+- ArrayList<Job> filterJobs(ArrayList<Job>,List<String>,List<String>,List<String>,int,int)
+}
+
+
+class com.example.noaproj.MyJobs {
+- {static} String TAG
+~ DatabaseService databaseService
+~ ArrayList<Job> jobArrayList
+~ RecyclerView rvMyjobs
+~ TextView tv_myJobs_count
+~ ImageView imgAddOffer
+~ OfferAdapter adapter
+~ int totalJobs
+~ String uid
+~ FirebaseAuth mAuth
+# void onCreate(Bundle)
+- void initViews()
+- void initRecycler()
+- void setUpJobsAdapter()
+- void initListeners()
+- void readJobs(String)
+# void onResume()
++ void onClick(View)
+}
+
+
+class com.example.noaproj.AboutApp {
+# void onCreate(Bundle)
+}
+
+class com.example.noaproj.model.User {
+~ String id
+~ String fName
+~ String lName
+~ String phone
+~ String email
+~ String password
+~ String age
+~ String gender
+~ String city
+~ boolean isAdmin
++ String getAge()
++ void setAge(String)
++ String getCity()
++ void setCity(String)
++ String getEmail()
++ void setEmail(String)
++ String getfName()
++ void setfName(String)
++ String getGender()
++ void setGender(String)
++ String getId()
++ void setId(String)
++ String getlName()
++ void setlName(String)
++ String getPassword()
++ void setPassword(String)
++ boolean getIsAdmin()
++ void setIsAdmin(boolean)
++ String getPhone()
++ void setPhone(String)
++ String toString()
+}
+
+
+class com.example.noaproj.OfferList {
+- {static} String TAG
+~ DatabaseService databaseService
+~ ArrayList<Job> jobArrayList
+~ RecyclerView rcOffers
+~ TextView tv_offer_count
+~ OfferAdapter adapter
+~ int totalOffers
+~ String uid
+~ FirebaseAuth mAuth
+~ User currentUser
+- {static} int SMS_PERMISSION_CODE
+# void onCreate(Bundle)
+- void initViews()
+- void initRecycler()
+- void setUpOfferAdapter()
+- void readNewJobs()
++ void sendApprovalSMS(Job)
+- void showRejectReasonDialog(Job)
++ void sendRejectionSMS(Job,String)
+- void checkSMSPermission()
++ void onRequestPermissionsResult(int,String[],int[])
+# void onResume()
+}
+
+
+class com.example.noaproj.model.Job {
+~ String id
+~ String title
+~ String type
+~ String city
+~ String address
+~ String phone
+~ String age
+~ String details
+~ User user
+~ String company
+~ String status
++ String getCompany()
++ void setCompany(String)
++ String getAddress()
++ void setAddress(String)
++ String getAge()
++ void setAge(String)
++ String getCity()
++ void setCity(String)
++ String getDetails()
++ void setDetails(String)
++ String getId()
++ void setId(String)
++ String getPhone()
++ void setPhone(String)
++ String getTitle()
++ void setTitle(String)
++ String getType()
++ void setType(String)
++ User getUser()
++ void setUser(User)
++ String getStatus()
++ void setStatus(String)
++ String toString()
+}
+
+
+class com.example.noaproj.SubmitOfferActivity {
+- {static} String TAG
+- DatabaseService databaseService
+~ EditText etCompany
+~ String jobCity
+~ Button btnSubmitOffer
+~ Spinner spCity
+# void onCreate(Bundle)
+- void initViews()
+- void initListeners()
++ void onClick(View)
+- void SubmitOffer(String,String,String,String,String,String,String,String)
+- void createJobInDatabase(Job)
+- boolean checkInput()
+}
+
+
+class com.example.noaproj.ExampleUnitTest {
++ void addition_isCorrect()
+}
+
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.JobNotification
+com.example.noaproj.services.DatabaseService +.. com.example.noaproj.services.DatabaseService$DatabaseCallback
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.Splash
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.Login
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.Login
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.Register
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.Register
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.MainActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.MainActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.UserList
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.UserActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.UserActivity
+com.example.noaproj.adapters.Adapter <|-- com.example.noaproj.adapters.CallAdapter
+com.example.noaproj.adapters.CallAdapter +.. com.example.noaproj.adapters.CallAdapter$ViewHolder
+com.example.noaproj.adapters.ViewHolder <|-- com.example.noaproj.adapters.CallAdapter$ViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.MyCalls
+android.app.Service <|-- com.example.noaproj.services.JobAlarmService
+com.example.noaproj.adapters.Adapter <|-- com.example.noaproj.adapters.UserAdapter
+com.example.noaproj.adapters.UserAdapter +.. com.example.noaproj.adapters.UserAdapter$ViewHolder
+com.example.noaproj.adapters.ViewHolder <|-- com.example.noaproj.adapters.UserAdapter$ViewHolder
+com.example.noaproj.adapters.Adapter <|-- com.example.noaproj.adapters.OfferAdapter
+com.example.noaproj.adapters.OfferAdapter +.. com.example.noaproj.adapters.OfferAdapter$OnJobClickListener
+com.example.noaproj.adapters.OfferAdapter +.. com.example.noaproj.adapters.OfferAdapter$ViewHolder
+com.example.noaproj.adapters.ViewHolder <|-- com.example.noaproj.adapters.OfferAdapter$ViewHolder
+android.content.BroadcastReceiver <|-- com.example.noaproj.services.JobCheckReceiver
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.MyJobs
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.MyJobs
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.AboutApp
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.OfferList
+com.example.noaproj.OnClickListener <|.. com.example.noaproj.SubmitOfferActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.noaproj.SubmitOfferActivity
+@enduml
