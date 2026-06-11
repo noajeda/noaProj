@@ -183,7 +183,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         approveArraylist.add(jobList.get(i)); // רשימה המכילה את כל העבודות המאושרות
                     Log.d(TAG, "Job ID: " + jobList.get(i).getId() + ", Status: " + jobList.get(i).getStatus());
                 }
-                adapter.setJobList(new ArrayList<>(approveArraylist));
+                 adapter.setJobList(new ArrayList<>(approveArraylist));
             }
 
             @Override
@@ -415,6 +415,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     // ---- התנתקות מהמשתמש ----
     private void logOut() {
+        FirebaseAuth.getInstance().signOut();
+
         SharedPreferences prefs = getSharedPreferences("jobFilter", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear().apply();

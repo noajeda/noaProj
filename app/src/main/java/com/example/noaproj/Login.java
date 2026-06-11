@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         tvRegister = findViewById(R.id.tvLogToReg);
     }
     private void initData(){
-        // כתיבה אוטומטית של פריטh ההתחברות הקודמים, במידה וקיימים
+        // כתיבה אוטומטית של פריטי ההתחברות הקודמים, במידה וקיימים
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         email1=sharedpreferences.getString("email","");
         password1=sharedpreferences.getString("password","");

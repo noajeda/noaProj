@@ -39,7 +39,7 @@ public class MyJobs extends AppCompatActivity implements View.OnClickListener {
     FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_jobs);

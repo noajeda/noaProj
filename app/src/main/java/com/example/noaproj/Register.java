@@ -117,7 +117,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             public void onFailed(Exception e) {
                 // בדיקה האם השגיאה היא כי המשתמש כבר קיים
                 if (e instanceof com.google.firebase.auth.FirebaseAuthUserCollisionException) {
-                    Toast.makeText(Register.this, "האימייל כבר קיים במערכת!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Register.this, "האימייל כבר קיים במערכת!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

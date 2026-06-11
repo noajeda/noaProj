@@ -11,7 +11,7 @@ public class JobAlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent == null || intent.getAction() == null) {
-            return START_STICKY;
+            return START_NOT_STICKY;
         }
         String action = intent.getAction();
         if ("START".equals(action)) {
@@ -21,7 +21,7 @@ public class JobAlarmService extends Service {
             stopAlarm(); // עצור
         }
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     // ---- הפעל התראה ----

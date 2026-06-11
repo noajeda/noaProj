@@ -85,6 +85,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
         // עיצוב מס' טלפון
         holder.tvJobPhone2.setPaintFlags(holder.tvJobPhone2.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         holder.tvJobPhone2.setTextColor(holder.tvJobCompany2.getTextColors());
+
         // לחיצה על מס' טלפון או אייקון טלפון
         View.OnClickListener phoneClickListener = v -> {
             holder.tvJobPhone2.setTextColor(android.graphics.Color.parseColor("#1E88E5"));

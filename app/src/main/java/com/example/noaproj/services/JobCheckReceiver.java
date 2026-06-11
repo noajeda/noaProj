@@ -120,10 +120,10 @@ public class JobCheckReceiver extends BroadcastReceiver {
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        // הפעל את ההתראה בעוד 20 שניות
+        // הפעל את ההתראה בעוד 15 דקות
         alarmManager.set(
                 AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 1000 * 60 * 15,
+                System.currentTimeMillis() + 15 * 60 * 1000,
                 schedulePendingIntent
         );
     }

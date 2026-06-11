@@ -27,6 +27,8 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebase_messaging" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.11.0" }
+androidx-test-core = { group = "androidx.test", name = "core", version = "1.6.1" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version = "1.6.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

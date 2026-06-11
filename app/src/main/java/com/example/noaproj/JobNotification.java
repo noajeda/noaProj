@@ -242,9 +242,9 @@ public class JobNotification extends AppCompatActivity {
 
     // ---- האם יש הרשאה ----
     private boolean hasNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {  // האם גרסת האנדרואיד שווה/גדולה מ13
             return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    == PackageManager.PERMISSION_GRANTED;
+                    == PackageManager.PERMISSION_GRANTED; // בדיקה האם ניתנה הרשאה להתראות
         }
         return true;
     }
@@ -254,8 +254,8 @@ public class JobNotification extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                     this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    NOTIFICATION_PERMISSION_CODE
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS}, // מערך הרשאות
+                    NOTIFICATION_PERMISSION_CODE // מספר מזהה לבקשה
             );
         }
     }
