@@ -14,7 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.database.ValueEventListener;
 
 
 import org.jetbrains
@@ -210,7 +210,7 @@ public class DatabaseService {
     // ---- רשימת שיחות יוצאות של משתמש מסוים ----
     private void readOutgoingCalls(@NotNull String uid, @NotNull DatabaseCallback<List<Call>> callback) {
         readData(CALLS_PATH + "/" + uid) // שליפת calls של משתמש מסוים
-                .addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         List<Call> outgoingCalls = new ArrayList<>();

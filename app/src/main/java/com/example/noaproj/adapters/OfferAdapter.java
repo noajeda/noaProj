@@ -144,7 +144,7 @@ public class OfferAdapter extends RecyclerView.Adapter<com.example.noaproj.adapt
     // מעבר לאפליקציית שיחות
     private void phoneClick(View v, Job job) {
         String phone = job.getPhone().trim();
-        Intent goCall = new Intent(Intent.ACTION_DIAL);
+        Intent goCall = new Intent(Intent.ACTION_DIAL); 
         goCall.setData(Uri.parse("tel:" + phone));
         v.getContext().startActivity(goCall);
         if (onJobClickListener != null) {
